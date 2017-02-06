@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:weightSum="1">
+
+
+    <TextView
+        android:text="Name of Task1"
+        android:id="@+id/auctionWorkName"
+        android:layout_weight="0.5"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:textSize="15dp"
+        android:paddingLeft="0.1in"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center|left"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:singleLine="false" />
+
+    <TextView
+        android:text="Duration of auction :"
+        android:id="@+id/textViewTaskStatus"
+        android:layout_width="wrap_content"
+        android:paddingRight="0.2in"
+        android:layout_height="37dp"
+        android:gravity="center|right"
+        android:layout_weight="0.50"
+        android:textSize="12dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:fontFamily="sans-serif-medium"
+        />
+
+</LinearLayout>

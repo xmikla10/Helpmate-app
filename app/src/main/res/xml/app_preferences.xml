@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Notifications">
+        <CheckBoxPreference
+            android:title="Notification"
+            android:summary="Notification On"
+            android:key="notification"
+            android:defaultValue="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Languages">
+
+        <ListPreference
+            android:key="language"
+            android:title="Language"
+            android:defaultValue="English"
+            android:entries="@array/updateInterval"
+            android:entryValues="@array/updateIntervalValues"
+            android:summary="%s"
+            />
+
+    </PreferenceCategory>
+</PreferenceScreen>

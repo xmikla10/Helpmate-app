@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:weightSum="1">
+
+    <EditText
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:backgroundTint="@android:color/holo_orange_light"
+        android:text="0"
+        android:id="@+id/duraction"
+        android:gravity="center"
+        android:textColor="?attr/actionModeSplitBackground" />
+
+    <TextView
+        android:text="minutes"
+        android:layout_width="wrap_content"
+        android:layout_height="27dp"
+        android:id="@+id/textView3"
+        android:layout_weight="0.10" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.50" />
+
+    <include layout="@layout/task_button"/>
+</LinearLayout>

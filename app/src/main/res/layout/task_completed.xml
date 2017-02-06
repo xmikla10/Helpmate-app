@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:gravity="center"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_weight="1.30"
+        android:gravity="left">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="left"
+            app:srcCompat="@drawable/user_man_header"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textStyle="normal"
+        android:textSize="15dp"
+        android:gravity="left">
+
+        <TextView
+            android:text="Name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/completedUserName"
+            android:layout_weight="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textStyle="normal"
+            android:textSize="16dp"
+            android:gravity="left|center" />
+
+        <TextView
+            android:text="Name of Task"
+            android:fontFamily="sans-serif-medium"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/completedNameOfTask"
+            android:layout_weight="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textStyle="normal|bold"
+            android:textSize="14dp"
+            android:gravity="left|center" />
+
+        <TextView
+            android:textSize="15dp"
+            android:text="Date"
+            android:layout_width="match_parent"
+            android:gravity="left|center"
+            android:paddingRight="0.1in"
+            android:textColor="@color/colorAccent"
+            android:layout_height="match_parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:id="@+id/completedDate"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.35"
+        android:gravity="center">
+
+        <TextView
+            android:text="credits"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:id="@+id/completedCredits"
+            android:textColor="@android:color/holo_green_dark"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+</LinearLayout>

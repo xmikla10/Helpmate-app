@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <group android:checkableBehavior="single"
+            android:id="@+id/group1" >
+                <item
+                    android:id="@+id/nav_to_do"
+                    android:icon="@drawable/to_do_icon"
+                    android:title="Main Page" />
+
+
+                <item
+                    android:id="@+id/nav_my_group"
+                    android:icon="@drawable/group_icon"
+                    android:title="My Groups" />
+
+                <item
+                    android:id="@+id/nav_join_group"
+                    android:icon="@drawable/add_group_icon"
+                    android:title="Join Existed Group" />
+
+                <item
+                    android:id="@+id/nav_add_group"
+                    android:icon="@drawable/plus"
+                    android:title="New Group" />
+
+                <item
+                    android:id="@+id/nav_activity_graph"
+                    android:icon="@drawable/activity_graph_icon"
+                    android:title="@string/activity_graph" />
+
+        </group>
+
+        <group android:checkableBehavior="single"
+            android:id="@+id/group2" >
+
+                <item
+                    android:id="@+id/nav_account"
+                    android:icon="@drawable/account_icon"
+                    android:title="@string/account" />
+
+                <item
+                    android:id="@+id/nav_settings"
+                    android:icon="@drawable/settings_icon"
+                    android:title="@string/settings" />
+
+                <item
+                    android:id="@+id/nav_about_flatmate"
+                    android:icon="@drawable/about_flatmate_icon"
+                    android:title="@string/about_flatmate" />
+
+                <item
+                    android:id="@+id/nav_log_out"
+                    android:icon="@drawable/logout"
+                    android:title="Log out" />
+
+        </group>
+
+</menu>

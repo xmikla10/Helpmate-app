@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:weightSum="1">
+
+
+    <TextView
+        android:text="Status"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:id="@+id/auctionStatus"
+        android:layout_weight="0.5"
+        android:paddingLeft="0.1in"
+        android:textSize="13dp"
+        android:gravity="center|left"
+        android:textColor="@color/colorAccent"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        />
+
+    <TextView
+        android:text="0h 0m"
+        android:layout_width="0dp"
+        android:layout_height="37dp"
+        android:paddingRight="0.1in"
+        android:gravity="center|right"
+        android:id="@+id/auctionTime"
+        android:layout_weight="0.5"
+        android:textSize="15dp"
+        android:textColor="@android:color/holo_green_dark"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+
+</LinearLayout>

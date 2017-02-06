@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Flatmate</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="to_do">To Do</string>
+    <string name="my_works">My Works</string>
+    <string name="completed">Completed</string>
+    <string name="activity_graph">Activity Graph</string>
+    <string name="account">Account</string>
+    <string name="settings">Settings</string>
+    <string name="about_flatmate">About Flatmate</string>
+</resources>

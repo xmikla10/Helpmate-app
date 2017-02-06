@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:backgroundTint="@android:color/holo_orange_light"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:hint="Email"
+        android:gravity="center"
+        android:ems="10"
+        android:id="@+id/editTextFindEmail"
+        android:layout_weight="1" />
+
+    <Space
+        android:layout_width="10dp"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:layout_width="40dp"
+        android:onClick="find"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:id="@+id/find_button"
+        android:background = "@drawable/search_icon"
+        style="@style/Widget.AppCompat.Button" />
+
+</LinearLayout>

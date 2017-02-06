@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "106635181777",
+    "firebase_url": "https://flatmate-80ba2.firebaseio.com",
+    "project_id": "flatmate-80ba2",
+    "storage_bucket": "flatmate-80ba2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106635181777:android:7d6ac8a8a7b58cba",
+        "android_client_info": {
+          "package_name": "com.flatmate.flatmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "106635181777-rr95k2ssb7n545sff191nijm5so8qbvs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flatmate.flatmate",
+            "certificate_hash": "B0C29A8F29B308CB8E427EE1F24497313BE55E9A"
+          }
+        },
+        {
+          "client_id": "106635181777-q4b1cf0s3mcb5j59akh8emq8oqm61ubp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkQBi7jWKG2Uszq3VFcfTv3gmQ9FT1ygc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "106635181777-q4b1cf0s3mcb5j59akh8emq8oqm61ubp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

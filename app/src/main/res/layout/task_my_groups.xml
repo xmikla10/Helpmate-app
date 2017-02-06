@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
+
+    <LinearLayout
+        android:id="@+id/linLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:weightSum="1">
+
+        <FrameLayout
+            android:weightSum="1"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="3dp"
+            android:layout_width="0dp"
+            android:layout_weight="0.95"
+            android:background="#ffffff"
+            android:layout_height="match_parent"
+            android:focusable="false"
+            android:elevation="4dp">
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent">
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        />
+
+                    <ImageView
+                        android:id="@+id/groupImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        app:srcCompat="@drawable/accept_group_grey"
+                        />
+
+                </LinearLayout>
+
+                <TextView
+                    android:text="Group Name"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textGroupName"
+                    android:gravity="center"
+                    android:textSize="22dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_weight="2"
+                        android:id="@+id/groupInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        app:srcCompat="@drawable/group_info"
+                        />
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+</LinearLayout>

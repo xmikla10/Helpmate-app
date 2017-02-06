@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="updateInterval">
+        <item name="english">English</item>
+        <item name="german">Deutsch</item>
+        <item name="czech">Český</item>
+        <item name="slovak">Slovenský</item>
+        <item name="vietnamese">Tiếng Việt</item>
+    </string-array>
+
+    <string-array name="updateIntervalValues">
+        <item name="english">English</item>
+        <item name="german">Deutsch</item>
+        <item name="czech">Český</item>
+        <item name="slovak">Slovenský</item>
+        <item name="vietnamese">Tiếng Việt</item>
+    </string-array>
+</resources>
