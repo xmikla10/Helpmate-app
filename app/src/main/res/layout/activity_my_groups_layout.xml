@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     tools:context="com.flatmate.flatmate.Activity.SignInActivity">
 
-    <include layout="@layout/content_my_groups_layout"/>
+    <include layout="@layout/content_graph_layout"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

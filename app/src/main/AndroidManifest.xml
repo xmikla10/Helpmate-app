@@ -59,7 +59,7 @@
 
         <activity
             android:label="Activity Graph"
-            android:name=".Activity.ActivityGraphActivity"/>
+            android:name=".Activity.GraphActivity"/>
 
         <activity
             android:label="Work details"

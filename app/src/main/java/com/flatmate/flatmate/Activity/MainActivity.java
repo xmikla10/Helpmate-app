@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 if (id == R.id.nav_to_do) {
                     startActivity(new Intent(MainActivity.this, MainActivity.class));
                 } else if (id == R.id.nav_activity_graph) {
-                    startActivity(new Intent(MainActivity.this, ActivityGraphActivity.class));
+                    startActivity(new Intent(MainActivity.this, GraphActivity.class));
                 } else if (id == R.id.nav_account) {
                     startActivity(new Intent(MainActivity.this, AccountActivity.class));
                 } else if (id == R.id.nav_settings) {
