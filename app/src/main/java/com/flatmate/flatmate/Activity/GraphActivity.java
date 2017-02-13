@@ -12,8 +12,12 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.flatmate.flatmate.Firebase.Members;
+import com.flatmate.flatmate.Firebase.NewWork;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
@@ -25,8 +29,16 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import com.flatmate.flatmate.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by xmikla10 on 29.10.2016.
@@ -37,9 +49,20 @@ public class GraphActivity extends AppCompatActivity
 
     private static String TAG = "MainActivity";
 
-    private float[] yData = {25.3f, 35.3f, 18.3f, 28.3f, 26.3f};
-    private String[] xData = {"Mitch", "Jessica" , "Mohammad" , "Kelsey", "Sam"};
+    private Integer[] yData;
+    private String[] xData;
     PieChart pieChart;
+
+    public Integer membersCount;
+
+    private FirebaseAuth firebaseAuth;
+    private String groupID;
+    DatabaseReference db;
+    NewWork newWork1;
+    String userID;
+    String uniqueID;
+    Boolean saved=null;
+    ArrayList<NewWork> a =new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,25 +71,90 @@ public class GraphActivity extends AppCompatActivity
         setContentView(R.layout.activity_graph_layout);
         Log.d(TAG, "onCreate: starting to create chart");
 
-        pieChart = (PieChart) findViewById(R.id.pieChart);
+        membersCount = 0;
 
-        pieChart.setRotationEnabled(true);
-        //pieChart.setUsePercentValues(true);
-        pieChart.setNoDataTextColor(Color.parseColor("#EF6C00"));
-        pieChart.setCenterTextColor(Color.BLACK);
-        pieChart.setHoleRadius(40f);
-        pieChart.setTransparentCircleAlpha(0);
-        pieChart.setCenterText("January");
-        pieChart.setCenterTextSize(15);
-        pieChart.setEntryLabelTextSize(12);
-        //More options just check out the documentation!
+        firebaseAuth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance().getReference();
+        userID = firebaseAuth.getCurrentUser().getUid().toString();
 
-        addDataSet();
+        db.child("user").child("users").child(userID).addChildEventListener(new ChildEventListener()
+        {
+            @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
+            {
+                Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                groupID = value.get("_group").toString();
+                    if(groupID.length() != 0)
+                    {
+                        db.child("groups").child(groupID).child("graph").child("months").child("February").child("members").addChildEventListener(new ChildEventListener() {
+                            @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                                String members = value.get("_membersCount").toString();
+                                setGraph(members);
+                            }
+                            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                            @Override public void onCancelled(DatabaseError databaseError) {}
+                        });
+                        /*Members members = new Members();
+                        members.set_membersCount("3");
+                        db.child("groups").child(groupID).child("graph").child("months").child("February").child("members").push().setValue(members);*/
+                    }
 
+            }
+            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    public void setGraph(String members)
+    {
+        db = FirebaseDatabase.getInstance().getReference();
+        final Integer tmp = Integer.parseInt(members);
+
+        yData = new Integer[tmp];
+        xData = new String[tmp];
+
+        db.child("groups").child(groupID).child("graph").child("months").child("February").child("users").addChildEventListener(new ChildEventListener() {
+            @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                String name = value.get("_name").toString();
+                String credits = value.get("_credits").toString();
+
+                yData[membersCount]= Integer.parseInt(credits);
+                xData[membersCount]= name;
+
+                System.out.println(yData[membersCount]);
+                System.out.println(xData[membersCount]);
+
+                membersCount++;
+                if (membersCount == tmp)
+                {
+                    pieChart = (PieChart) findViewById(R.id.pieChart);
+                    pieChart.setRotationEnabled(true);
+                    //pieChart.setUsePercentValues(true);
+                    pieChart.setNoDataTextColor(Color.parseColor("#EF6C00"));
+                    pieChart.setCenterTextColor(Color.BLACK);
+                    pieChart.setHoleRadius(40f);
+                    pieChart.setTransparentCircleAlpha(0);
+                    pieChart.setCenterText("January");
+                    pieChart.setCenterTextSize(15);
+                    pieChart.setEntryLabelTextSize(12);
+                    addDataSet();
+                }
+            }
+            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
     public String addName(int i)
     {
+        System.out.println("tusom");
         return xData[i];
     }
 
@@ -127,5 +215,10 @@ public class GraphActivity extends AppCompatActivity
         PieData pieData = new PieData(pieDataSet);
         pieChart.setData(pieData);
         pieChart.invalidate();
+
+        ProgressBar load = (ProgressBar) findViewById(R.id.loadingProgressBarGraph);
+        com.github.mikephil.charting.charts.PieChart pieGraph = (com.github.mikephil.charting.charts.PieChart) findViewById(R.id.pieChart);
+        load.setVisibility(View.GONE);
+        pieGraph.setVisibility(View.VISIBLE);
     }
 }

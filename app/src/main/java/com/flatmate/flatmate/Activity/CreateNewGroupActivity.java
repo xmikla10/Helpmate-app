@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.flatmate.flatmate.Firebase.Months;
 import com.flatmate.flatmate.Firebase.NewGroup;
 import com.flatmate.flatmate.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,6 +50,32 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                 final NewGroup newGroupMembers = new NewGroup();
                 final NewGroup newGroupFind = new NewGroup();
 
+                final Months months1 = new Months();
+                final Months months2 = new Months();
+                final Months months3 = new Months();
+                final Months months4 = new Months();
+                final Months months5 = new Months();
+                final Months months6 = new Months();
+                final Months months7 = new Months();
+                final Months months8 = new Months();
+                final Months months9 = new Months();
+                final Months months10 = new Months();
+                final Months months11 = new Months();
+                final Months months12 = new Months();
+
+                months1.set_month("null");
+                months2.set_month("null");
+                months3.set_month("null");
+                months4.set_month("null");
+                months5.set_month("null");
+                months6.set_month("null");
+                months7.set_month("null");
+                months8.set_month("null");
+                months9.set_month("null");
+                months10.set_month("null");
+                months11.set_month("null");
+                months12.set_month("null");
+
                 EditText groupName = (EditText) findViewById(R.id.editTextGroupName);
                 group_name = groupName.getText().toString();
                 group_ID = UUID.randomUUID().toString();
@@ -77,6 +104,20 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                         newGroupFind.set_user_email(user_email);
                         newGroupFind.set_user_ID(userID);
                         db.child("user").child("groups").child("find").push().setValue(newGroupFind);
+
+                        db.child("groups").child(group_ID).child("graph").child("months").child("January").child("control").push().setValue(months1);
+                        db.child("groups").child(group_ID).child("graph").child("months").child("February").child("control").push().setValue(months2);
+                        db.child("groups").child(group_ID).child("graph").child("months").child("March").child("control").push().setValue(months3);
+                        db.child("groups").child(group_ID).child("graph").child("months").child("April").child("control").push().setValue(months4);
+                        db.child("groups").child(group_ID).child("graph").child("months").child("May").child("control").push().setValue(months5);
+                        db.child("groups").child(group_ID).child("graph").child("months").child("June").child("control").push().setValue(months6);
+                        db.child("groups").child(group_ID).child("graph").child("months").child("July").child("control").push().setValue(months7);
+                        db.child("groups").child(group_ID).child("graph").child("months").child("August").child("control").push().setValue(months8);
+                        db.child("groups").child(group_ID).child("graph").child("months").child("September").child("control").push().setValue(months9);
+                        db.child("groups").child(group_ID).child("graph").child("months").child("October").child("control").push().setValue(months10);
+                        db.child("groups").child(group_ID).child("graph").child("months").child("November").child("control").push().setValue(months11);
+                        db.child("groups").child(group_ID).child("graph").child("months").child("December").child("control").push().setValue(months12);
+
                         finish();
                     }
                     @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
