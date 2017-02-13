@@ -84,7 +84,6 @@
         android:layout_alignBottom="@+id/deadline_spinner" />
 
         <Spinner
-
             android:layout_width="match_parent"
             android:layout_below="@+id/textView11"
             android:id="@+id/deadline_spinner"

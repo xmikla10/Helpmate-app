@@ -51,7 +51,7 @@ public class FirebaseHelperWork
                          {
                              db.child("groups").child(groupID).child("works").child("todo").push().setValue(newWork1);
 
-                             /*GraphUser graphUser1 = new GraphUser();
+                             GraphUser graphUser1 = new GraphUser();
                              graphUser1.set_name("Peter");
                              graphUser1.set_email("a@a.com");
                              graphUser1.set_ID("f51MP4By4Dfu7ltoxfhtkvNSfk63");
@@ -69,9 +69,9 @@ public class FirebaseHelperWork
                              graphUser3.set_ID("wgCR977V8vOj1d4hGtHgHpH7IXA2");
                              graphUser3.set_credits("15");
 
-                             db.child("groups").child(groupID).child("graph").child("months").child("February").child("users").push().setValue(graphUser1);
-                             db.child("groups").child(groupID).child("graph").child("months").child("February").child("users").push().setValue(graphUser2);
-                             db.child("groups").child(groupID).child("graph").child("months").child("February").child("users").push().setValue(graphUser3);*/
+                             db.child("groups").child(groupID).child("graph").child("months").child("March").child("users").push().setValue(graphUser1);
+                             db.child("groups").child(groupID).child("graph").child("months").child("March").child("users").push().setValue(graphUser2);
+                             db.child("groups").child(groupID).child("graph").child("months").child("March").child("users").push().setValue(graphUser3);
                          }
                      }
                      @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}

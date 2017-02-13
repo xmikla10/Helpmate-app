@@ -13,7 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.flatmate.flatmate.Firebase.Members;
@@ -28,6 +31,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -48,21 +52,17 @@ public class GraphActivity extends AppCompatActivity
 {
 
     private static String TAG = "MainActivity";
-
+    public String monthString;
     private Integer[] yData;
     private String[] xData;
-    PieChart pieChart;
-
+    public PieChart pieChart;
     public Integer membersCount;
-
     private FirebaseAuth firebaseAuth;
     private String groupID;
     DatabaseReference db;
-    NewWork newWork1;
     String userID;
-    String uniqueID;
-    Boolean saved=null;
-    ArrayList<NewWork> a =new ArrayList<>();
+    public Integer tmp_get;
+    public Spinner dropdown1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -73,6 +73,62 @@ public class GraphActivity extends AppCompatActivity
 
         membersCount = 0;
 
+        tmp_get = Calendar.getInstance().get(Calendar.MONTH)+1;
+        if ( tmp_get == 13)
+            tmp_get = 1;
+        switch (tmp_get) {
+            case 1:  monthString = "January";
+                break;
+            case 2:  monthString = "February";
+                break;
+            case 3:  monthString = "March";
+                break;
+            case 4:  monthString = "April";
+                break;
+            case 5:  monthString = "May";
+                break;
+            case 6:  monthString = "June";
+                break;
+            case 7:  monthString = "July";
+                break;
+            case 8:  monthString = "August";
+                break;
+            case 9:  monthString = "September";
+                break;
+            case 10: monthString = "October";
+                break;
+            case 11: monthString = "November";
+                break;
+            case 12: monthString = "December";
+                break;
+            default: monthString = "Invalid month";
+                break;
+        }
+
+        dropdown1 = (Spinner) findViewById(R.id.spinnerGraph);
+        String[] items = new String[]
+                {
+                        "January",
+                        "February",
+                        "March",
+                        "April",
+                        "May",
+                        "June",
+                        "July",
+                        "August",
+                        "September",
+                        "October",
+                        "November",
+                        "December"
+                };
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown1.setAdapter(adapter);
+
+        findInDB();
+    }
+
+    public void findInDB()
+    {
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance().getReference();
         userID = firebaseAuth.getCurrentUser().getUid().toString();
@@ -83,23 +139,25 @@ public class GraphActivity extends AppCompatActivity
             {
                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
                 groupID = value.get("_group").toString();
-                    if(groupID.length() != 0)
-                    {
-                        db.child("groups").child(groupID).child("graph").child("months").child("February").child("members").addChildEventListener(new ChildEventListener() {
-                            @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                                String members = value.get("_membersCount").toString();
-                                setGraph(members);
-                            }
-                            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                            @Override public void onCancelled(DatabaseError databaseError) {}
-                        });
-                        /*Members members = new Members();
-                        members.set_membersCount("3");
-                        db.child("groups").child(groupID).child("graph").child("months").child("February").child("members").push().setValue(members);*/
-                    }
+                if(groupID.length() != 0)
+                {
+                    db.child("groups").child(groupID).child("graph").child("months").child("members").addChildEventListener(new ChildEventListener() {
+                        @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                            Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                            String members = value.get("_membersCount").toString();
+
+                            /*Members member = new Members();
+                            member.set_membersCount("3");
+                            db.child("groups").child(groupID).child("graph").child("months").child("members").push().setValue(member);*/
+
+                            setGraph(members);
+                        }
+                        @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                        @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                        @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                        @Override public void onCancelled(DatabaseError databaseError) {}
+                    });
+                }
 
             }
             @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
@@ -107,6 +165,43 @@ public class GraphActivity extends AppCompatActivity
             @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
+
+    }
+
+    public void changeMonthToView(Integer nPos)
+    {
+        switch (nPos) {
+            case 1:  monthString = "January";
+                break;
+            case 2:  monthString = "February";
+                break;
+            case 3:  monthString = "March";
+                break;
+            case 4:  monthString = "April";
+                break;
+            case 5:  monthString = "May";
+                break;
+            case 6:  monthString = "June";
+                break;
+            case 7:  monthString = "July";
+                break;
+            case 8:  monthString = "August";
+                break;
+            case 9:  monthString = "September";
+                break;
+            case 10: monthString = "October";
+                break;
+            case 11: monthString = "November";
+                break;
+            case 12: monthString = "December";
+                break;
+            default: monthString = "Invalid month";
+                break;
+        }
+        System.out.println("test   " + monthString);
+        membersCount = 0;
+
+        findInDB();
     }
 
     public void setGraph(String members)
@@ -117,7 +212,7 @@ public class GraphActivity extends AppCompatActivity
         yData = new Integer[tmp];
         xData = new String[tmp];
 
-        db.child("groups").child(groupID).child("graph").child("months").child("February").child("users").addChildEventListener(new ChildEventListener() {
+        db.child("groups").child(groupID).child("graph").child("months").child(monthString).child("users").addChildEventListener(new ChildEventListener() {
             @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
                 String name = value.get("_name").toString();
@@ -126,8 +221,7 @@ public class GraphActivity extends AppCompatActivity
                 yData[membersCount]= Integer.parseInt(credits);
                 xData[membersCount]= name;
 
-                System.out.println(yData[membersCount]);
-                System.out.println(xData[membersCount]);
+                System.out.println("test ------->  " + yData[membersCount]);
 
                 membersCount++;
                 if (membersCount == tmp)
@@ -139,7 +233,7 @@ public class GraphActivity extends AppCompatActivity
                     pieChart.setCenterTextColor(Color.BLACK);
                     pieChart.setHoleRadius(40f);
                     pieChart.setTransparentCircleAlpha(0);
-                    pieChart.setCenterText("January");
+                    pieChart.setCenterText(monthString);
                     pieChart.setCenterTextSize(15);
                     pieChart.setEntryLabelTextSize(12);
                     addDataSet();
@@ -154,7 +248,6 @@ public class GraphActivity extends AppCompatActivity
 
     public String addName(int i)
     {
-        System.out.println("tusom");
         return xData[i];
     }
 
@@ -218,7 +311,19 @@ public class GraphActivity extends AppCompatActivity
 
         ProgressBar load = (ProgressBar) findViewById(R.id.loadingProgressBarGraph);
         com.github.mikephil.charting.charts.PieChart pieGraph = (com.github.mikephil.charting.charts.PieChart) findViewById(R.id.pieChart);
+        Spinner spinner = (Spinner) findViewById(R.id.spinnerGraph);
+        spinner.setVisibility(View.VISIBLE);
+        //spinner.setSelection(tmp_get-1);
         load.setVisibility(View.GONE);
         pieGraph.setVisibility(View.VISIBLE);
+
+        dropdown1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int nPos = position;
+                changeMonthToView(nPos+1);
+            }
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
     }
 }
