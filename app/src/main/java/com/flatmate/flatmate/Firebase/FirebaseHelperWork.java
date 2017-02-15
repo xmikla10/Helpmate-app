@@ -51,7 +51,7 @@ public class FirebaseHelperWork
                          {
                              db.child("groups").child(groupID).child("works").child("todo").push().setValue(newWork1);
 
-                             GraphUser graphUser1 = new GraphUser();
+                             /*GraphUser graphUser1 = new GraphUser();
                              graphUser1.set_name("Peter");
                              graphUser1.set_email("a@a.com");
                              graphUser1.set_ID("f51MP4By4Dfu7ltoxfhtkvNSfk63");
@@ -61,17 +61,17 @@ public class FirebaseHelperWork
                              graphUser2.set_name("Thomas");
                              graphUser2.set_email("b@a.com");
                              graphUser2.set_ID("3zQM6sZYi3O8Yfq6enhIVbAkd3h1");
-                             graphUser2.set_credits("10");
+                             graphUser2.set_credits("5");
 
                              GraphUser graphUser3 = new GraphUser();
                              graphUser3.set_name("Miley");
                              graphUser3.set_email("c@a.com");
                              graphUser3.set_ID("wgCR977V8vOj1d4hGtHgHpH7IXA2");
-                             graphUser3.set_credits("15");
+                             graphUser3.set_credits("20");
 
-                             db.child("groups").child(groupID).child("graph").child("months").child("March").child("users").push().setValue(graphUser1);
-                             db.child("groups").child(groupID).child("graph").child("months").child("March").child("users").push().setValue(graphUser2);
-                             db.child("groups").child(groupID).child("graph").child("months").child("March").child("users").push().setValue(graphUser3);
+                             db.child("groups").child(groupID).child("graph").child("months").child("January").child("users").push().setValue(graphUser1);
+                             db.child("groups").child(groupID).child("graph").child("months").child("January").child("users").push().setValue(graphUser2);
+                             db.child("groups").child(groupID).child("graph").child("months").child("January").child("users").push().setValue(graphUser3);*/
                          }
                      }
                      @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}

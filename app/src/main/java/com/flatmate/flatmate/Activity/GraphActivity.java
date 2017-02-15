@@ -1,40 +1,25 @@
 package com.flatmate.flatmate.Activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.flatmate.flatmate.Firebase.Members;
-import com.flatmate.flatmate.Firebase.NewWork;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import com.flatmate.flatmate.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -63,10 +48,15 @@ public class GraphActivity extends AppCompatActivity
     String userID;
     public Integer tmp_get;
     public Spinner dropdown1;
+    public String monthYear;
+
+    public boolean startGraph;
+    public PieDataSet pieDataSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        startGraph = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_layout);
         Log.d(TAG, "onCreate: starting to create chart");
@@ -141,16 +131,26 @@ public class GraphActivity extends AppCompatActivity
                 groupID = value.get("_group").toString();
                 if(groupID.length() != 0)
                 {
-                    db.child("groups").child(groupID).child("graph").child("months").child("members").addChildEventListener(new ChildEventListener() {
+                    db.child("groups").child(groupID).child("graph").child("months").child(monthString).child("control").addChildEventListener(new ChildEventListener() {
                         @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                             Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                            String members = value.get("_membersCount").toString();
+                            monthYear = value.get("_month").toString();
+                            db.child("groups").child(groupID).child("graph").child("months").child("members").addChildEventListener(new ChildEventListener() {
+                                @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                    Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                                    String members = value.get("_membersCount").toString();
 
-                            /*Members member = new Members();
-                            member.set_membersCount("3");
-                            db.child("groups").child(groupID).child("graph").child("months").child("members").push().setValue(member);*/
+                                    /*Members member = new Members();
+                                    member.set_membersCount("3");
+                                    db.child("groups").child(groupID).child("graph").child("months").child("members").push().setValue(member);*/
 
-                            setGraph(members);
+                                    setGraph(members);
+                                }
+                                @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                                @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                                @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                                @Override public void onCancelled(DatabaseError databaseError) {}
+                            });
                         }
                         @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
                         @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
@@ -158,7 +158,6 @@ public class GraphActivity extends AppCompatActivity
                         @Override public void onCancelled(DatabaseError databaseError) {}
                     });
                 }
-
             }
             @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
             @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
@@ -212,38 +211,54 @@ public class GraphActivity extends AppCompatActivity
         yData = new Integer[tmp];
         xData = new String[tmp];
 
-        db.child("groups").child(groupID).child("graph").child("months").child(monthString).child("users").addChildEventListener(new ChildEventListener() {
-            @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                String name = value.get("_name").toString();
-                String credits = value.get("_credits").toString();
+        if ( !monthYear.equals("null"))
+        {
+            db.child("groups").child(groupID).child("graph").child("months").child(monthString).child("users").addChildEventListener(new ChildEventListener()
+            {
+                @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                    String name = value.get("_name").toString();
+                    String credits = value.get("_credits").toString();
 
-                yData[membersCount]= Integer.parseInt(credits);
-                xData[membersCount]= name;
+                    yData[membersCount] = Integer.parseInt(credits);
+                    xData[membersCount] = name;
 
-                System.out.println("test ------->  " + yData[membersCount]);
+                    membersCount++;
+                    if (membersCount == tmp) {
 
-                membersCount++;
-                if (membersCount == tmp)
-                {
-                    pieChart = (PieChart) findViewById(R.id.pieChart);
-                    pieChart.setRotationEnabled(true);
-                    //pieChart.setUsePercentValues(true);
-                    pieChart.setNoDataTextColor(Color.parseColor("#EF6C00"));
-                    pieChart.setCenterTextColor(Color.BLACK);
-                    pieChart.setHoleRadius(40f);
-                    pieChart.setTransparentCircleAlpha(0);
-                    pieChart.setCenterText(monthString);
-                    pieChart.setCenterTextSize(15);
-                    pieChart.setEntryLabelTextSize(12);
-                    addDataSet();
+                        pieChart = (PieChart) findViewById(R.id.pieChart);
+                        pieChart.setRotationEnabled(true);
+                        //pieChart.setUsePercentValues(true);
+                        pieChart.setNoDataTextColor(Color.parseColor("#EF6C00"));
+                        pieChart.setCenterTextColor(Color.BLACK);
+                        pieChart.setHoleRadius(40f);
+                        pieChart.setTransparentCircleAlpha(0);
+                        pieChart.setCenterText(monthString + " " + monthYear);
+                        pieChart.setCenterTextSize(15);
+                        pieChart.setEntryLabelTextSize(12);
+                        addDataSet();
+                    }
                 }
-            }
-            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
-            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-            @Override public void onCancelled(DatabaseError databaseError) {}
-        });
+
+                @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                @Override public void onCancelled(DatabaseError databaseError) {}
+            });
+        }
+        else
+        {
+            pieChart = (PieChart) findViewById(R.id.pieChart);
+            pieChart.setRotationEnabled(true);
+            pieChart.setNoDataTextColor(Color.parseColor("#EF6C00"));
+            pieChart.setCenterTextColor(Color.BLACK);
+            pieChart.setHoleRadius(40f);
+            pieChart.setTransparentCircleAlpha(0);
+            pieChart.setCenterText(monthString + " " + "- no data");
+            pieChart.setCenterTextSize(15);
+            pieChart.setEntryLabelTextSize(12);
+            addDataSet();
+        }
     }
 
     public String addName(int i)
@@ -251,54 +266,61 @@ public class GraphActivity extends AppCompatActivity
         return xData[i];
     }
 
-    private void addDataSet() {
-        Log.d(TAG, "addDataSet started");
-        ArrayList<PieEntry> yEntrys = new ArrayList<>();
-        ArrayList<String> xEntrys = new ArrayList<>();
+    private void addDataSet()
+    {
 
-        PieDataSet pieDataSet = new PieDataSet(yEntrys, "");
+        if ( monthYear.equals("null"))
+        {
+            ArrayList<PieEntry> yEntrys = new ArrayList<>();
+            ArrayList<String> xEntrys = new ArrayList<>();
 
-        for(int i = 0; i < yData.length; i++){
-            yEntrys.add(new PieEntry(yData[i] , addName(i)));
+            membersCount = 0;
+            pieDataSet = new PieDataSet(yEntrys, "");
+
+            yEntrys.add(new PieEntry( 1 , "No available data"));
+            xEntrys.add("No available data");
+            pieChart.setUsePercentValues(true);
         }
+        else
+        {
+            //Log.d(TAG, "addDataSet started");
+            ArrayList<PieEntry> yEntrys = new ArrayList<>();
+            ArrayList<String> xEntrys = new ArrayList<>();
 
-        for(int i = 1; i < xData.length; i++){
-            xEntrys.add(xData[i]);
+            pieDataSet = new PieDataSet(yEntrys, "");
+
+            for(int i = 0; i < yData.length; i++){
+                yEntrys.add(new PieEntry(yData[i] , addName(i)));
+            }
+
+            for(int i = 1; i < xData.length; i++){
+                xEntrys.add(xData[i]);
+            }
         }
-
-        //create the data set
-        //List<PieEntry> entries = new ArrayList<>();
-
-       /* entries.add(new PieEntry(44.32f, "Blue"));
-        entries.add(new PieEntry(44.32f, "Blue"));
-        entries.add(new PieEntry(44.32f, "Blue"));
-        entries.add(new PieEntry(44.32f, "Blue"));
-        entries.add(new PieEntry(44.32f, "Blue"));
-        entries.add(new PieEntry(44.32f, "Blue"));
-        entries.add(new PieEntry(44.32f, "Blue"));
-        entries.add(new PieEntry(44.32f, "Blue"));
-        entries.add(new PieEntry(44.32f, "Blue"));
-        entries.add(new PieEntry(44.32f, "Blue"));*/
 
         pieDataSet.setSliceSpace(2);
         pieDataSet.setValueTextSize(14);
 
-        //add colors to dataset
-        ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(Color.parseColor("#EF6C00"));
-        colors.add(Color.parseColor("#0091EA"));
-        colors.add(Color.parseColor("#689F38"));
-        colors.add(Color.parseColor("#E64A19"));
-        colors.add(Color.parseColor("#7C4DFF"));
-        colors.add(Color.parseColor("#FF80AB"));
-        colors.add(Color.parseColor("#689F38"));
-        colors.add(Color.parseColor("#FFD740"));
-        colors.add(Color.parseColor("#0097A7"));
-        colors.add(Color.parseColor("#9E9E9E"));
-        colors.add(Color.parseColor("#00796B"));
-
-        pieDataSet.setColors(colors);
-
+        if ( monthYear.equals("null"))
+        {
+            pieDataSet.setColors(Color.parseColor("#2196F3"));
+        }
+        else
+        {
+            ArrayList<Integer> colors = new ArrayList<>();
+            colors.add(Color.parseColor("#EF6C00"));
+            colors.add(Color.parseColor("#0091EA"));
+            colors.add(Color.parseColor("#689F38"));
+            colors.add(Color.parseColor("#E64A19"));
+            colors.add(Color.parseColor("#7C4DFF"));
+            colors.add(Color.parseColor("#FF80AB"));
+            colors.add(Color.parseColor("#689F38"));
+            colors.add(Color.parseColor("#FFD740"));
+            colors.add(Color.parseColor("#0097A7"));
+            colors.add(Color.parseColor("#9E9E9E"));
+            colors.add(Color.parseColor("#00796B"));
+            pieDataSet.setColors(colors);
+        }
         //add legend to chart
         Legend legend = pieChart.getLegend();
         legend.setForm(Legend.LegendForm.CIRCLE);
@@ -311,16 +333,30 @@ public class GraphActivity extends AppCompatActivity
 
         ProgressBar load = (ProgressBar) findViewById(R.id.loadingProgressBarGraph);
         com.github.mikephil.charting.charts.PieChart pieGraph = (com.github.mikephil.charting.charts.PieChart) findViewById(R.id.pieChart);
-        Spinner spinner = (Spinner) findViewById(R.id.spinnerGraph);
+        final Spinner spinner = (Spinner) findViewById(R.id.spinnerGraph);
         spinner.setVisibility(View.VISIBLE);
-        //spinner.setSelection(tmp_get-1);
+
+        if ( startGraph == true)
+        {
+            spinner.setSelection(tmp_get-1);
+        }
+
         load.setVisibility(View.GONE);
         pieGraph.setVisibility(View.VISIBLE);
 
         dropdown1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int nPos = position;
-                changeMonthToView(nPos+1);
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                    if( startGraph == false)
+                    {
+                        int nPos = position;
+                        changeMonthToView(nPos+1);
+                    }
+
+                    if ( startGraph == true)
+                    {
+                        startGraph = false;
+                    }
             }
             public void onNothingSelected(AdapterView<?> parent) {}
         });
