@@ -69,7 +69,7 @@ public class CustomAdapterToDo extends BaseAdapter{
 
         textViewTaskName.setText(work_name);
         textViewStatus.setText(s.get_status());
-        textViewtime2.setText(s.get_time() +"  "+s.get_date());
+        textViewtime2.setText(s.get_deadline());
 
         return convertView;
     }

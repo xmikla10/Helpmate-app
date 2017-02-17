@@ -25,7 +25,7 @@
         android:id="@+id/auctionDuration"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:paddingRight="0.2in"
+        android:paddingRight="0.1in"
         android:gravity="center|right"
         android:layout_weight="0.5"
         android:textSize="15dp"

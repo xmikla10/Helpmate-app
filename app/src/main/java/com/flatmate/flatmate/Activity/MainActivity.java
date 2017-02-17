@@ -31,9 +31,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import com.flatmate.flatmate.Firebase.FirebaseHelperWork;
 
@@ -247,6 +253,127 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         });
     }
 
+    public void setAuctionDeadline()
+    {
+
+        String myString = timeR + " " + dateR;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+        Date myDateTime = null;
+
+        //Parse your string to SimpleDateFormat
+        try
+        {
+            myDateTime = simpleDateFormat.parse(myString);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+        //System.out.println("This is the Actual Date:"+myDateTime);
+
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(myDateTime);
+
+        if ( deadlineR.equals("1 hour"))
+        {
+            cal.add(Calendar.HOUR_OF_DAY, 1);
+        }
+        else if ( deadlineR.equals("3 hours"))
+        {
+            cal.add(Calendar.HOUR_OF_DAY, 2);
+        }
+        else if ( deadlineR.equals("6 hours"))
+        {
+            cal.add(Calendar.HOUR_OF_DAY, 6);
+        }
+        else if ( deadlineR.equals("12 hours"))
+        {
+            cal.add(Calendar.HOUR_OF_DAY, 12);
+        }
+        else if ( deadlineR.equals("24 hours"))
+        {
+            cal.add(Calendar.HOUR_OF_DAY, 24);
+        }
+        else if ( deadlineR.equals("48 hours"))
+        {
+            cal.add(Calendar.HOUR_OF_DAY, 48);
+        }
+        else if ( deadlineR.equals("week"))
+        {
+            cal.add(Calendar.HOUR_OF_DAY, 168);
+        }
+
+        //System.out.println("This is Hours Added Date:"+cal.getTime());
+
+        deadlineR = cal.getTime().toString();
+    }
+
+    public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit)
+    {
+        long diffInMillies = date2.getTime() - date1.getTime();
+        return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
+    }
+
+    public void setUnspecifiedDeadline()
+    {
+        Date date1;
+        Date date2;
+        long difference;
+        long tmp;
+        Date myDateTime = null;
+
+        Calendar cal1 = Calendar.getInstance();
+        date1 = cal1.getTime();
+
+        String myString = timeR + " " + dateR;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+
+        try
+        {
+            myDateTime = simpleDateFormat.parse(myString);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+        Calendar cal = new GregorianCalendar();
+        Calendar cal2 = new GregorianCalendar();
+
+        cal.setTime(myDateTime);
+        date2= cal.getTime();
+
+        System.out.println("Aktualny ---->" + date1.toString());
+        System.out.println("Deadline ---->" + date2.toString());
+        System.out.println("---->");
+
+        difference = getDateDiff(date1,date2,TimeUnit.MINUTES);
+
+        System.out.println("Rozdiel ---->" + difference);
+
+        if ( difference < 2880)
+        {
+            tmp = (difference / 100)* 20;
+        }
+        else
+        {
+            tmp = (difference / 100)* 50;
+        }
+
+        difference = (difference - tmp)/60;
+
+        cal2.add(Calendar.HOUR_OF_DAY, (int) difference);
+
+        simpleDateFormat.setTimeZone(cal2.getTimeZone());
+
+        deadlineR = simpleDateFormat.format(cal2.getTime()).toString();
+
+        System.out.println("------> " + deadlineR);
+
+
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -264,12 +391,23 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 NewWork newWork = new NewWork();
                 newWork.set_work_name(nameR);
                 newWork.set_duration(durationR + " min");
+
+                if ( !deadlineR.equals("null"))
+                {
+                    setAuctionDeadline();
+                }
+                else
+                {
+                    setUnspecifiedDeadline();
+                }
+
                 newWork.set_deadline(deadlineR);
                 newWork.set_date(dateR);
                 newWork.set_time(timeR);
                 newWork.set_status("Status : auctioning");
                 newWork.set_bidsID(uniqueID);
                 newWork.set_bidsID(uniqueID);
+                newWork.set_userEmail("null");
 
                 helper.save(newWork);
                 CustomAdapterToDo adapter = new CustomAdapterToDo(this, helper.retrieve());

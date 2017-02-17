@@ -19,7 +19,12 @@ import android.widget.CheckBox;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import static java.lang.Integer.parseInt;
 
@@ -42,16 +47,16 @@ public class AddNewWorkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_work);
 
-        Spinner dropdown1 = (Spinner) findViewById(R.id.deadline_spinner);
+        final Spinner dropdown1 = (Spinner) findViewById(R.id.deadline_spinner);
         String[] items = new String[]
                 {
                         "1 hour",
                         "3 hours",
-                        "today",
-                        "tomorrow",
-                        "week",
-                        "2 weeks",
-                        "month"
+                        "6 hours",
+                        "12 hours",
+                        "24 hours",
+                        "48 hours",
+                        "weeek"
                 };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown1.setAdapter(adapter);
@@ -86,13 +91,11 @@ public class AddNewWorkActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked)
                 {
-                    sw1.setVisibility(View.VISIBLE);
-                    sw2.setVisibility(View.VISIBLE);
+                    dropdown1.setVisibility(View.VISIBLE);
                 }
                 else
                 {
-                    sw1.setVisibility(View.INVISIBLE);
-                    sw2.setVisibility(View.INVISIBLE);
+                    dropdown1.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -159,6 +162,9 @@ public class AddNewWorkActivity extends AppCompatActivity {
         EditText work_name_text = (EditText) findViewById(R.id.work_name);
         EditText duration_text = (EditText) findViewById(R.id.duraction);
         Spinner deadline_spinner_text = (Spinner) findViewById(R.id.deadline_spinner);
+        Switch switch1 = (Switch) findViewById(R.id.switchTime);
+        Switch switch2 = (Switch) findViewById(R.id.switchDate);
+        CheckBox checkbox = (CheckBox) findViewById(R.id.duration_of_auction_checkBox);
 
 
         String work_name = work_name_text.getText().toString().trim();
@@ -167,15 +173,48 @@ public class AddNewWorkActivity extends AppCompatActivity {
         String date = str2;
         String time = str1;
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+        Date now = new Date();
+        Date myDateTime = null;
+
+        String strDate = simpleDateFormat.format(now);
+        String myString = time + " " + date;
+        try
+        {
+            myDateTime = simpleDateFormat.parse(myString);
+            now = simpleDateFormat.parse(strDate);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
         if ( work_name_text.getText().toString().trim().length() == 0)
         {
             Toast.makeText( getBaseContext(), "Please, enter a name of work" ,Toast.LENGTH_SHORT).show();
+        }
+        else if(now.compareTo(myDateTime)>0)
+        {
+            Toast.makeText( getBaseContext(), "Wrong time or date" ,Toast.LENGTH_SHORT).show();
         }
         else if ( Integer.parseInt(duration) <= 0)
         {
             Toast.makeText( getBaseContext(), "Please, enter a duration of work" ,Toast.LENGTH_SHORT).show();
         }
-        else {
+        else if (switch1.isChecked() == false)
+        {
+            Toast.makeText( getBaseContext(), "Please, enter a time" ,Toast.LENGTH_SHORT).show();
+        }
+        else if (switch2.isChecked() == false)
+        {
+            Toast.makeText( getBaseContext(), "Please, enter a date" ,Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            if (checkbox.isChecked() == false)
+            {
+                deadline_spinner = "null";
+            }
+
             Toast.makeText( getBaseContext(), "New work has been added" ,Toast.LENGTH_SHORT).show();
             String selectedDate = (work_name + "#"
                     + duration + "#"

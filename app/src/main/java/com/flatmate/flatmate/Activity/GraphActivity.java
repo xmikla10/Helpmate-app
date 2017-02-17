@@ -35,7 +35,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class GraphActivity extends AppCompatActivity
 {
-
     private static String TAG = "MainActivity";
     public String monthString;
     private Integer[] yData;
@@ -60,6 +59,11 @@ public class GraphActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_layout);
         Log.d(TAG, "onCreate: starting to create chart");
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 10);
+        calendar.set(Calendar.MINUTE, 30);
 
         membersCount = 0;
 

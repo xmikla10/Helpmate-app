@@ -23,7 +23,7 @@
     <TextView
         android:text="0h 0m"
         android:layout_width="0dp"
-        android:layout_height="37dp"
+        android:layout_height="35dp"
         android:paddingRight="0.1in"
         android:gravity="center|right"
         android:id="@+id/auctionTime"

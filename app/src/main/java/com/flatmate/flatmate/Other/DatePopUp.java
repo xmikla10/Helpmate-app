@@ -51,8 +51,29 @@ public class DatePopUp extends Activity
                                         {
                                             public void onClick(View v)
                                             {
-                                                String selectedDate = date_picker.getDayOfMonth() +"/"
-                                                        + (date_picker.getMonth()+1)+"/"
+                                                Integer month = date_picker.getMonth()+1;
+                                                Integer day = date_picker.getDayOfMonth();
+                                                String monthFinal;
+                                                String dayFinal;
+
+                                                if ( month < 10)
+                                                {
+                                                    monthFinal = "0" + month.toString();
+                                                }
+                                                else
+                                                    monthFinal = month.toString();
+
+
+                                                if ( day < 10)
+                                                {
+                                                    dayFinal = "0" + day.toString();
+                                                }
+                                                else
+                                                    dayFinal = day.toString();
+
+
+                                                String selectedDate = dayFinal +"/"
+                                                        + monthFinal+"/"
                                                         + (date_picker.getYear());
                                                 Intent intent = new Intent();
                                                 intent.putExtra(SELECTED_DATE_KEY,selectedDate);

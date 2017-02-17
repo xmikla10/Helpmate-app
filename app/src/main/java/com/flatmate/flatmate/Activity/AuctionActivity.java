@@ -78,8 +78,8 @@ public class AuctionActivity extends AppCompatActivity
             TextView work_name1 = (TextView) findViewById(R.id.auctionWorkName);
             TextView status1 = (TextView) findViewById(R.id.auctionStatus);
             TextView duration1 = (TextView) findViewById(R.id.auctionDuration);
-            TextView deadline1 = (TextView) findViewById(R.id.auctionDeadline);
-            TextView time1 = (TextView) findViewById(R.id.auctionTime);
+            TextView time1 = (TextView) findViewById(R.id.auctionDeadline);
+            TextView deadline1 = (TextView) findViewById(R.id.auctionTime);
 
             String pom = "";
             if( work_name.length() > 20)
