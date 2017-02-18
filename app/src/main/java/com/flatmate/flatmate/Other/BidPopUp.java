@@ -55,7 +55,7 @@ public class BidPopUp extends Activity
             public void onClick(View v)
             {
                 int np_count = np.getValue();
-                String bid = np_count + " credits";
+                String bid = String.valueOf(np_count);
                 if ( checkboxbid.isChecked() )
                 {
                     bid = "not interested";

@@ -409,6 +409,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 newWork.set_bidsID(uniqueID);
                 newWork.set_userEmail("null");
 
+                newWork.set_bidsLastValue("null");
+                newWork.set_bidsLastUser("null");
+                newWork.set_bidsCount("0");
+
                 helper.save(newWork);
                 CustomAdapterToDo adapter = new CustomAdapterToDo(this, helper.retrieve());
 

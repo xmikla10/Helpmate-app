@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flatmate.flatmate.Firebase.FirebaseHelperAuction;
 import com.flatmate.flatmate.Firebase.FirebaseHelperMyWorks;
@@ -32,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -49,11 +51,19 @@ public class AuctionActivity extends AppCompatActivity
     String bid;
     String userName;
     String userEmail;
+    String bidsLastValue;
+    String bidsLastUser;
+    String bidsCount;
+    String childKey;
+    Boolean bidsLastIsNull;
     DatabaseReference db;
     FirebaseHelperAuction helper;
     CustomAdapterAuction adapter;
     NewWork newWork;
     ListView lv;
+    Integer bidsLast;
+    Integer bidsActual;
+
     ArrayList<NewWork> a =new ArrayList<>();
     public static final String TAG = AuctionActivity.class.getSimpleName();
     public static final String SELECTED_ADD_KEY = "bid_result";
@@ -65,6 +75,9 @@ public class AuctionActivity extends AppCompatActivity
         setContentView(R.layout.activity_auction_layout);
         Bundle extras = getIntent().getExtras();
 
+        bidsLast = 0;
+        bidsActual = 0;
+
         if (extras != null)
         {
             String work_name = extras.getString("work_name");
@@ -74,6 +87,10 @@ public class AuctionActivity extends AppCompatActivity
             String time = extras.getString("time");
             String myWork = extras.getString("myWork");
             bidsID = extras.getString("bidsID");
+
+            bidsLastUser = extras.getString("bidsLastUser");
+            bidsLastValue = extras.getString("bidsLastValue");
+            bidsCount = extras.getString("bidsCount");
 
             TextView work_name1 = (TextView) findViewById(R.id.auctionWorkName);
             TextView status1 = (TextView) findViewById(R.id.auctionStatus);
@@ -225,24 +242,71 @@ public class AuctionActivity extends AppCompatActivity
                 firebaseAuth = FirebaseAuth.getInstance();
                 userID = firebaseAuth.getCurrentUser().getUid().toString();
 
-                db.child("user").child("users").child(userID).addChildEventListener(new ChildEventListener() {
-                    @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                        userName = value.get("_name").toString();
-                        groupID = value.get("_group").toString();
+                db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(bidsID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override public void onDataChange(DataSnapshot dataSnapshot)
+                    {
+                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                        {
+                            childKey = childSnapshot.getKey();
+                            Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
+                            bidsLastValue = value.get("_bidsLastValue").toString();
+                            bidsCount = value.get("_bidsCount").toString();
+                        }
 
-                        NewBid newbid = new NewBid();
-                        newbid.set_credits(bid);
-                        newbid.set_userName(userName);
-                        helper.save(newbid, bidsID, groupID);
-                        finish();
-                        startActivity(getIntent());
+                        if(!bidsLastValue.equals("null"))
+                        {
+                            bidsLast = Integer.valueOf(bidsLastValue);
+                            bidsActual = Integer.valueOf(bid);
+                            bidsLastIsNull = false;
+                        }
+                        else
+                        {
+                            bidsLastIsNull = true;
+                        }
+
+
+                        if (bidsLast <= bidsActual && bidsLastIsNull == false)
+                        {
+                            Toast.makeText(getBaseContext(), "Please, enter a lesser bid then a last user", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            db.child("user").child("users").child(userID).addChildEventListener(new ChildEventListener() {
+                                @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                    Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                                    userName = value.get("_name").toString();
+                                    groupID = value.get("_group").toString();
+
+                                    Map newWorkData = new HashMap();
+                                    bidsLastValue = bid;
+
+                                    newWorkData.put("_bidsLastValue", bidsLastValue);
+
+                                    newWorkData.put("_bidsLastUser", userEmail);
+
+                                    Integer bidsC = Integer.valueOf(bidsCount);
+                                    bidsC++;
+                                    bidsCount = String.valueOf(bidsC);
+                                    newWorkData.put("_bidsCount", bidsCount);
+
+                                    db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newWorkData);
+
+                                    NewBid newbid = new NewBid();
+                                    newbid.set_credits(bid + " credits");
+                                    newbid.set_userName(userName);
+                                    helper.save(newbid, bidsID, groupID);
+                                    finish();
+                                    startActivity(getIntent());
+                                }
+                                @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                                @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                                @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                                @Override public void onCancelled(DatabaseError databaseError) {}
+                            });
+                        }
                     }
-                    @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                    @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                    @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                     @Override public void onCancelled(DatabaseError databaseError) {}
-                });
+                    });
                 break;
 
             default:
