@@ -253,7 +253,7 @@ public class AuctionActivity extends AppCompatActivity
                             bidsCount = value.get("_bidsCount").toString();
                         }
 
-                        if(!bidsLastValue.equals("null"))
+                        if(!bidsLastValue.equals("null") && !bid.equals("not interested"))
                         {
                             bidsLast = Integer.valueOf(bidsLastValue);
                             bidsActual = Integer.valueOf(bid);
@@ -276,13 +276,14 @@ public class AuctionActivity extends AppCompatActivity
                                     Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
                                     userName = value.get("_name").toString();
                                     groupID = value.get("_group").toString();
-
                                     Map newWorkData = new HashMap();
-                                    bidsLastValue = bid;
 
-                                    newWorkData.put("_bidsLastValue", bidsLastValue);
-
-                                    newWorkData.put("_bidsLastUser", userEmail);
+                                    if(!bid.equals("not interested"))
+                                    {
+                                        bidsLastValue = bid;
+                                        newWorkData.put("_bidsLastValue", bidsLastValue);
+                                        newWorkData.put("_bidsLastUser", userEmail);
+                                    }
 
                                     Integer bidsC = Integer.valueOf(bidsCount);
                                     bidsC++;
@@ -292,7 +293,14 @@ public class AuctionActivity extends AppCompatActivity
                                     db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newWorkData);
 
                                     NewBid newbid = new NewBid();
-                                    newbid.set_credits(bid + " credits");
+
+                                    if(bid.equals("not interested"))
+                                    {
+                                        newbid.set_credits(bid);
+                                    }
+                                    else
+                                        newbid.set_credits(bid + " credits");
+
                                     newbid.set_userName(userName);
                                     helper.save(newbid, bidsID, groupID);
                                     finish();
