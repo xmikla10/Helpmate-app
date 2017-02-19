@@ -49,6 +49,7 @@ public class CustomAdapterToDo extends BaseAdapter{
         TextView textViewTaskName = (TextView) convertView.findViewById(R.id.textViewTaskName);
         TextView textViewStatus = (TextView) convertView.findViewById(R.id.textViewStatus);
         TextView textViewtime2 = (TextView) convertView.findViewById(R.id.textViewtime2);
+        TextView textViewtime = (TextView) convertView.findViewById(R.id.textViewTime);
 
         final NewWork s= (NewWork) this.getItem(position);
         String pom;
@@ -67,9 +68,17 @@ public class CustomAdapterToDo extends BaseAdapter{
         else
             work_name = s.get_work_name();
 
+        if(!s.get_status().equals("Status : auctioning"))
+        {
+            textViewtime2.setText(s.get_bidsLastUserName());
+            textViewtime.setText("Who won?");
+            textViewtime.setTextSize(17);
+        }
+        else
+            textViewtime2.setText(s.get_deadline());
+
         textViewTaskName.setText(work_name);
         textViewStatus.setText(s.get_status());
-        textViewtime2.setText(s.get_deadline());
 
         return convertView;
     }

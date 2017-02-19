@@ -412,6 +412,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 newWork.set_bidsLastValue("null");
                 newWork.set_bidsAddUsers("null");
                 newWork.set_bidsLastUser("null");
+                newWork.set_bidsLastUserName("null");
                 newWork.set_bidsCount("0");
 
                 helper.save(newWork);

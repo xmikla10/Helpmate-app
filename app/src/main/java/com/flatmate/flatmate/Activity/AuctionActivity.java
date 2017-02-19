@@ -48,6 +48,7 @@ public class AuctionActivity extends AppCompatActivity
     private FirebaseAuth firebaseAuth;
     private String groupID;
     public String bidsID;
+
     String userID;
     String bid;
     String userName;
@@ -57,6 +58,9 @@ public class AuctionActivity extends AppCompatActivity
     String bidsCount;
     String bidsAddUser;
     String childKey;
+    String statusToShow;
+    String lastUser;
+
     Boolean bidsLastIsNull;
     DatabaseReference db;
     FirebaseHelperAuction helper;
@@ -65,6 +69,7 @@ public class AuctionActivity extends AppCompatActivity
     ListView lv;
     Integer bidsLast;
     Integer bidsActual;
+    boolean evaluation;
 
     ArrayList<NewWork> a =new ArrayList<>();
     public static final String TAG = AuctionActivity.class.getSimpleName();
@@ -154,25 +159,41 @@ public class AuctionActivity extends AppCompatActivity
                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
                 groupID = value.get("_group").toString();
                 bidsExistListener(bidsID);
-                db.child("groups").child(groupID).child("bids").child(bidsID).addChildEventListener(new ChildEventListener() {
 
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        ProgressBar mProgress= (ProgressBar) findViewById(R.id.loadingProgressBar);
-                        mProgress.setVisibility(View.GONE);
-                        adapter = new CustomAdapterAuction( AuctionActivity.this, helper.retrieve(bidsID));
-                        lv.setAdapter(adapter);
-                    }
+                db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(bidsID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override public void onDataChange(DataSnapshot dataSnapshot)
+                    {
+                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                        {
+                            childKey = childSnapshot.getKey();
+                            Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
+                            statusToShow = value.get("_status").toString();
+                            lastUser = value.get("_bidsLastUserName").toString();
+                        }
 
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        ProgressBar mProgress= (ProgressBar) findViewById(R.id.loadingProgressBar);
-                        mProgress.setVisibility(View.GONE);
-                        adapter = new CustomAdapterAuction( AuctionActivity.this, helper.retrieve(bidsID));
-                        lv.setAdapter(adapter);
+                        if ( !statusToShow.equals("Status : auctioning"))
+                        {
+                            endOfEvaluation(lastUser, statusToShow);
+                        }
+
+                        db.child("groups").child(groupID).child("bids").child(bidsID).addChildEventListener(new ChildEventListener() {
+                            @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                ProgressBar mProgress= (ProgressBar) findViewById(R.id.loadingProgressBar);
+                                mProgress.setVisibility(View.GONE);
+                                adapter = new CustomAdapterAuction( AuctionActivity.this, helper.retrieve(bidsID));
+                                lv.setAdapter(adapter);
+                            }
+                            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                ProgressBar mProgress= (ProgressBar) findViewById(R.id.loadingProgressBar);
+                                mProgress.setVisibility(View.GONE);
+                                adapter = new CustomAdapterAuction( AuctionActivity.this, helper.retrieve(bidsID));
+                                lv.setAdapter(adapter);
+                            }
+                            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                            @Override public void onCancelled(DatabaseError databaseError) {}
+                        });
                     }
-                    @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                    @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                     @Override public void onCancelled(DatabaseError databaseError) {}
                 });
             }
@@ -182,22 +203,41 @@ public class AuctionActivity extends AppCompatActivity
                 groupID = value.get("_group").toString();
 
                 bidsExistListener(bidsID);
-                db.child("groups").child(groupID).child("bids").child(bidsID).addChildEventListener(new ChildEventListener()
-                {
-                    @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        ProgressBar mProgress= (ProgressBar) findViewById(R.id.loadingProgressBar);
-                        mProgress.setVisibility(View.GONE);
-                        adapter = new CustomAdapterAuction( AuctionActivity.this, helper.retrieve(bidsID));
-                        lv.setAdapter(adapter);
+                db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(bidsID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override public void onDataChange(DataSnapshot dataSnapshot)
+                    {
+                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                        {
+                            childKey = childSnapshot.getKey();
+                            Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
+                            statusToShow = value.get("_status").toString();
+                            lastUser = value.get("_bidsLastUserName").toString();
+                        }
+
+                        if ( !statusToShow.equals("Status : auctioning"))
+                        {
+                            endOfEvaluation(lastUser, statusToShow);
+                        }
+
+                        db.child("groups").child(groupID).child("bids").child(bidsID).addChildEventListener(new ChildEventListener() {
+                            @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                ProgressBar mProgress= (ProgressBar) findViewById(R.id.loadingProgressBar);
+                                mProgress.setVisibility(View.GONE);
+                                adapter = new CustomAdapterAuction( AuctionActivity.this, helper.retrieve(bidsID));
+                                lv.setAdapter(adapter);
+                            }
+                            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                ProgressBar mProgress= (ProgressBar) findViewById(R.id.loadingProgressBar);
+                                mProgress.setVisibility(View.GONE);
+                                adapter = new CustomAdapterAuction( AuctionActivity.this, helper.retrieve(bidsID));
+                                lv.setAdapter(adapter);
+                            }
+                            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                            @Override public void onCancelled(DatabaseError databaseError) {}
+                        });
+
                     }
-                    @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        ProgressBar mProgress= (ProgressBar) findViewById(R.id.loadingProgressBar);
-                        mProgress.setVisibility(View.GONE);
-                        adapter = new CustomAdapterAuction( AuctionActivity.this, helper.retrieve(bidsID));
-                        lv.setAdapter(adapter);
-                    }
-                    @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                    @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                     @Override public void onCancelled(DatabaseError databaseError) {}
                 });
             }
@@ -208,6 +248,28 @@ public class AuctionActivity extends AppCompatActivity
         });
 
         lv.setAdapter(adapter);
+    }
+
+    public void endOfEvaluation(String lastUser, String status)
+    {
+        TextView auctiontext = (TextView) findViewById(R.id.textViewAuctionText);
+        ListView bids = (ListView) findViewById(R.id.listViewAuction);
+        LinearLayout bar = (LinearLayout) findViewById(R.id.seekBar2);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_bid);
+
+        TextView textViewTaskStatus = (TextView) findViewById(R.id.textViewTaskStatus);
+        TextView auctionStatus = (TextView) findViewById(R.id.auctionStatus);
+        TextView auctionTime = (TextView) findViewById(R.id.auctionTime);
+
+        textViewTaskStatus.setText("Who won?");
+        textViewTaskStatus.setTextSize(17);
+        auctionStatus.setText(status);
+        auctionTime.setText(lastUser);
+
+        auctiontext.setVisibility(View.GONE);
+        bids.setVisibility(View.GONE);
+        bar.setVisibility(View.VISIBLE);
+        fab.setVisibility(View.GONE);
     }
 
     public void bidsExistListener(final String bidID)
@@ -231,7 +293,8 @@ public class AuctionActivity extends AppCompatActivity
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case BidPopUp.BID_POPUP_FINISHED:
@@ -246,102 +309,131 @@ public class AuctionActivity extends AppCompatActivity
                 firebaseAuth = FirebaseAuth.getInstance();
                 userID = firebaseAuth.getCurrentUser().getUid().toString();
 
-                db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(bidsID).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override public void onDataChange(DataSnapshot dataSnapshot)
-                    {
-                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                db.child("groups").child(groupID).child("graph").child("months").child("members").addChildEventListener(new ChildEventListener() {
+                    @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                        final String members = value.get("_membersCount").toString();
+
+                    db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(bidsID).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override public void onDataChange(DataSnapshot dataSnapshot)
                         {
-                            childKey = childSnapshot.getKey();
-                            Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
-                            bidsLastValue = value.get("_bidsLastValue").toString();
-                            bidsCount = value.get("_bidsCount").toString();
-                            bidsAddUser = value.get("_bidsAddUsers").toString();
+                            for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                            {
+                                childKey = childSnapshot.getKey();
+                                Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                bidsLastValue = value.get("_bidsLastValue").toString();
+                                bidsCount = value.get("_bidsCount").toString();
+                                bidsAddUser = value.get("_bidsAddUsers").toString();
+                                bidsLastUser = value.get("_bidsLastUser").toString();
+                            }
 
-                        }
-
-                        if(!bidsLastValue.equals("null") && !bid.equals("not interested"))
-                        {
-                            bidsLast = Integer.valueOf(bidsLastValue);
-                            bidsActual = Integer.valueOf(bid);
-                            bidsLastIsNull = false;
-                        }
-                        else
-                        {
-                            bidsLastIsNull = true;
-                        }
+                            if(!bidsLastValue.equals("null") && !bid.equals("not interested"))
+                            {
+                                bidsLast = Integer.valueOf(bidsLastValue);
+                                bidsActual = Integer.valueOf(bid);
+                                bidsLastIsNull = false;
+                            }
+                            else
+                            {
+                                bidsLastIsNull = true;
+                            }
 
 
-                        if (bidsLast <= bidsActual && bidsLastIsNull == false)
-                        {
-                            Toast.makeText(getBaseContext(), "Please, enter a lesser bid then a last user", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            db.child("user").child("users").child(userID).addChildEventListener(new ChildEventListener() {
-                                @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                    Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                                    userName = value.get("_name").toString();
-                                    groupID = value.get("_group").toString();
-                                    Map newWorkData = new HashMap();
+                            if (bidsLast <= bidsActual && bidsLastIsNull == false)
+                            {
+                                Toast.makeText(getBaseContext(), "Please, enter a lesser bid then a last user", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                db.child("user").child("users").child(userID).addChildEventListener(new ChildEventListener() {
+                                    @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                        Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                                        userName = value.get("_name").toString();
+                                        groupID = value.get("_group").toString();
+                                        Map newWorkData = new HashMap();
 
-                                    System.out.println("------->" + bidsAddUser);
-
-                                    if( bidsAddUser.equals("null"))
-                                    {
-                                        Integer bidsC = 0 ;
-                                        bidsC++;
-                                        bidsCount = String.valueOf(bidsC);
-                                        newWorkData.put("_bidsCount", bidsCount);
-                                        newWorkData.put("_bidsAddUsers", userID + ",");
-                                    }
-                                    else
-                                    {
-                                        if (bidsAddUser.indexOf(userID) != -1)
+                                        if( bidsAddUser.equals("null"))
                                         {
-                                            System.out.println("------->" + "Vyslo to");
-                                        }
-                                        else
-                                        {
-                                            Integer bidsC = Integer.valueOf(bidsCount);
+                                            Integer bidsC = 0 ;
                                             bidsC++;
                                             bidsCount = String.valueOf(bidsC);
                                             newWorkData.put("_bidsCount", bidsCount);
-                                            newWorkData.put("_bidsAddUsers", bidsAddUser + userID + ",");
+                                            newWorkData.put("_bidsAddUsers", userID + ",");
                                         }
+                                        else
+                                        {
+                                            if (bidsAddUser.indexOf(userID) != -1)
+                                            {
+                                                System.out.println("------->" + "Vyslo to");
+                                            }
+                                            else
+                                            {
+                                                Integer bidsC = Integer.valueOf(bidsCount);
+                                                bidsC++;
+                                                bidsCount = String.valueOf(bidsC);
+                                                newWorkData.put("_bidsCount", bidsCount);
+                                                newWorkData.put("_bidsAddUsers", bidsAddUser + userID + ",");
+                                            }
+                                        }
+
+                                        if(!bid.equals("not interested"))
+                                        {
+                                            bidsLastValue = bid;
+                                            newWorkData.put("_bidsLastValue", bidsLastValue);
+                                            newWorkData.put("_bidsLastUser", userEmail);
+                                            newWorkData.put("_bidsLastUserName", userName);
+
+                                            evaluation = true;
+                                        }
+
+                                        db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newWorkData);
+
+                                        NewBid newbid = new NewBid();
+
+                                        if(bid.equals("not interested"))
+                                        {
+                                            newbid.set_credits(bid);
+                                        }
+                                        else
+                                            newbid.set_credits(bid + " credits");
+
+                                        newbid.set_userName(userName);
+                                        helper.save(newbid, bidsID, groupID);
+
+                                        if ( Integer.valueOf(members) <= Integer.valueOf(bidsCount))
+                                        {
+                                            Map newEvaluationData = new HashMap();
+                                            if ( evaluation == true)
+                                            {
+                                                newEvaluationData.put("_userEmail", userEmail);
+                                            }
+                                            else
+                                                newEvaluationData.put("_userEmail", bidsLastUser);
+
+                                            newEvaluationData.put("_status", "Status : in progress");
+
+                                            db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newEvaluationData);
+                                        }
+
+                                        finish();
+                                        startActivity(getIntent());
                                     }
-
-                                    if(!bid.equals("not interested"))
-                                    {
-                                        bidsLastValue = bid;
-                                        newWorkData.put("_bidsLastValue", bidsLastValue);
-                                        newWorkData.put("_bidsLastUser", userEmail);
-                                    }
-
-                                    db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newWorkData);
-
-                                    NewBid newbid = new NewBid();
-
-                                    if(bid.equals("not interested"))
-                                    {
-                                        newbid.set_credits(bid);
-                                    }
-                                    else
-                                        newbid.set_credits(bid + " credits");
-
-                                    newbid.set_userName(userName);
-                                    helper.save(newbid, bidsID, groupID);
-                                    finish();
-                                    startActivity(getIntent());
-                                }
-                                @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                                @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                                @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                                @Override public void onCancelled(DatabaseError databaseError) {}
-                            });
+                                    @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                                    @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                                    @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                                    @Override public void onCancelled(DatabaseError databaseError) {}
+                                });
+                            }
                         }
+                        @Override public void onCancelled(DatabaseError databaseError) {}
+                        });
+
                     }
+                    @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                    @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                    @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                     @Override public void onCancelled(DatabaseError databaseError) {}
-                    });
+                });
                 break;
 
             default:
