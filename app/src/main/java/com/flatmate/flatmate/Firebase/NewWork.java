@@ -18,6 +18,7 @@ public class NewWork {
     private String bidsLastValue;
     private String bidsLastUser;
     private String bidsCount;
+    private String bidsAddUsers;
 
     public NewWork()
     {
@@ -113,7 +114,7 @@ public class NewWork {
     }
 
     public String get_bidsLastValue() {
-        return bidsLastValue;
+        return bidsLastUser;
     }
 
     public void set_bidsLastUser(String bidsLastUser) {
@@ -129,7 +130,15 @@ public class NewWork {
     }
 
     public String get_bidsCount() {
-        return bidsCount;
+        return bidsAddUsers;
+    }
+
+    public void set_bidsAddUsers(String bidsAddUsers) {
+        this.bidsAddUsers = bidsAddUsers;
+    }
+
+    public String get_bidsAddUsers() {
+        return bidsAddUsers;
     }
 
 }

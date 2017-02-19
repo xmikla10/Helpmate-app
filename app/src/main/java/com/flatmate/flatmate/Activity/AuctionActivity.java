@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -54,6 +55,7 @@ public class AuctionActivity extends AppCompatActivity
     String bidsLastValue;
     String bidsLastUser;
     String bidsCount;
+    String bidsAddUser;
     String childKey;
     Boolean bidsLastIsNull;
     DatabaseReference db;
@@ -223,7 +225,9 @@ public class AuctionActivity extends AppCompatActivity
 
     public void showAddBid(View view)
     {
-        startActivityForResult(new Intent(this, BidPopUp.class), BidPopUp.BID_POPUP_FINISHED);
+        Intent intent = new Intent(this, BidPopUp.class);
+        intent.putExtra("bidsID", bidsID);
+        startActivityForResult( intent, BidPopUp.BID_POPUP_FINISHED);
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
 
@@ -251,6 +255,8 @@ public class AuctionActivity extends AppCompatActivity
                             Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
                             bidsLastValue = value.get("_bidsLastValue").toString();
                             bidsCount = value.get("_bidsCount").toString();
+                            bidsAddUser = value.get("_bidsAddUsers").toString();
+
                         }
 
                         if(!bidsLastValue.equals("null") && !bid.equals("not interested"))
@@ -278,17 +284,38 @@ public class AuctionActivity extends AppCompatActivity
                                     groupID = value.get("_group").toString();
                                     Map newWorkData = new HashMap();
 
+                                    System.out.println("------->" + bidsAddUser);
+
+                                    if( bidsAddUser.equals("null"))
+                                    {
+                                        Integer bidsC = 0 ;
+                                        bidsC++;
+                                        bidsCount = String.valueOf(bidsC);
+                                        newWorkData.put("_bidsCount", bidsCount);
+                                        newWorkData.put("_bidsAddUsers", userID + ",");
+                                    }
+                                    else
+                                    {
+                                        if (bidsAddUser.indexOf(userID) != -1)
+                                        {
+                                            System.out.println("------->" + "Vyslo to");
+                                        }
+                                        else
+                                        {
+                                            Integer bidsC = Integer.valueOf(bidsCount);
+                                            bidsC++;
+                                            bidsCount = String.valueOf(bidsC);
+                                            newWorkData.put("_bidsCount", bidsCount);
+                                            newWorkData.put("_bidsAddUsers", bidsAddUser + userID + ",");
+                                        }
+                                    }
+
                                     if(!bid.equals("not interested"))
                                     {
                                         bidsLastValue = bid;
                                         newWorkData.put("_bidsLastValue", bidsLastValue);
                                         newWorkData.put("_bidsLastUser", userEmail);
                                     }
-
-                                    Integer bidsC = Integer.valueOf(bidsCount);
-                                    bidsC++;
-                                    bidsCount = String.valueOf(bidsC);
-                                    newWorkData.put("_bidsCount", bidsCount);
 
                                     db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newWorkData);
 
