@@ -1,5 +1,6 @@
 package com.flatmate.flatmate.Activity;
 
+import android.app.AlarmManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.PendingIntent;
+
 
 import com.flatmate.flatmate.Firebase.FirebaseHelperAuction;
 import com.flatmate.flatmate.Firebase.FirebaseHelperMyWorks;
@@ -34,6 +37,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -248,6 +252,7 @@ public class AuctionActivity extends AppCompatActivity
         });
 
         lv.setAdapter(adapter);
+
     }
 
     public void endOfEvaluation(String lastUser, String status)

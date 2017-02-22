@@ -1,6 +1,8 @@
 
 package com.flatmate.flatmate.Activity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,6 +19,7 @@ import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
+import com.flatmate.flatmate.Other.AlarmReceiver;
 import com.flatmate.flatmate.Other.AppPreferences;
 import com.flatmate.flatmate.Other.CustomAdapterToDo;
 import com.flatmate.flatmate.Firebase.NewWork;
@@ -66,6 +69,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     public FirebaseHelperWork helper;
     private FirebaseAuth firebaseAuth;
 
+    AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
+
     private static final String TAG = MainActivity.class.getSimpleName();
 
 
@@ -109,6 +115,30 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 viewPager.setCurrentItem(tab.getPosition());
             }
         });
+
+        setEvaluationByDB();
+    }
+
+    public void setEvaluationByDB()
+    {
+
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        Log.d("MyActivity", "Alarm On");
+
+        Calendar cal = Calendar.getInstance();
+
+        cal.setTimeInMillis(System.currentTimeMillis());
+        cal.clear();
+        cal.set(Calendar.HOUR_OF_DAY, 10);
+        cal.set(Calendar.MINUTE, 55);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.set(Calendar.AM_PM, Calendar.AM);
+
+        Intent myIntent = new Intent(MainActivity.this, AlarmReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, myIntent, 0);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
 
     }
 
