@@ -3,6 +3,7 @@ package com.flatmate.flatmate.Activity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -69,8 +70,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     public FirebaseHelperWork helper;
     private FirebaseAuth firebaseAuth;
 
-    AlarmManager alarmManager;
-    private PendingIntent pendingIntent;
+    public AlarmManager alarmManager;
+    public PendingIntent pendingIntent;
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         init();
         setUserName();
+        setEvaluationByDB();
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(new Pager(getSupportFragmentManager(),getApplicationContext()));
@@ -116,29 +118,73 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             }
         });
 
-        setEvaluationByDB();
     }
 
     public void setEvaluationByDB()
     {
 
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
         Log.d("MyActivity", "Alarm On");
-
+        int min = 53;
+        int sec = 0;
         Calendar cal = Calendar.getInstance();
 
-        cal.setTimeInMillis(System.currentTimeMillis());
-        cal.clear();
-        cal.set(Calendar.HOUR_OF_DAY, 10);
-        cal.set(Calendar.MINUTE, 55);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        cal.set(Calendar.AM_PM, Calendar.AM);
+        System.out.println("---------->"+ min);
+        //cal.set(Calendar.MONTH, 2);
+        //cal.set(Calendar.DAY_OF_MONTH, 22);
+        cal.set(Calendar.HOUR_OF_DAY, 13);
+        cal.set(Calendar.MINUTE, min);
+        cal.set(Calendar.SECOND, sec);
 
-        Intent myIntent = new Intent(MainActivity.this, AlarmReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, myIntent, 0);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+        int _id = (int) System.currentTimeMillis();
+
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.putExtra("alarmId", _id);
+        PendingIntent pending = PendingIntent.getBroadcast(this, _id, intent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+
+        System.out.println("---------->"+ _id);
+        System.out.println("---------->"+ min);
+        //cal.set(Calendar.MONTH, 2);
+        //cal.set(Calendar.DAY_OF_MONTH, 22);
+
+        cal = null;
+        cal = Calendar.getInstance();
+
+        cal.set(Calendar.HOUR_OF_DAY, 13);
+        cal.set(Calendar.MINUTE, min+1);
+        cal.set(Calendar.SECOND, sec);
+
+        _id = (int) System.currentTimeMillis();
+
+        intent = new Intent(this, AlarmReceiver.class);
+        intent.putExtra("alarmId", _id);
+        pending = PendingIntent.getBroadcast(this, _id, intent, PendingIntent.FLAG_ONE_SHOT);
+        alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+
+        System.out.println("---------->"+ _id);
+        System.out.println("---------->"+ min);
+        //cal.set(Calendar.MONTH, 2);
+        //cal.set(Calendar.DAY_OF_MONTH, 22);
+
+        cal = null;
+        cal = Calendar.getInstance();
+
+        cal.set(Calendar.HOUR_OF_DAY, 13);
+        cal.set(Calendar.MINUTE, min+2);
+        cal.set(Calendar.SECOND, sec);
+
+        _id = (int) System.currentTimeMillis();
+
+        intent = new Intent(this, AlarmReceiver.class);
+        intent.putExtra("alarmId", _id);
+        pending = PendingIntent.getBroadcast(this, _id, intent, PendingIntent.FLAG_ONE_SHOT);
+        alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+
+        System.out.println("---------->"+ _id);
+
 
     }
 

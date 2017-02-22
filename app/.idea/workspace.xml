@@ -10,7 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fd57dee4-bcea-4192-9b81-709a8dca7e41" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/AlarmReceiver.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.14.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/../.gradle/2.14.1/taskArtifacts/cache.properties.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.14.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/../.gradle/2.14.1/taskArtifacts/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/../.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" />
@@ -20,9 +19,10 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/../.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/../.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.iml" afterPath="$PROJECT_DIR$/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/AuctionActivity.java" afterPath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/AuctionActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/src/main/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/MainActivity.java" afterPath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/MainActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/AlarmReceiver.java" afterPath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/AlarmReceiver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/../build/intermediates/dex-cache/cache.xml" />
     </list>
     <ignored path="app.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -55,11 +55,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1755">
-              <caret line="138" column="62" selection-start-line="138" selection-start-column="62" selection-end-line="138" selection-end-column="62" />
+            <state relative-caret-position="-390">
+              <caret line="124" column="0" selection-start-line="124" selection-start-column="0" selection-end-line="124" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -67,15 +67,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AlarmReceiver.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AlarmReceiver.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/AlarmReceiver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" column="20" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+            <state relative-caret-position="294">
+              <caret line="23" column="38" selection-start-line="23" selection-start-column="38" selection-end-line="23" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/AndroidManifest.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" column="53" selection-start-line="5" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-manifest">
+            <state />
           </provider>
         </entry>
       </file>
@@ -2012,6 +2025,7 @@
         <option value="$PROJECT_DIR$/src/main/res/layout/content_auction_layout.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/CustomAdapterToDo.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/AuctionActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/AlarmReceiver.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/MainActivity.java" />
       </list>
@@ -2204,6 +2218,10 @@
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="manifests" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidManifestsGroupNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
@@ -2220,6 +2238,8 @@
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="full.screen.before.presentation.mode" value="true" />
     <property name="SearchEverywhereHistoryKey" value="task_todo&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/res/layout/task_to_do_final.xml&#10;task_auc&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/res/layout/task_auction.xml&#10;auction&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/res/layout/content_auction_layout.xml&#10;todo1a&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/res/layout/task_todo1a.xml&#10;todo2&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/res/layout/task_todo2.xml&#10;task_to_do_final&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/res/layout/task_to_do_final.xml&#10;todo2a&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/res/layout/task_todo2a.xml&#10;task&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/res/layout/task_auction.xml&#10;task_au&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/res/layout/task_auction1.xml&#10;auctio&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/res/layout/content_auction_layout.xml&#10;bid&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/res/layout/popup_bid.xml&#10;color&#9;ACTION&#9;ChangeColorScheme&#10;color scheme&#9;ACTION&#9;ChangeColorScheme&#10;color sche&#9;ACTION&#9;ChangeColorScheme&#10;addNe&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/java/com/flatmate/flatmate/Activity/AddNewWorkActivity.java&#10;auction1&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/res/layout/task_auction1.xml&#10;auction2&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/res/layout/task_auction2.xml&#10;custom&#9;PSI&#9;JAVA://com.flatmate.flatmate.Other.CustomAdapterAuction&#10;adapter&#9;PSI&#9;JAVA://com.flatmate.flatmate.Other.CustomAdapterToDo&#10;main&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/java/com/flatmate/flatmate/Activity/MainActivity.java&#10;add&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/java/com/flatmate/flatmate/Activity/AddNewWorkActivity.java&#10;content_graph_layout&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/res/layout/content_graph_layout.xml&#10;activity_my_groups_layout&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/res/layout/activity_my_groups_layout.xml&#10;content_add_new_work&#9;FILE&#9;file:///Users/enterprise/Flatmate/app/src/main/res/layout/content_add_new_work.xml&#10;show line&#9;null&#9;null" />
+    <property name="android.project.structure.last.selected" value="SDK Location" />
+    <property name="android.project.structure.proportion" value="0.15" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -2586,7 +2606,7 @@
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24969475" sideWeight="0.080543935" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38075313" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38075313" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -2654,17 +2674,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_add_new_work.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="25" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4905">
@@ -2951,8 +2960,8 @@
         <state relative-caret-position="480">
           <caret line="111" column="19" selection-start-line="91" selection-start-column="16" selection-end-line="111" selection-end-column="19" />
           <folding>
-            <element signature="e#4648#5174#0" expanded="true" />
-            <element signature="e#5173#5174#0" expanded="true" />
+            <element signature="e#4648#5174#0" expanded="false" />
+            <element signature="e#5173#5174#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3111,8 +3120,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/AuctionActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="358">
-          <caret line="75" column="23" selection-start-line="75" selection-start-column="23" selection-end-line="75" selection-end-column="23" />
+        <state relative-caret-position="163">
+          <caret line="86" column="27" selection-start-line="86" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="53" selection-start-line="5" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-manifest">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/AlarmReceiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="23" column="38" selection-start-line="23" selection-start-column="38" selection-end-line="23" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -3121,18 +3151,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1755">
-          <caret line="138" column="62" selection-start-line="138" selection-start-column="62" selection-end-line="138" selection-end-column="62" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/AlarmReceiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="20" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+        <state relative-caret-position="-390">
+          <caret line="124" column="0" selection-start-line="124" selection-start-column="0" selection-end-line="124" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
