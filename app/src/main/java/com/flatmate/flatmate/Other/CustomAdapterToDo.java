@@ -1,7 +1,10 @@
 package com.flatmate.flatmate.Other;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,8 @@ import com.flatmate.flatmate.Firebase.NewWork;
 import com.flatmate.flatmate.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+
 /**
  * Created by Oclemy on 6/21/2016 for ProgrammingWizards Channel and http://www.camposha.com.
  * 1. where WE INFLATE OUR MODEL LAYOUT INTO VIEW ITEM

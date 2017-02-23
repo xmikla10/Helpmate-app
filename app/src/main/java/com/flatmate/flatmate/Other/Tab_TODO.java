@@ -77,30 +77,23 @@ public class Tab_TODO extends Fragment
                         ProgressBar mProgress = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
 
                         @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        public void onChildAdded(DataSnapshot dataSnapshot, String s)
+                        {
                             mProgress.setVisibility(View.GONE);
                             adapter = new CustomAdapterToDo(getContext(), helper.retrieve());
                             lv.setAdapter(adapter);
                         }
 
                         @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        public void onChildChanged(DataSnapshot dataSnapshot, String s)
+                        {
                             mProgress.setVisibility(View.GONE);
                             adapter = new CustomAdapterToDo(getContext(), helper.retrieve());
                             lv.setAdapter(adapter);
                         }
-
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
-                        }
-
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                        }
+                        @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                        @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                        @Override public void onCancelled(DatabaseError databaseError) {}
                     });
             }
             @Override public void onChildChanged(DataSnapshot dataSnapshot, String s)

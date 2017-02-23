@@ -65,6 +65,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     public String userName;
     public String userEmail;
     public String uniqueID;
+    public String groupID;
+
+    public String evaluationBidsID;
+    public String evaluationDeadline;
+    public String evaluationStatus;
+
+
 
     public DatabaseReference db;
     public FirebaseHelperWork helper;
@@ -123,69 +130,70 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     public void setEvaluationByDB()
     {
 
-        Log.d("MyActivity", "Alarm On");
-        int min = 53;
-        int sec = 0;
-        Calendar cal = Calendar.getInstance();
+        db = FirebaseDatabase.getInstance().getReference();
 
-        System.out.println("---------->"+ min);
-        //cal.set(Calendar.MONTH, 2);
-        //cal.set(Calendar.DAY_OF_MONTH, 22);
-        cal.set(Calendar.HOUR_OF_DAY, 13);
-        cal.set(Calendar.MINUTE, min);
-        cal.set(Calendar.SECOND, sec);
+        db.child("user").child("users").child(userID).addChildEventListener(new ChildEventListener() {
+            @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
+            {
+                Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                groupID = value.get("_group").toString();
+                if(groupID.length() != 0)
+                {
+                    db.child("groups").child(groupID).child("works").child("todo").addChildEventListener(new ChildEventListener() {
+                        @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
+                        {
+                                Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                                evaluationBidsID = value.get("_bidsID").toString();
+                                evaluationDeadline = value.get("_deadline").toString();
+                                evaluationStatus = value.get("_status").toString();
 
-        int _id = (int) System.currentTimeMillis();
+                                final Integer Year, Month, Day, Hour, Minute;
 
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        intent.putExtra("alarmId", _id);
-        PendingIntent pending = PendingIntent.getBroadcast(this, _id, intent, PendingIntent.FLAG_ONE_SHOT);
-        AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+                                if ( evaluationStatus.equals("Status : auctioning"))
+                                {
+                                    Hour = Integer.valueOf(evaluationDeadline.substring(0,2));
+                                    Minute = Integer.valueOf(evaluationDeadline.substring(3,5));
+                                    Day = Integer.valueOf(evaluationDeadline.substring(6,8));
+                                    Month = Integer.valueOf(evaluationDeadline.substring(9,11));
+                                    Year = Integer.valueOf(evaluationDeadline.substring(12,16));
 
-        System.out.println("---------->"+ _id);
-        System.out.println("---------->"+ min);
-        //cal.set(Calendar.MONTH, 2);
-        //cal.set(Calendar.DAY_OF_MONTH, 22);
+                                    Log.d("MyActivity", "Alarm Set");
+                                    Calendar cal = Calendar.getInstance();
 
-        cal = null;
-        cal = Calendar.getInstance();
+                                    cal.set(Calendar.YEAR, Year);
+                                    cal.set(Calendar.MONTH, Month-1);
+                                    cal.set(Calendar.DAY_OF_MONTH, Day);
+                                    cal.set(Calendar.HOUR_OF_DAY, Hour);
+                                    cal.set(Calendar.MINUTE, Minute);
+                                    cal.set(Calendar.SECOND, 0);
+                                    cal.set(Calendar.MILLISECOND, 0);
 
-        cal.set(Calendar.HOUR_OF_DAY, 13);
-        cal.set(Calendar.MINUTE, min+1);
-        cal.set(Calendar.SECOND, sec);
+                                    int _id = (int) System.currentTimeMillis();
 
-        _id = (int) System.currentTimeMillis();
+                                    Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+                                    intent.putExtra("alarmId", _id);
+                                    intent.putExtra("bidsID", evaluationBidsID);
+                                    intent.putExtra("groupID", groupID);
 
-        intent = new Intent(this, AlarmReceiver.class);
-        intent.putExtra("alarmId", _id);
-        pending = PendingIntent.getBroadcast(this, _id, intent, PendingIntent.FLAG_ONE_SHOT);
-        alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+                                    PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                    AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                    alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
 
-        System.out.println("---------->"+ _id);
-        System.out.println("---------->"+ min);
-        //cal.set(Calendar.MONTH, 2);
-        //cal.set(Calendar.DAY_OF_MONTH, 22);
-
-        cal = null;
-        cal = Calendar.getInstance();
-
-        cal.set(Calendar.HOUR_OF_DAY, 13);
-        cal.set(Calendar.MINUTE, min+2);
-        cal.set(Calendar.SECOND, sec);
-
-        _id = (int) System.currentTimeMillis();
-
-        intent = new Intent(this, AlarmReceiver.class);
-        intent.putExtra("alarmId", _id);
-        pending = PendingIntent.getBroadcast(this, _id, intent, PendingIntent.FLAG_ONE_SHOT);
-        alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
-
-        System.out.println("---------->"+ _id);
-
-
+                                    cal = null;
+                                }
+                        }
+                        @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                        @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                        @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                        @Override public void onCancelled(DatabaseError databaseError) {}
+                    });
+                }
+            }
+            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
     public void setUserName(){
@@ -420,13 +428,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         cal.setTime(myDateTime);
         date2= cal.getTime();
 
-        System.out.println("Aktualny ---->" + date1.toString());
-        System.out.println("Deadline ---->" + date2.toString());
-        System.out.println("---->");
-
         difference = getDateDiff(date1,date2,TimeUnit.MINUTES);
-
-        System.out.println("Rozdiel ---->" + difference);
 
         if ( difference < 2880)
         {
@@ -444,8 +446,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         simpleDateFormat.setTimeZone(cal2.getTimeZone());
 
         deadlineR = simpleDateFormat.format(cal2.getTime()).toString();
-
-        System.out.println("------> " + deadlineR);
 
 
     }
