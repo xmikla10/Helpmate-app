@@ -20,6 +20,7 @@ public class NewWork {
     private String bidsCount;
     private String bidsAddUsers;
     private String bidsLastUserName;
+    private String workProgress;
 
     public NewWork()
     {
@@ -153,6 +154,14 @@ public class NewWork {
 
     public String get_bidsLastUserName() {
         return bidsLastUserName;
+    }
+
+    public String get_workProgress() {
+        return workProgress;
+    }
+
+    public void set_workProgress(String workProgress) {
+        this.workProgress = workProgress;
     }
 
 }

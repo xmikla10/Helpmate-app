@@ -140,6 +140,8 @@ public class Tab_MYWORKS extends Fragment {
                 intent.putExtra("time", ( s.get_time() +"  "+s.get_date()));
                 intent.putExtra("bidsID", s.get_bidsID());
                 intent.putExtra("myWork", "1");
+                intent.putExtra("workProgress", s.get_workProgress());
+
 
                 startActivity(intent);
             }

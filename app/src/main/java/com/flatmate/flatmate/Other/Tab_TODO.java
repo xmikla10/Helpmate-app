@@ -142,6 +142,7 @@ public class Tab_TODO extends Fragment
                 intent.putExtra("bidsLastValue", s.get_bidsLastValue());
                 intent.putExtra("bidsLastUser", s.get_bidsLastUser());
                 intent.putExtra("bidsCount", s.get_bidsCount());
+                intent.putExtra("workProgress", s.get_workProgress());
 
                 intent.putExtra("myWork", "0");
                 startActivity(intent);

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -75,6 +76,9 @@ public class AuctionActivity extends AppCompatActivity
     Integer bidsActual;
     boolean evaluation;
 
+    String seekEditable;
+    boolean setSeekEditable;
+
     ArrayList<NewWork> a =new ArrayList<>();
     public static final String TAG = AuctionActivity.class.getSimpleName();
     public static final String SELECTED_ADD_KEY = "bid_result";
@@ -98,6 +102,7 @@ public class AuctionActivity extends AppCompatActivity
             String time = extras.getString("time");
             String myWork = extras.getString("myWork");
             bidsID = extras.getString("bidsID");
+            seekEditable = extras.getString("workProgress");
 
             bidsLastUser = extras.getString("bidsLastUser");
             bidsLastValue = extras.getString("bidsLastValue");
@@ -135,13 +140,35 @@ public class AuctionActivity extends AppCompatActivity
                 LinearLayout bar = (LinearLayout) findViewById(R.id.seekBar2);
                 LinearLayout lay = (LinearLayout) findViewById(R.id.layMyWorks);
                 FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_bid);
+                SeekBar seekBar = (SeekBar) findViewById(R.id.seekBarAuction);
 
                 auctiontext.setVisibility(View.GONE);
                 bids.setVisibility(View.GONE);
                 bar.setVisibility(View.VISIBLE);
                 lay.setVisibility(View.VISIBLE);
                 fab.setVisibility(View.GONE);
+                setSeekEditable = true;
+
             }
+            else
+                setSeekEditable = false;
+
+            SeekBar seekBar = (SeekBar) findViewById(R.id.seekBarAuction);
+            final LinearLayout lay2 = (LinearLayout) findViewById(R.id.layMyWorks);
+            seekBar.setProgress(Integer.valueOf(seekEditable));
+
+            seekBar.setOnTouchListener(new View.OnTouchListener(){
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (setSeekEditable == true)
+                    {
+                        return false;
+                    }
+                    else
+                        return true;
+                }
+            });
+
         }
 
         newWork = new NewWork();
@@ -174,6 +201,20 @@ public class AuctionActivity extends AppCompatActivity
                             statusToShow = value.get("_status").toString();
                             lastUser = value.get("_bidsLastUserName").toString();
                         }
+
+                        SeekBar seekBar = (SeekBar) findViewById(R.id.seekBarAuction);
+                        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+                        {
+                            public void onStopTrackingTouch(SeekBar seekBar) {}
+                            public void onStartTrackingTouch(SeekBar seekBar) {}
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+                            {
+                                System.out.println("tusoooooooom");
+                                Map newWorkData = new HashMap();
+                                newWorkData.put("_workProgress", String.valueOf(progress));
+                                db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newWorkData);
+                            }
+                        });
 
                         if ( !statusToShow.equals("Status : auctioning"))
                         {
