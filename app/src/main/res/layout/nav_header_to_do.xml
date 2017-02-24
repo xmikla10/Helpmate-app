@@ -6,7 +6,7 @@
     android:gravity="bottom"
     android:id="@+id/headerView"
     android:layout_height="wrap_content"
-    android:background="@android:color/holo_orange_light">
+    android:background="@color/colorOrange">
 
     <Space
         android:layout_width="5dp"
@@ -18,7 +18,7 @@
         android:gravity="center"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@drawable/user_man_header"/>
+        app:srcCompat="@drawable/user_man"/>
 
     <Space
         android:layout_width="15dp"

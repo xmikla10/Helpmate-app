@@ -10,7 +10,7 @@
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:inputType="number"
-        android:backgroundTint="@android:color/holo_orange_light"
+        android:backgroundTint="@color/colorOrange"
         android:text="0"
         android:id="@+id/duraction"
         android:gravity="center"

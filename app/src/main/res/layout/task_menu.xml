@@ -13,7 +13,7 @@
         android:layout_weight="0.54"
         android:textOn="To Do"
         android:textOff="To Do"
-        android:textColor="@android:color/holo_orange_light"
+        android:textColor="@color/colorOrange"
         android:background="#000000"
         android:checked="false" />
 
@@ -24,7 +24,7 @@
         android:layout_weight="0.48"
         android:textOff="My Works"
         android:textOn="My Works"
-        android:textColor="@android:color/holo_orange_light"
+        android:textColor="@color/colorOrange"
         android:checked="false"
         android:background="#000000" />
 
@@ -34,7 +34,7 @@
         android:id="@+id/toggleButton3"
         android:textOff="Completed"
         android:textOn="Completed"
-        android:textColor="@android:color/holo_orange_light"
+        android:textColor="@color/colorOrange"
         android:checked="false"
         android:background="#000000" />
 </LinearLayout>

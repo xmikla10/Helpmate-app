@@ -7,7 +7,7 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:backgroundTint="@android:color/holo_orange_light"
+        android:backgroundTint="@color/colorOrange"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:hint="Email"

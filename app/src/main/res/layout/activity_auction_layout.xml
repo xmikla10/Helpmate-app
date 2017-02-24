@@ -19,6 +19,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/auction_icon"
-        bind:backgroundTint="@android:color/holo_orange_light" />
+        bind:backgroundTint="@color/colorOrange" />
 
 </android.support.design.widget.CoordinatorLayout>

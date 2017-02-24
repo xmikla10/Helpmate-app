@@ -3,6 +3,7 @@ package com.flatmate.flatmate.Activity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -87,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity);
-
 
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() == null){
@@ -310,8 +310,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     startActivity(new Intent(MainActivity.this, MainActivity.class));
                 } else if (id == R.id.nav_activity_graph) {
                     startActivity(new Intent(MainActivity.this, GraphActivity.class));
-                } else if (id == R.id.nav_account) {
-                    startActivity(new Intent(MainActivity.this, AccountActivity.class));
                 } else if (id == R.id.nav_settings) {
                     startActivity(new Intent(MainActivity.this, AppPreferences.class));
                 } else if (id == R.id.nav_my_group) {
@@ -320,9 +318,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     startActivity(new Intent(MainActivity.this, JoinGroupActivity.class));
                 } else if (id == R.id.nav_add_group) {
                     startActivity(new Intent(MainActivity.this, CreateNewGroupActivity.class));
-                } else if (id == R.id.nav_about_flatmate) {
-                    startActivity(new Intent(MainActivity.this, AboutFlatmateActivity.class));
-                    overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
                 } else if (id == R.id.nav_log_out) {
                     firebaseAuth.signOut();
                     finish();

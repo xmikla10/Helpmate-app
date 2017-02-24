@@ -20,7 +20,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textStyle="normal|bold"
         android:textSize="30sp"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:id="@+id/menuUserNameView" />
 
     <TextView
@@ -32,7 +32,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textStyle="normal|bold"
         android:textSize="15sp"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:id="@+id/menuUserEmailView" />
 
     </LinearLayout>

@@ -36,7 +36,7 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorPrimaryDark"
+                    android:background="@color/colorOrange"
                     android:minHeight="?attr/actionBarSize"
                     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
@@ -46,9 +46,9 @@
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:tabTextColor="@color/colorPrimary"
-                    app:tabIndicatorColor="@android:color/holo_orange_light"
-                    app:tabSelectedTextColor="@android:color/holo_orange_light"
+                    app:tabTextColor="#363636"
+                    app:tabIndicatorColor="@color/colorOrange"
+                    app:tabSelectedTextColor="@color/colorOrange"
                     android:background="@color/colorWhite"
                     android:minHeight="?attr/actionBarSize"
                     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
@@ -69,7 +69,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             app:srcCompat="@drawable/plus_icon"
-            bind:backgroundTint="@android:color/holo_orange_light" />
+            bind:backgroundTint="@color/colorOrange" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_notif"
@@ -79,15 +79,16 @@
             android:layout_gravity="bottom|start"
             android:layout_margin="@dimen/fab_margin"
             app:srcCompat="@drawable/notification_icon"
-            bind:backgroundTint="@android:color/holo_orange_light" />
+            bind:backgroundTint="@color/colorOrange" />
 
     </android.support.design.widget.CoordinatorLayout>
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
+        app:theme="@style/ToolbarTheme"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@android:color/white"
+        android:background="#363636"
         app:headerLayout="@layout/nav_header_to_do"
         app:menu="@menu/activity_to_do_drawer" />
 

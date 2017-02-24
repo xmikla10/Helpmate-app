@@ -29,7 +29,7 @@
         android:layout_gravity="top|center_horizontal"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/plus_icon"
-        app:backgroundTint="@android:color/holo_orange_light"
+        app:backgroundTint="@color/colorOrange"
         app:elevation="13dp"
         android:adjustViewBounds="false"
         app:fabSize="normal"

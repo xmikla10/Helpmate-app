@@ -34,19 +34,9 @@
             android:id="@+id/group2" >
 
                 <item
-                    android:id="@+id/nav_account"
-                    android:icon="@drawable/account_icon"
-                    android:title="@string/account" />
-
-                <item
                     android:id="@+id/nav_settings"
                     android:icon="@drawable/settings_icon"
                     android:title="@string/settings" />
-
-                <item
-                    android:id="@+id/nav_about_flatmate"
-                    android:icon="@drawable/about_flatmate_icon"
-                    android:title="@string/about_flatmate" />
 
                 <item
                     android:id="@+id/nav_log_out"

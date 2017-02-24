@@ -53,8 +53,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:text="Log in"
-
-            android:background="@android:color/holo_orange_light"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorOrange"
             android:elevation="0dp"
             android:textAppearance="@style/TextAppearance.AppCompat" />
 
@@ -66,7 +66,7 @@
             android:layout_margin="15dp"
             android:text="Not have an account? Sign up Here"
             android:textColor="@color/colorWhite"
-            android:background="@color/colorPrimary"
+            android:background="#363636"
             android:textAppearance="@style/TextAppearance.AppCompat" />
 
 

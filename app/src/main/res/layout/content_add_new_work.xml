@@ -41,7 +41,7 @@
             android:layout_weight="0.1" />
 
         <EditText
-            android:backgroundTint="@android:color/holo_orange_light"
+            android:backgroundTint="@color/colorOrange"
             android:layout_width="match_parent"
             android:ems="10"
             android:hint="...here type name of work"

@@ -29,7 +29,8 @@
             android:id="@+id/textViewAuctionText"
             android:gravity="left|center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-medium" />
 
         <LinearLayout
             android:id="@+id/seekBar2"

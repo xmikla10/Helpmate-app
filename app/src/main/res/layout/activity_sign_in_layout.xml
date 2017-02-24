@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:text="Sign up"
-            android:background="@android:color/holo_orange_light"
+            android:background="@color/colorOrange"
             android:elevation="0dp"
             android:textAppearance="@style/TextAppearance.AppCompat" />
 
@@ -75,7 +75,7 @@
             android:layout_margin="15dp"
             android:textColor="@color/colorWhite"
             android:text="Already Registered? Log in Here"
-            android:background="@color/colorPrimary"
+            android:background="#363636"
             android:textAppearance="@style/TextAppearance.AppCompat" />
 
     </LinearLayout>
