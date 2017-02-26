@@ -98,6 +98,8 @@ public class Tab_TODO extends Fragment
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s)
                         {
+                            LinearLayout lay = (LinearLayout) rootView.findViewById(R.id.addNewWorkText);
+                            lay.setVisibility(View.GONE);
                             mProgress.setVisibility(View.GONE);
                             adapter = new CustomAdapterToDo(getContext(), helper.retrieve());
                             lv.setAdapter(adapter);
@@ -106,12 +108,16 @@ public class Tab_TODO extends Fragment
                         @Override
                         public void onChildChanged(DataSnapshot dataSnapshot, String s)
                         {
+                            LinearLayout lay = (LinearLayout) rootView.findViewById(R.id.addNewWorkText);
+                            lay.setVisibility(View.GONE);
                             mProgress.setVisibility(View.GONE);
                             adapter = new CustomAdapterToDo(getContext(), helper.retrieve());
                             lv.setAdapter(adapter);
                         }
                         @Override public void onChildRemoved(DataSnapshot dataSnapshot)
                         {
+                            LinearLayout lay = (LinearLayout) rootView.findViewById(R.id.addNewWorkText);
+                            lay.setVisibility(View.GONE);
                             mProgress.setVisibility(View.GONE);
                             adapter = new CustomAdapterToDo(getContext(), helper.retrieve());
                             lv.setAdapter(adapter);
@@ -128,11 +134,15 @@ public class Tab_TODO extends Fragment
                 {
                     ProgressBar mProgress= (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
                     @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        LinearLayout lay = (LinearLayout) rootView.findViewById(R.id.addNewWorkText);
+                        lay.setVisibility(View.GONE);
                         mProgress.setVisibility(View.GONE);
                         adapter = new CustomAdapterToDo(getContext(), helper.retrieve());
                         lv.setAdapter(adapter);
                     }
                     @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        LinearLayout lay = (LinearLayout) rootView.findViewById(R.id.addNewWorkText);
+                        lay.setVisibility(View.GONE);
                         mProgress.setVisibility(View.GONE);
                         adapter = new CustomAdapterToDo(getContext(), helper.retrieve());
                         lv.setAdapter(adapter);

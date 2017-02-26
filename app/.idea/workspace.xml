@@ -10,7 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fd57dee4-bcea-4192-9b81-709a8dca7e41" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/res/drawable/plus.png" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.14.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/../.gradle/2.14.1/taskArtifacts/cache.properties.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.14.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/../.gradle/2.14.1/taskArtifacts/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/../.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" />
@@ -19,17 +18,11 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" afterPath="$PROJECT_DIR$/../.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/../.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/../.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/res/drawable/accept_fab_icon.png" afterPath="$PROJECT_DIR$/src/main/res/drawable/accept_fab_icon.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/res/drawable/notification_icon.png" afterPath="$PROJECT_DIR$/src/main/res/drawable/notification_icon.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/res/drawable/plus_icon.png" afterPath="$PROJECT_DIR$/src/main/res/drawable/plus_icon.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.iml" afterPath="$PROJECT_DIR$/app.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/AuctionActivity.java" afterPath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/AuctionActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Firebase/FirebaseHelperWork.java" afterPath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Firebase/FirebaseHelperWork.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_COMPLETED.java" afterPath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_COMPLETED.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_MYWORKS.java" afterPath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_MYWORKS.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_TODO.java" afterPath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_TODO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/res/layout/content_main_activity.xml" afterPath="$PROJECT_DIR$/src/main/res/layout/content_main_activity.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/res/menu/activity_to_do_drawer.xml" afterPath="$PROJECT_DIR$/src/main/res/menu/activity_to_do_drawer.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/../build/intermediates/dex-cache/cache.xml" />
     </list>
     <ignored path="app.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -64,76 +57,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AuctionActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Tab_TODO.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_TODO.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-110">
+              <caret line="116" column="43" selection-start-line="116" selection-start-column="43" selection-end-line="116" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AuctionActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/AuctionActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
-              <caret line="374" column="62" selection-start-line="374" selection-start-column="62" selection-end-line="374" selection-end-column="62" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="content_main_activity.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/res/layout/content_main_activity.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+            <state relative-caret-position="280">
+              <caret line="334" column="13" selection-start-line="334" selection-start-column="13" selection-end-line="334" selection-end-column="13" />
               <folding>
-                <element signature="e#1177#1196#0" expanded="true" />
+                <marker date="1488123360000" expanded="false" signature="33559:33692" ph="(dialog, id) → {" />
               </folding>
             </state>
-          </provider>
-          <provider editor-type-id="android-designer2">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activity_to_do_drawer.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/res/menu/activity_to_do_drawer.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer2">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Tab_COMPLETED.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_COMPLETED.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-75">
-              <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TimePopUp.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/TimePopUp.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activity_main_activity.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_main_activity.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="157">
-              <caret line="63" column="8" selection-start-line="63" selection-start-column="8" selection-end-line="71" selection-end-column="55" />
-              <folding>
-                <element signature="e#3770#3789#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer2">
-            <state />
           </provider>
         </entry>
       </file>
@@ -2089,11 +2031,11 @@
         <option value="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Firebase/FirebaseHelperWork.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_MYWORKS.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_COMPLETED.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/AuctionActivity.java" />
         <option value="$PROJECT_DIR$/src/main/res/layout/activity_main_activity.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_TODO.java" />
         <option value="$PROJECT_DIR$/src/main/res/layout/content_main_activity.xml" />
         <option value="$PROJECT_DIR$/src/main/res/menu/activity_to_do_drawer.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_TODO.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/AuctionActivity.java" />
       </list>
     </option>
   </component>
@@ -2706,7 +2648,7 @@
       <window_info id="Dynamic Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24969475" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39330545" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39330545" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32845187" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -3199,22 +3141,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_TODO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="88" column="43" selection-start-line="88" selection-start-column="43" selection-end-line="88" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/AuctionActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="374" column="62" selection-start-line="374" selection-start-column="62" selection-end-line="374" selection-end-column="62" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/TimePopUp.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -3236,6 +3162,14 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_COMPLETED.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="91" column="85" selection-start-line="91" selection-start-column="85" selection-end-line="91" selection-end-column="85" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/res/menu/activity_to_do_drawer.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -3247,11 +3181,21 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_COMPLETED.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_TODO.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-75">
-          <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
+        <state relative-caret-position="-110">
+          <caret line="116" column="43" selection-start-line="116" selection-start-column="43" selection-end-line="116" selection-end-column="43" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/AuctionActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="334" column="13" selection-start-line="334" selection-start-column="13" selection-end-line="334" selection-end-column="13" />
+          <folding>
+            <marker date="1488123360000" expanded="false" signature="33559:33692" ph="(dialog, id) → {" />
+          </folding>
         </state>
       </provider>
     </entry>
