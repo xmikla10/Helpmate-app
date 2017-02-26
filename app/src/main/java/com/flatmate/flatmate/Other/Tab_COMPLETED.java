@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -64,6 +65,20 @@ public class Tab_COMPLETED extends Fragment {
             {
                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
                 groupID = value.get("_group").toString();
+
+                db.child("groups").child(groupID).child("completed").child("works").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        System.out.println(snapshot.getValue());
+                        if (snapshot.getValue() == null)
+                        {
+                            ProgressBar mProgress = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
+                            mProgress.setVisibility(View.GONE);
+
+                        }
+                    }
+                    @Override public void onCancelled(DatabaseError databaseError) {} });
+
                 db.child("groups").child(groupID).child("completed").addChildEventListener(new ChildEventListener() {
                     ProgressBar mProgress = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
 

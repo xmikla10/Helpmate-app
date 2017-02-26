@@ -7,6 +7,7 @@ package com.flatmate.flatmate.Other;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.flatmate.flatmate.Firebase.FirebaseHelperWork;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -73,6 +75,23 @@ public class Tab_TODO extends Fragment
                     ProgressBar mProgress= (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
                     mProgress.setVisibility(View.GONE);
                 }
+
+                db.child("groups").child(groupID).child("works").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        System.out.println(snapshot.getValue());
+                        if (snapshot.getValue() == null)
+                        {
+                            ProgressBar mProgress = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
+                            mProgress.setVisibility(View.GONE);
+                            LinearLayout lay = (LinearLayout) rootView.findViewById(R.id.addNewWorkText);
+                            lay.setVisibility(View.VISIBLE);
+                            adapter = null;
+                            lv.setAdapter(adapter);
+                        }
+                    }
+                    @Override public void onCancelled(DatabaseError databaseError) {} });
+
                     db.child("groups").child(groupID).child("works").addChildEventListener(new ChildEventListener() {
                         ProgressBar mProgress = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
 
@@ -91,7 +110,12 @@ public class Tab_TODO extends Fragment
                             adapter = new CustomAdapterToDo(getContext(), helper.retrieve());
                             lv.setAdapter(adapter);
                         }
-                        @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                        @Override public void onChildRemoved(DataSnapshot dataSnapshot)
+                        {
+                            mProgress.setVisibility(View.GONE);
+                            adapter = new CustomAdapterToDo(getContext(), helper.retrieve());
+                            lv.setAdapter(adapter);
+                        }
                         @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                         @Override public void onCancelled(DatabaseError databaseError) {}
                     });

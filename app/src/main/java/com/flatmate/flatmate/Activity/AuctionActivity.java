@@ -349,6 +349,7 @@ public class AuctionActivity extends AppCompatActivity
                                 Map newCompletedData = new HashMap();
 
                                 newCompletedData.put("_userEmail", "null");
+                                newCompletedData.put("_workProgress", "6");
                                 newCompletedData.put("_status", "Status : done");
 
                                 db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newCompletedData);
@@ -368,7 +369,7 @@ public class AuctionActivity extends AppCompatActivity
                                 }
 
                                 cal.setTime(datePlus);
-                                cal.add(Calendar.MINUTE, 1);
+                                cal.add(Calendar.HOUR, 24);
 
                                 Map dateData = new HashMap();
                                 dateData.put("_deadline", dateFormat.format(cal.getTime()));
@@ -465,7 +466,77 @@ public class AuctionActivity extends AppCompatActivity
                                                 @Override public void onCancelled(DatabaseError databaseError) {}});
                                         }
                                         else
-                                            addToGraph();
+                                        {
+                                            Date actDate= new Date();
+                                            Calendar actCal = Calendar.getInstance();
+                                            actCal.setTime(actDate);
+                                            Integer year = actCal.get(Calendar.YEAR);
+
+                                            Integer yearInGraPH = Integer.valueOf(graphMonth);
+
+                                            if ( year > yearInGraPH)
+                                            {
+                                                db.child("groups").child(groupID).child("graph").child("months").child("members").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                                    {
+                                                        String members = null;
+                                                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                                                        {
+                                                            Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                            members = value.get("_membersCount").toString();
+                                                            groupMembersCount = Integer.valueOf(members);
+                                                        }
+
+                                                        Date actDate= new Date();
+                                                        Calendar actCal = Calendar.getInstance();
+                                                        actCal.setTime(actDate);
+                                                        Integer year = actCal.get(Calendar.YEAR);
+
+                                                        Map newData = new HashMap();
+                                                        newData.put("_month", year);
+                                                        newData.put("_membersCount", members);
+                                                        db.child("groups").child(groupID).child("graph").child("months").child(actualMonth).child("control").child(childKey).updateChildren(newData);
+
+
+                                                        db.child("groups").child(groupID).child("graph").child("months").child(actualMonth).child("users").setValue(null);
+                                                        db.child("groups").child(groupID).child("graph").child("months").child(actualMonth).child("users").removeValue();
+
+                                                        //namapovat clenov pre graf
+                                                        db.child("user").child("groups").child("members").child(groupID).addChildEventListener(new ChildEventListener()
+                                                        {
+                                                            Integer memC = 0;
+                                                            @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
+                                                            {
+                                                                Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                                                                String memberName = value.get("_user_name").toString();
+                                                                String memberEmail = value.get("_user_email").toString();
+                                                                String memberID = value.get("_user_ID").toString();
+
+                                                                GraphUser graphUser = new GraphUser();
+                                                                graphUser.set_ID(memberID);
+                                                                graphUser.set_name(memberName);
+                                                                graphUser.set_email(memberEmail);
+                                                                graphUser.set_credits("0");
+                                                                memC++;
+
+                                                                db.child("groups").child(groupID).child("graph").child("months").child(actualMonth).child("users").push().setValue(graphUser);
+
+                                                                if ( memC == groupMembersCount)
+                                                                {
+                                                                    addToGraph();
+                                                                }
+                                                            }
+                                                            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                                                            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                                                            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                                                            @Override public void onCancelled(DatabaseError databaseError) {}
+                                                        });
+                                                    }
+                                                    @Override public void onCancelled(DatabaseError databaseError) {}});
+                                            }
+                                            else
+                                                addToGraph();
+                                        }
 
                                     }
                                     @Override public void onCancelled(DatabaseError databaseError) {}});
@@ -491,8 +562,6 @@ public class AuctionActivity extends AppCompatActivity
         firebaseAuth = FirebaseAuth.getInstance();
         userID = firebaseAuth.getCurrentUser().getUid().toString();
         db = FirebaseDatabase.getInstance().getReference();
-
-        Log.d("Control - addToGraph", "vnom");
 
         db.child("groups").child(groupID).child("graph").child("months").child(actualMonth).child("users").orderByChild("_ID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
         @Override public void onDataChange(DataSnapshot dataSnapshot)
