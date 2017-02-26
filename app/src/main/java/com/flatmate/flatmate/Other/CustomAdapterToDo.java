@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,6 +82,14 @@ public class CustomAdapterToDo extends BaseAdapter{
         }
         else
             textViewtime2.setText(s.get_deadline());
+
+        if(s.get_status().equals("Status : done"))
+        {
+            textViewtime2.setText(s.get_bidsLastUserName());
+            textViewtime.setText("Work completed by :");
+            textViewtime.setTextSize(14);
+            textViewStatus.setTextColor(Color.parseColor("#ff669900"));
+        }
 
         textViewTaskName.setText(work_name);
         textViewStatus.setText(s.get_status());

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.flatmate.flatmate.Firebase.Members;
 import com.flatmate.flatmate.Firebase.Months;
 import com.flatmate.flatmate.Firebase.NewGroup;
 import com.flatmate.flatmate.R;
@@ -62,19 +63,21 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                 final Months months10 = new Months();
                 final Months months11 = new Months();
                 final Months months12 = new Months();
+                final Members mem = new Members();
 
-                months1.set_month("null");
-                months2.set_month("null");
-                months3.set_month("null");
-                months4.set_month("null");
-                months5.set_month("null");
-                months6.set_month("null");
-                months7.set_month("null");
-                months8.set_month("null");
-                months9.set_month("null");
-                months10.set_month("null");
-                months11.set_month("null");
-                months12.set_month("null");
+                months1.set_month("null"); months1.set_membersCount("null");
+                months2.set_month("null"); months2.set_membersCount("null");
+                months3.set_month("null"); months3.set_membersCount("null");
+                months4.set_month("null"); months4.set_membersCount("null");
+                months5.set_month("null"); months5.set_membersCount("null");
+                months6.set_month("null"); months6.set_membersCount("null");
+                months7.set_month("null"); months7.set_membersCount("null");
+                months8.set_month("null"); months8.set_membersCount("null");
+                months9.set_month("null"); months9.set_membersCount("null");
+                months10.set_month("null"); months10.set_membersCount("null");
+                months11.set_month("null"); months11.set_membersCount("null");
+                months12.set_month("null"); months12.set_membersCount("null");
+                mem.set_membersCount("1");
 
                 EditText groupName = (EditText) findViewById(R.id.editTextGroupName);
                 group_name = groupName.getText().toString();
@@ -117,6 +120,8 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                         db.child("groups").child(group_ID).child("graph").child("months").child("October").child("control").push().setValue(months10);
                         db.child("groups").child(group_ID).child("graph").child("months").child("November").child("control").push().setValue(months11);
                         db.child("groups").child(group_ID).child("graph").child("months").child("December").child("control").push().setValue(months12);
+                        db.child("groups").child(group_ID).child("graph").child("months").child("members").push().setValue(mem);
+
 
                         finish();
                     }

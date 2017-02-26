@@ -26,6 +26,7 @@ import com.flatmate.flatmate.Other.AppPreferences;
 import com.flatmate.flatmate.Other.CustomAdapterToDo;
 import com.flatmate.flatmate.Firebase.NewWork;
 import com.flatmate.flatmate.Other.Pager;
+import com.flatmate.flatmate.Other.WorkDoneReceiver;
 import com.flatmate.flatmate.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -143,11 +144,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                         @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
                         {
                                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                                String key = dataSnapshot.getKey().toString();
+                                System.out.println("--------> " + key);
                                 evaluationBidsID = value.get("_bidsID").toString();
                                 evaluationDeadline = value.get("_deadline").toString();
                                 evaluationStatus = value.get("_status").toString();
 
-                                final Integer Year, Month, Day, Hour, Minute;
+                                Integer Year, Month, Day, Hour, Minute;
 
                                 if ( evaluationStatus.equals("Status : auctioning"))
                                 {
@@ -157,7 +160,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                     Month = Integer.valueOf(evaluationDeadline.substring(9,11));
                                     Year = Integer.valueOf(evaluationDeadline.substring(12,16));
 
-                                    Log.d("MyActivity", "Alarm Set");
                                     Calendar cal = Calendar.getInstance();
 
                                     cal.set(Calendar.YEAR, Year);
@@ -181,6 +183,40 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
                                     cal = null;
                                 }
+
+                                if ( evaluationStatus.equals("Status : done"))
+                                {
+                                    Hour = Integer.valueOf(evaluationDeadline.substring(0,2));
+                                    Minute = Integer.valueOf(evaluationDeadline.substring(3,5));
+                                    Day = Integer.valueOf(evaluationDeadline.substring(6,8));
+                                    Month = Integer.valueOf(evaluationDeadline.substring(9,11));
+                                    Year = Integer.valueOf(evaluationDeadline.substring(12,16));
+
+                                    Calendar cal = Calendar.getInstance();
+
+                                    cal.set(Calendar.YEAR, Year);
+                                    cal.set(Calendar.MONTH, Month-1);
+                                    cal.set(Calendar.DAY_OF_MONTH, Day);
+                                    cal.set(Calendar.HOUR_OF_DAY, Hour);
+                                    cal.set(Calendar.MINUTE, Minute);
+                                    cal.set(Calendar.SECOND, 0);
+                                    cal.set(Calendar.MILLISECOND, 0);
+
+                                    int _id = (int) System.currentTimeMillis();
+
+                                    Intent intent = new Intent(MainActivity.this, WorkDoneReceiver.class);
+                                    intent.putExtra("alarmId", _id);
+                                    intent.putExtra("bidsID", evaluationBidsID);
+                                    intent.putExtra("groupID", groupID);
+                                    intent.putExtra("groupID", groupID);
+                                    intent.putExtra("childKey", key);
+
+                                    PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                    AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                    alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+
+                                    cal = null;
+                                }
                         }
                         @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
                         @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
@@ -194,6 +230,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
+
     }
 
     public void setUserName(){

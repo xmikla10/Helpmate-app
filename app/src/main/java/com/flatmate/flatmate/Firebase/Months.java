@@ -8,6 +8,7 @@ public class Months
 {
     //name and address string
     private String month;
+    private String membersCount;
 
     public Months()
     {
@@ -20,6 +21,14 @@ public class Months
 
     public void set_month(String month) {
         this.month = month;
+    }
+
+    public String get_membersCount() {
+        return membersCount;
+    }
+
+    public void set_membersCount(String membersCount) {
+        this.membersCount = membersCount;
     }
 
 

@@ -54,7 +54,7 @@ public class CustomAdapterCompleted extends BaseAdapter{
         final NewWork s= (NewWork) this.getItem(position);
 
         completedNameOfTask.setText(s.get_work_name());
-        completedUserName.setText(s.get_userEmail());
+        completedUserName.setText(s.get_bidsLastUserName());
         completedDate.setText(s.get_date());
         completedCredits.setText(s.get_credits());
 

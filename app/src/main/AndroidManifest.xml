@@ -37,6 +37,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <receiver android:name=".Other.AlarmReceiver" />
+        <receiver android:name=".Other.WorkDoneReceiver" />
 
 
         <activity

@@ -64,6 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:text="Sign up"
+            android:textColor="@color/colorWhite"
             android:background="@color/colorOrange"
             android:elevation="0dp"
             android:textAppearance="@style/TextAppearance.AppCompat" />
