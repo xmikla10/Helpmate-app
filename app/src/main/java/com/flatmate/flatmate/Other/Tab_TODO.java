@@ -5,9 +5,9 @@ package com.flatmate.flatmate.Other;
  */
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.flatmate.flatmate.Activity.AuctionActivity;
@@ -55,6 +54,7 @@ public class Tab_TODO extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final View rootView = inflater.inflate(R.layout.activity_to_do, container, false);
+
         newWork = new NewWork();
         db = FirebaseDatabase.getInstance().getReference();
         helper = new FirebaseHelperWork(db);

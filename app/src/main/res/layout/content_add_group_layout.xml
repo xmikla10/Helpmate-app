@@ -18,11 +18,10 @@
         <LinearLayout
             android:id="@+id/addNewLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:orientation="vertical"
-            android:weightSum="1">
+            android:orientation="vertical">
 
             <TextView
                 android:text="Name of group"
@@ -35,11 +34,10 @@
                 android:layout_toStartOf="@+id/editText2"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:gravity="center_vertical"
-                android:textSize="17sp"
-                android:layout_weight="0.1" />
+                android:textSize="17sp"/>
 
             <EditText
-                android:backgroundTint="@android:color/holo_orange_light"
+                android:backgroundTint="@color/colorOrange"
                 android:layout_width="match_parent"
                 android:ems="10"
                 android:hint="...here type name of group"
@@ -51,8 +49,8 @@
                 android:layout_height="55dp"
                 android:gravity="center" />
 
-            <TextView
-                android:text="Add members..."
+        <TextView
+                android:text="Add members :"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView7"
@@ -62,11 +60,38 @@
                 android:layout_alignBottom="@+id/editText5"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="17sp"
-                android:gravity="center_vertical"
-                android:layout_weight="0.1" />
+                android:gravity="center_vertical"/>
 
+            <AutoCompleteTextView
+                android:id="@+id/mmWhoNo"
+                android:textColorHint="#d1d1d1"
+                android:backgroundTint="@color/colorOrange"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="name or email " >
+            </AutoCompleteTextView>
 
+            <LinearLayout
+                android:id="@+id/addNewMemberLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical">
 
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonAdd"
+                android:drawableLeft="@drawable/add_member"
+                android:paddingLeft="5dp"
+                android:background="@color/colorOrange"
+                android:textColor="@color/colorWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="  Add member  "
+                style="@style/Base.Widget.AppCompat.Button" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

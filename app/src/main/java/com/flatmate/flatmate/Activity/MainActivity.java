@@ -25,6 +25,7 @@ import com.flatmate.flatmate.Other.AlarmReceiver;
 import com.flatmate.flatmate.Other.AppPreferences;
 import com.flatmate.flatmate.Other.CustomAdapterToDo;
 import com.flatmate.flatmate.Firebase.NewWork;
+import com.flatmate.flatmate.Other.FontsOverride;
 import com.flatmate.flatmate.Other.Pager;
 import com.flatmate.flatmate.Other.WorkDoneReceiver;
 import com.flatmate.flatmate.R;
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity);
+        //FontsOverride.setDefaultFont(this, "DEFAULT", "customfont.ttf");
 
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() == null){

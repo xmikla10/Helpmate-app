@@ -1,14 +1,37 @@
 package com.flatmate.flatmate.Activity;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.res.ColorStateList;
+import android.database.CharArrayBuffer;
+import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flatmate.flatmate.Firebase.Members;
 import com.flatmate.flatmate.Firebase.Months;
+import com.flatmate.flatmate.Firebase.NewBid;
 import com.flatmate.flatmate.Firebase.NewGroup;
 import com.flatmate.flatmate.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,7 +40,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.SimpleTimeZone;
 import java.util.UUID;
@@ -33,13 +61,77 @@ public class CreateNewGroupActivity extends AppCompatActivity {
     String user_email;
     String group_ID;
     String userID;
+    ArrayList<String> memberEmail;
     FirebaseAuth firebaseAuth;
     DatabaseReference db;
+
+    private LinearLayout mLayout;
+    private AutoCompleteTextView mEditText;
+    private Button mButton;
+
+    ListView lvItem;
+    private Button btnAdd;
+    String displayName="", emailAddress="", phoneNumber="";
+    private ArrayList<Map<String, String>> mPeopleList;
+    private SimpleAdapter mAdapter;
+    private AutoCompleteTextView mTxtPhoneNo;
+    Integer oneClick;
+    Integer cnt;
+    private ProgressDialog progressDialog;
+    ArrayList<AutoCompleteTextView> editTexts = new ArrayList<>();
+    Integer count;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_group_layout);
+        oneClick = 1;
+        count = 0;
+        memberEmail = new ArrayList<String>();
+
+        mPeopleList = new ArrayList<Map<String, String>>();
+        mTxtPhoneNo = (AutoCompleteTextView) findViewById(R.id.mmWhoNo);
+        mAdapter = new SimpleAdapter(this, mPeopleList, R.layout.custcontview,
+                new String[] { "Name", "Phone" } , new int[] {
+                R.id.ccontName, R.id.ccontNo});
+        System.out.println(mPeopleList);
+        mTxtPhoneNo.setAdapter(mAdapter);
+
+        mLayout = (LinearLayout) findViewById(R.id.addNewMemberLayout);
+        mButton = (Button) findViewById(R.id.buttonAdd);
+        mButton.setOnClickListener(onClick());
+        TextView textView = new TextView(this);
+        textView.setText("email");
+        progressDialog = new ProgressDialog(CreateNewGroupActivity.this);
+
+        mTxtPhoneNo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> av, View arg1, int index, long arg3)
+            {
+                Map<String, String> map = (Map<String, String>) av.getItemAtPosition(index);
+                String name  = map.get("Name");
+                String number = map.get("Phone");
+                mTxtPhoneNo.setText(number);
+                memberEmail.add(number);
+            }
+        });
+
+        mTxtPhoneNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus)
+            {
+                if (hasFocus)
+                {
+                    openprogresdialog(v);
+                }
+            }
+        });
+
+
 
         FloatingActionButton createGroup = (FloatingActionButton) findViewById(R.id.fab_create_group);
 
@@ -47,7 +139,63 @@ public class CreateNewGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                final NewGroup newGroupUser = new NewGroup();
+                int size = memberEmail.size();
+                String wrongEmail = "";
+                cnt = 0 ;
+                DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+                AutoCompleteTextView first = (AutoCompleteTextView) findViewById(R.id.mmWhoNo) ;
+                editTexts.add(first);
+                Boolean goodEmails = true;
+
+                for (EditText editText : editTexts)
+                {
+                    if (!editText.getText().toString().equals(""))
+                    {
+                        if (!isValidEmail(editText.getText()))
+                        {
+                            wrongEmail = editText.getText().toString();
+                            goodEmails = false;
+                            break;
+                        }
+                    }
+                }
+
+                if ( goodEmails)
+                {
+                    for (EditText editText : editTexts)
+                    {
+                        final String email = editText.getText().toString();
+
+                        if (!email.equals(""))
+                        {
+                            db.child("user").child("groups").child("find").orderByChild("_user_email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                {
+                                    System.out.println("--------->" + email);
+                                    if (dataSnapshot.getValue() == null)
+                                    {
+                                        System.out.println("--------->" + "nenasiel som");
+                                    }
+
+                                    for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                                    {
+                                        String childKey = childSnapshot.getKey();
+                                        Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                        String ID = value.get("_user_ID").toString();
+                                        System.out.println("---------> " + ID);
+                                    }
+                                }
+                                @Override public void onCancelled(DatabaseError databaseError) {}
+                            });
+                        }
+                    }
+                    System.out.println("--------->" + "za forom");
+                }
+                else
+                    Toast.makeText(CreateNewGroupActivity.this, wrongEmail +" - wrong email address", Toast.LENGTH_SHORT).show();
+
+
+                /*final NewGroup newGroupUser = new NewGroup();
                 final NewGroup newGroupMembers = new NewGroup();
                 final NewGroup newGroupFind = new NewGroup();
 
@@ -129,11 +277,99 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                     @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
                     @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                     @Override public void onCancelled(DatabaseError databaseError) {}
-                });
+                });*/
 
             }
         });
 
+    }
+
+    public final static boolean isValidEmail(CharSequence target)
+    {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
+
+    private void openprogresdialog(final View view) {
+        // TODO Auto-generated method stub
+        final ProgressDialog progDailog = ProgressDialog.show(CreateNewGroupActivity.this, "Loading contacts", "Please wait...", true);
+
+        new Thread() {
+            public void run() {
+                try
+                {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    readContacts();
+
+                }
+                catch (Exception e) {
+                }
+                progDailog.dismiss();
+            }
+        }.start();
+    }
+
+    private View.OnClickListener onClick() {
+        return new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mLayout.addView(createNewTextView("name or email "));
+            }
+        };
+    }
+
+    private EditText createNewTextView(String text) {
+        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final AutoCompleteTextView editText = new AutoCompleteTextView(this);
+
+        editTexts.add( editText);
+        editText.setLayoutParams(lparams);
+        editText.setTop(25);
+        editText.setHint("name or email ");
+        editText.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#fb7b0a")));
+        editText.setHintTextColor(Color.parseColor("#d1d1d1"));
+        mAdapter = new SimpleAdapter(this, mPeopleList, R.layout.custcontview, new String[] { "Name", "Phone" } , new int[] {R.id.ccontName, R.id.ccontNo});
+        editText.setAdapter(mAdapter);
+
+        editText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override public void onItemClick(AdapterView<?> av, View arg1, int index, long arg3)
+            {
+                Map<String, String> map = (Map<String, String>) av.getItemAtPosition(index);
+                String name  = map.get("Name");
+                String number = map.get("Phone");
+                editText.setText(number);
+                memberEmail.add(number);
+            }
+        });
+
+        return editText;
+    }
+
+    private void readContacts()
+    {
+        mPeopleList.clear();
+        ContentResolver cr =getContentResolver();
+        Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+        while (cursor.moveToNext())
+        {
+            displayName="";emailAddress=""; phoneNumber="";
+            displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+            Cursor emails = cr.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,null, ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = " + id, null, null);
+            while (emails.moveToNext())
+            {
+                emailAddress = emails.getString(emails.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+                Map<String, String> NamePhoneType = new HashMap<String, String>();
+                NamePhoneType.put("Name", displayName);
+                NamePhoneType.put("Phone", emailAddress);
+                mPeopleList.add(NamePhoneType);
+                break;
+            }
+            emails.close();
+        }
+        cursor.close();
+        startManagingCursor(cursor);
     }
 
 }
