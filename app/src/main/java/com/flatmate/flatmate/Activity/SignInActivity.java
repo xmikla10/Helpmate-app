@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 
 import com.flatmate.flatmate.Firebase.FirebaseHelperUser;
+import com.flatmate.flatmate.Firebase.NewGroup;
 import com.flatmate.flatmate.Firebase.NewUser;
 import com.flatmate.flatmate.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -107,12 +108,18 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             helper = new FirebaseHelperUser(db);
 
                             NewUser newUser = new NewUser();
+                            NewGroup newFindUser = new NewGroup();
+
                             String userId = firebaseAuth.getCurrentUser().getUid().toString();
                             newUser.set_ID(userId);
                             newUser.set_name(name);
                             newUser.set_email(email);
                             newUser.set_group("");
                             helper.save(newUser);
+
+                            newFindUser.set_user_email(email);
+                            newFindUser.set_user_ID(userId);
+                            db.child("user").child("groups").child("find").push().setValue(newFindUser);
 
                             startActivity(new Intent(SignInActivity.this, LogInActivity.class));
                             overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);

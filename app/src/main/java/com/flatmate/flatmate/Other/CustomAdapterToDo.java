@@ -74,25 +74,33 @@ public class CustomAdapterToDo extends BaseAdapter{
         else
             work_name = s.get_work_name();
 
-        if(!s.get_status().equals("Status : auctioning"))
+        if(s.get_status().equals("Status : auctioning"))
+        {
+            textViewtime.setText("Duration of auction :");
+            textViewStatus.setTextColor(Color.BLACK);
+            textViewtime2.setText(s.get_deadline());
+        }
+        else if(s.get_status().equals("Status : in progress"))
         {
             textViewtime2.setText(s.get_bidsLastUserName());
             textViewtime.setText("Who won?");
             textViewtime.setTextSize(17);
         }
-        else
-            textViewtime2.setText(s.get_deadline());
-
-        if(s.get_status().equals("Status : done"))
+        else if(s.get_status().equals("Status : done"))
         {
             textViewtime2.setText(s.get_bidsLastUserName());
             textViewtime.setText("Work completed by :");
             textViewtime.setTextSize(14);
             textViewStatus.setTextColor(Color.parseColor("#ff669900"));
         }
+        else
+            textViewtime2.setText(s.get_deadline());
 
         textViewTaskName.setText(work_name);
         textViewStatus.setText(s.get_status());
+
+        System.out.println("------->" + s.get_status());
+        System.out.println("------->" + work_name);
 
         return convertView;
     }

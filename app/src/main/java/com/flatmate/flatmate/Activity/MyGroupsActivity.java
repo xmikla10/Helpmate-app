@@ -64,7 +64,7 @@ public class MyGroupsActivity extends AppCompatActivity {
 
         userID = firebaseAuth.getCurrentUser().getUid().toString();
 
-        db.child("user").child("users").child(userID).addChildEventListener(new ChildEventListener() {
+        db.child("user").child("users").child(userID).child("data").addChildEventListener(new ChildEventListener() {
             @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
             {
                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
@@ -119,7 +119,7 @@ public class MyGroupsActivity extends AppCompatActivity {
                 final NewGroup s= (NewGroup) adapter.getItem(position);
                 userID = firebaseAuth.getCurrentUser().getUid().toString();
 
-                db.child("user").child("users").child(userID).orderByChild("_ID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                db.child("user").child("users").child(userID).child("data").orderByChild("_ID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override public void onDataChange(DataSnapshot dataSnapshot)
                     {
                         for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
@@ -129,7 +129,7 @@ public class MyGroupsActivity extends AppCompatActivity {
                         Map newUserData = new HashMap();
                         newUserData.put("_group", s.get_group_ID());
 
-                        db.child("user").child("users").child(userID).child(childKey).updateChildren(newUserData);
+                        db.child("user").child("users").child(userID).child("data").child(childKey).updateChildren(newUserData);
                         finish();
                     }
                     @Override public void onCancelled(DatabaseError databaseError) {}

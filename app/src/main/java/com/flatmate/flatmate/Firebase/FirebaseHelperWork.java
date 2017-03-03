@@ -43,7 +43,7 @@ public class FirebaseHelperWork
                 firebaseAuth = FirebaseAuth.getInstance();
                 uniqueID = UUID.randomUUID().toString();
                 userID = firebaseAuth.getCurrentUser().getUid().toString();
-                db.child("user").child("users").child(userID).addChildEventListener(new ChildEventListener() {
+                db.child("user").child("users").child(userID).child("data").addChildEventListener(new ChildEventListener() {
                      @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                          Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
                          groupID = value.get("_group").toString();
@@ -72,7 +72,7 @@ public class FirebaseHelperWork
     {
         firebaseAuth = FirebaseAuth.getInstance();
         userID = firebaseAuth.getCurrentUser().getUid().toString();
-        db.child("user").child("users").child(userID).addChildEventListener(new ChildEventListener() {
+        db.child("user").child("users").child(userID).child("data").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();

@@ -28,7 +28,7 @@ public class FirebaseHelperUser
         {
             try
             {
-                db.child("user").child("users").child(newUser.get_ID()).push().setValue(newUser);
+                db.child("user").child("users").child(newUser.get_ID()).child("data").push().setValue(newUser);
                 saved=true;
             }catch (DatabaseException e)
             {
@@ -38,42 +38,6 @@ public class FirebaseHelperUser
         }
         return saved;
     }
-    //READ
-    public ArrayList<NewUser> retrieve()
-    {
-        db.child("user").child("users").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                fetchData(dataSnapshot);
-            }
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                fetchData(dataSnapshot);
-            }
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-            }
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
-        return a;
-    }
-    private void fetchData(DataSnapshot dataSnapshot)
-    {
-        a.clear();
-        for (DataSnapshot ds : dataSnapshot.getChildren())
-        {
-            NewUser newUser = ds.getValue(NewUser.class);
-            a.add(newUser);
-
-        }
-    }
 
 }

@@ -3,11 +3,13 @@ package com.flatmate.flatmate.Activity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,6 +23,7 @@ import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
+import com.flatmate.flatmate.Firebase.AddMembers;
 import com.flatmate.flatmate.Other.AlarmReceiver;
 import com.flatmate.flatmate.Other.AppPreferences;
 import com.flatmate.flatmate.Other.CustomAdapterToDo;
@@ -49,6 +52,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import com.flatmate.flatmate.Firebase.FirebaseHelperWork;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener{
@@ -135,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         db = FirebaseDatabase.getInstance().getReference();
 
-        db.child("user").child("users").child(userID).addChildEventListener(new ChildEventListener() {
+        db.child("user").child("users").child(userID).child("data").addChildEventListener(new ChildEventListener() {
             @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
             {
                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
@@ -246,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         final TextView userEmailView = (TextView) hView.findViewById(R.id.menuUserEmailView);
 
         db = FirebaseDatabase.getInstance().getReference();
-        db.child("user").child("users").child(userID).addChildEventListener(new ChildEventListener() {
+        db.child("user").child("users").child(userID).child("data").addChildEventListener(new ChildEventListener() {
             @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
                 userName = value.get("_name").toString();
@@ -255,6 +259,41 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 {
                     userNameView.setText(userName);
                     userEmailView.setText(userEmail);
+                    db.child("user").child("users").child(userID).child("messages").addChildEventListener(new ChildEventListener() {
+                        @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
+                        {
+                            Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                            String addGroupID = value.get("_group_ID").toString();
+                            String addGroupName = value.get("_group_name").toString();
+                            String senderEmail= value.get("_sender_email").toString();
+                            final String key = dataSnapshot.getKey().toString();
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                            builder.setTitle("Request").setMessage("User " + senderEmail + " add you to group " + addGroupName)
+                                    .setCancelable(false)
+                                    .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id)
+                                        {
+                                            db.child("user").child("users").child(userID).child("messages").child(key).setValue(null);
+                                            dialog.cancel();
+                                        }
+                                    })
+                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id)
+                                        {
+                                            db.child("user").child("users").child(userID).child("messages").child(key).setValue(null);
+                                            dialog.cancel();
+                                        }
+                                    });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+
+                        }
+                        @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                        @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                        @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                        @Override public void onCancelled(DatabaseError databaseError) {}
+                    });
                 }
             }
             @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
@@ -353,9 +392,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     startActivity(new Intent(MainActivity.this, AppPreferences.class));
                 } else if (id == R.id.nav_my_group) {
                     startActivity(new Intent(MainActivity.this, MyGroupsActivity.class));
-                } else if (id == R.id.nav_join_group) {
-                    startActivity(new Intent(MainActivity.this, JoinGroupActivity.class));
-                } else if (id == R.id.nav_add_group) {
+                } //else if (id == R.id.nav_join_group) {
+                  //  startActivity(new Intent(MainActivity.this, JoinGroupActivity.class));
+                //}
+                else if (id == R.id.nav_add_group) {
                     startActivity(new Intent(MainActivity.this, CreateNewGroupActivity.class));
                 } else if (id == R.id.nav_log_out) {
                     firebaseAuth.signOut();

@@ -84,7 +84,7 @@ public class BidPopUp extends Activity
         firebaseAuth = FirebaseAuth.getInstance();
         userID = firebaseAuth.getCurrentUser().getUid().toString();
 
-        db.child("user").child("users").child(userID).addChildEventListener(new ChildEventListener() {
+        db.child("user").child("users").child(userID).child("data").addChildEventListener(new ChildEventListener() {
             @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
             {
                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();

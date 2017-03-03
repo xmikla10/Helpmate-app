@@ -4,10 +4,12 @@ package com.flatmate.flatmate.Other;
  * Created by xmikla10 on 16.11.2016.
  */
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.flatmate.flatmate.Activity.AuctionActivity;
+import com.flatmate.flatmate.Activity.MainActivity;
 import com.flatmate.flatmate.Firebase.NewWork;
 import com.flatmate.flatmate.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,7 +68,7 @@ public class Tab_TODO extends Fragment
         firebaseAuth = FirebaseAuth.getInstance();
         userID = firebaseAuth.getCurrentUser().getUid().toString();
 
-        db.child("user").child("users").child(userID).addChildEventListener(new ChildEventListener() {
+        db.child("user").child("users").child(userID).child("data").addChildEventListener(new ChildEventListener() {
             @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
             {
                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();

@@ -127,7 +127,7 @@ public class GraphActivity extends AppCompatActivity
         db = FirebaseDatabase.getInstance().getReference();
         userID = firebaseAuth.getCurrentUser().getUid().toString();
 
-        db.child("user").child("users").child(userID).addChildEventListener(new ChildEventListener()
+        db.child("user").child("users").child(userID).child("data").addChildEventListener(new ChildEventListener()
         {
             @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
             {

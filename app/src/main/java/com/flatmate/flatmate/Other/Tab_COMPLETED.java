@@ -60,24 +60,11 @@ public class Tab_COMPLETED extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         userID = firebaseAuth.getCurrentUser().getUid().toString();
 
-        db.child("user").child("users").child(userID).addChildEventListener(new ChildEventListener() {
+        db.child("user").child("users").child(userID).child("data").addChildEventListener(new ChildEventListener() {
             @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
             {
                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
                 groupID = value.get("_group").toString();
-
-                db.child("groups").child(groupID).child("completed").child("works").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        System.out.println(snapshot.getValue());
-                        if (snapshot.getValue() == null)
-                        {
-                            ProgressBar mProgress = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
-                            mProgress.setVisibility(View.GONE);
-
-                        }
-                    }
-                    @Override public void onCancelled(DatabaseError databaseError) {} });
 
                 db.child("groups").child(groupID).child("completed").addChildEventListener(new ChildEventListener() {
                     ProgressBar mProgress = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);

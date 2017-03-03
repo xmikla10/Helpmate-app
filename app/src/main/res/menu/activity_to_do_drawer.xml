@@ -13,10 +13,10 @@
                     android:icon="@drawable/group_icon"
                     android:title="My Groups" />
 
-                <item
+                <!--<item
                     android:id="@+id/nav_join_group"
                     android:icon="@drawable/add_group_icon"
-                    android:title="Join Existed Group" />
+                    android:title="Join Existed Group" />-->
 
                 <item
                     android:id="@+id/nav_add_group"

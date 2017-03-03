@@ -40,14 +40,14 @@
                 android:backgroundTint="@color/colorOrange"
                 android:layout_width="match_parent"
                 android:ems="10"
-                android:hint="...here type name of group"
+                android:hint="Here type name of group"
                 android:textColorHint="#d1d1d1"
                 android:inputType="textCapSentences"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:id="@+id/editTextGroupName"
                 android:layout_height="55dp"
-                android:gravity="center" />
+                android:gravity="left" />
 
         <TextView
                 android:text="Add members :"
@@ -68,7 +68,7 @@
                 android:backgroundTint="@color/colorOrange"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:hint="name or email " >
+                android:hint="name@email.com" >
             </AutoCompleteTextView>
 
             <LinearLayout

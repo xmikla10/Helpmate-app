@@ -44,14 +44,14 @@
             android:backgroundTint="@color/colorOrange"
             android:layout_width="match_parent"
             android:ems="10"
-            android:hint="...here type name of work"
+            android:hint="Here type name of work"
             android:textColorHint="#d1d1d1"
             android:inputType="textCapSentences"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:id="@+id/work_name"
             android:layout_height="55dp"
-            android:gravity="center" />
+            android:gravity="left" />
 
         <TextView
             android:text="Duration of work"
