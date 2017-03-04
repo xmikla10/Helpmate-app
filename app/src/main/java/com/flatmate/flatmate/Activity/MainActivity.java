@@ -24,6 +24,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
 import com.flatmate.flatmate.Firebase.AddMembers;
+import com.flatmate.flatmate.Firebase.NewGroup;
 import com.flatmate.flatmate.Other.AlarmReceiver;
 import com.flatmate.flatmate.Other.AppPreferences;
 import com.flatmate.flatmate.Other.CustomAdapterToDo;
@@ -39,6 +40,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import android.util.Log;
+import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.ParseException;
@@ -47,7 +50,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -263,8 +268,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                         @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
                         {
                             Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                            String addGroupID = value.get("_group_ID").toString();
-                            String addGroupName = value.get("_group_name").toString();
+                            final String addGroupID = value.get("_group_ID").toString();
+                            final String addGroupName = value.get("_group_name").toString();
                             String senderEmail= value.get("_sender_email").toString();
                             final String key = dataSnapshot.getKey().toString();
 
@@ -274,8 +279,49 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                     .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id)
                                         {
+
+                                            db.child("groups").child(addGroupID).child("graph").child("months").child("members").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                                {
+                                                    for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                                                    {
+                                                        System.out.println("-------------->" + dataSnapshot);
+                                                        Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                        String childKey = childSnapshot.getKey();
+                                                        String stringMemCount = value.get("_membersCount").toString();
+
+                                                        Integer memCount = Integer.valueOf(stringMemCount);
+                                                        memCount = memCount + 1;
+
+                                                        System.out.println("-------------->" + memCount);
+                                                        System.out.println("-------------->" + childKey);
+                                                        System.out.println("-------------->" + stringMemCount);
+
+                                                        Map newUserData = new HashMap();
+                                                        newUserData.put("_membersCount", memCount.toString());
+                                                        db.child("groups").child(addGroupID).child("graph").child("months").child("members").child(childKey).updateChildren(newUserData);
+                                                    }
+                                                }
+                                                @Override public void onCancelled(DatabaseError databaseError) {}
+                                            });
+
+                                            final NewGroup newGroupUser = new NewGroup();
+                                            final NewGroup newGroupMembers = new NewGroup();
+
+                                            newGroupUser.set_group_ID(addGroupID);
+                                            newGroupUser.set_user_email(userEmail);
+                                            newGroupUser.set_group_name(addGroupName);
+                                            newGroupUser.set_admin("false");
+                                            db.child("user").child("groups").child("user").child(userID).child("user").push().setValue(newGroupUser);
+
+                                            newGroupMembers.set_user_email(userEmail);
+                                            newGroupMembers.set_user_ID(userID);
+                                            newGroupMembers.set_user_name(userName);
+                                            db.child("user").child("groups").child("members").child(addGroupID).child("members").push().setValue(newGroupMembers);
+
                                             db.child("user").child("users").child(userID).child("messages").child(key).setValue(null);
                                             dialog.cancel();
+                                            Toast.makeText(MainActivity.this,"Group "+ addGroupName + "was added to your groups",Toast.LENGTH_LONG).show();
                                         }
                                     })
                                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -309,11 +355,31 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
     }
 
-    public void showZaire(View view) {
-        Intent intent = new Intent(this, AddNewWorkActivity.class);
-        startActivityForResult(new Intent(this, AddNewWorkActivity.class), AddNewWorkActivity.ADD_FINISHED);
-        //startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+    public void showZaire(View view)
+    {
+        db.child("user").child("users").child(userID).child("data").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
+                {
+                    Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                    String childKey = childSnapshot.getKey();
+                    String existGroupID = value.get("_group").toString();
+
+                    if (!existGroupID.equals(""))
+                    {
+                        Intent intent = new Intent(MainActivity.this, AddNewWorkActivity.class);
+                        startActivityForResult(new Intent(MainActivity.this, AddNewWorkActivity.class), AddNewWorkActivity.ADD_FINISHED);
+                        //startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+                    }
+                    else
+                        Toast.makeText(MainActivity.this,"You must have selected group for add new work. If you are not a member of any group, you must create a group",Toast.LENGTH_LONG).show();
+
+                }
+            }
+            @Override public void onCancelled(DatabaseError databaseError) {} });
     }
 
     @Override

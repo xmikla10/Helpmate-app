@@ -12,6 +12,7 @@
 
     <LinearLayout
         android:orientation="horizontal"
+        android:onClick="showZaire"
         android:id="@+id/addNewWorkText"
         android:visibility="gone"
         android:layout_width="match_parent"

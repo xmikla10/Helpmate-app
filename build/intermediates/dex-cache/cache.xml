@@ -25,7 +25,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="e8d0c5ecce97ba3de7a856eb16bdb962893ec3f5">
+        sha1="8ded5aee1d9acc69fb2cbb27ecd27454cfcf6a01">
         <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_07b1f564cf740290377acda49cccbf2bdc04ff74/classes.dex" />
     </item>
     <item
@@ -52,7 +52,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="7284f0a6b129e9c24e0820d7c8da33a23fbeb03a">
+        sha1="c250159069dc648d41f57f87bf799c0f1828f446">
         <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_fca7c28c1a56d71ab6ac6e13f3f2202e8ba6f0e9/classes.dex" />
     </item>
     <item

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/fab_margin"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:id="@+id/notificationButton">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+        <LinearLayout
+            android:id="@+id/addNewLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="Name of group :"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/textViewGroupName2"
+                android:layout_alignBottom="@+id/editText2"
+                android:layout_toStartOf="@+id/editText2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:gravity="center_vertical"
+                android:textSize="17sp"/>
+
+            <TextView
+                android:text="Name of group :"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:layout_alignParentStart="true"
+                android:id="@+id/textViewInfoGroupName"
+                android:layout_alignBottom="@+id/editText2"
+                android:layout_toStartOf="@+id/editText2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textStyle="normal|bold"
+                android:fontFamily="sans-serif" />
+
+            <TextView
+                android:text="Members :"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView7"
+                android:layout_alignParentStart="true"
+                android:id="@+id/textView11"
+                android:layout_toStartOf="@+id/editText2"
+                android:layout_alignBottom="@+id/editText5"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="17sp"
+                android:gravity="center_vertical"/>
+
+            <ListView
+                android:id="@+id/listViewInfoGroup"
+                android:divider="@null"
+                android:dividerHeight="0dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                />
+            
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="10dp" />
+
+            <TextView
+                android:text="Add members :"
+                android:id="@+id/addMembersTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignBottom="@+id/editText2"
+                android:layout_toStartOf="@+id/editText2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:gravity="center_vertical"
+                android:textSize="17sp"/>
+
+            <AutoCompleteTextView
+                android:id="@+id/InfoGroupAutoCompleteText"
+                android:textColorHint="#d1d1d1"
+                android:backgroundTint="@color/colorOrange"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="name@email.com" >
+            </AutoCompleteTextView>
+
+            <LinearLayout
+                android:id="@+id/addInfoGroupNewMemberLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonInfoGroupAdd"
+                android:drawableLeft="@drawable/add_member"
+                android:paddingLeft="5dp"
+                android:background="@color/colorOrange"
+                android:textColor="@color/colorWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="  Add member  "
+                style="@style/Base.Widget.AppCompat.Button" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

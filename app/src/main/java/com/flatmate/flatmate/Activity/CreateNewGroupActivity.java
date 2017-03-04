@@ -3,6 +3,7 @@ package com.flatmate.flatmate.Activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.CharArrayBuffer;
 import android.database.Cursor;
@@ -82,6 +83,7 @@ public class CreateNewGroupActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     ArrayList<AutoCompleteTextView> editTexts = new ArrayList<>();
     Integer count;
+    Integer memCount;
 
 
 
@@ -100,6 +102,8 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                 R.id.ccontName, R.id.ccontNo});
         System.out.println(mPeopleList);
         mTxtPhoneNo.setAdapter(mAdapter);
+        AutoCompleteTextView first = (AutoCompleteTextView) findViewById(R.id.mmWhoNo) ;
+        editTexts.add(first);
 
         mLayout = (LinearLayout) findViewById(R.id.addNewMemberLayout);
         mButton = (Button) findViewById(R.id.buttonAdd);
@@ -135,7 +139,7 @@ public class CreateNewGroupActivity extends AppCompatActivity {
 
 
 
-        FloatingActionButton createGroup = (FloatingActionButton) findViewById(R.id.fab_create_group);
+        final FloatingActionButton createGroup = (FloatingActionButton) findViewById(R.id.fab_create_group);
 
         createGroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,8 +149,6 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                 String wrongEmail = "";
                 cnt = 0 ;
                 db = FirebaseDatabase.getInstance().getReference();
-                AutoCompleteTextView first = (AutoCompleteTextView) findViewById(R.id.mmWhoNo) ;
-                editTexts.add(first);
                 Boolean goodEmails = true;
 
                 firebaseAuth = FirebaseAuth.getInstance();
@@ -170,19 +172,21 @@ public class CreateNewGroupActivity extends AppCompatActivity {
 
                 if ( goodEmails)
                 {
-                    int itemCount = editTexts.size();
+                    final int itemCount = editTexts.size();
+                    memCount = 0;
                     System.out.println("----->" + itemCount);
+
 
                     for (EditText editText : editTexts)
                     {
                         final String email = editText.getText().toString();
+                        System.out.println("----->" + editTexts);
 
-                        if (!email.equals(""))
-                        {
                             db.child("user").child("groups").child("find").orderByChild("_user_email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override public void onDataChange(DataSnapshot dataSnapshot)
                                 {
                                     System.out.println("--------->" + email);
+                                    memCount++;
                                     if (dataSnapshot.getValue() == null)
                                     {
                                         System.out.println("--------->" + "nenasiel som");
@@ -201,10 +205,15 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                                         addMembers.set_group_name(group_name);
                                         db.child("user").child("users").child(ID).child("messages").push().setValue(addMembers);
                                     }
+                                    if ( memCount == itemCount)
+                                    {
+                                        System.out.println("----->" + itemCount);
+                                        System.out.println("----->" + memCount);
+                                        createGroup();
+                                    }
                                 }
                                 @Override public void onCancelled(DatabaseError databaseError) {}
                             });
-                        }
                     }
                 }
                 else
@@ -267,7 +276,7 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                 newGroupMembers.set_user_email(user_email);
                 newGroupMembers.set_user_ID(userID);
                 newGroupMembers.set_user_name(user_name);
-                db.child("user").child("groups").child("members").child(group_ID).push().setValue(newGroupMembers);
+                db.child("user").child("groups").child("members").child(group_ID).child("members").push().setValue(newGroupMembers);
 
                 db.child("groups").child(group_ID).child("graph").child("months").child("January").child("control").push().setValue(months1);
                 db.child("groups").child(group_ID).child("graph").child("months").child("February").child("control").push().setValue(months2);
@@ -283,7 +292,9 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                 db.child("groups").child(group_ID).child("graph").child("months").child("December").child("control").push().setValue(months12);
                 db.child("groups").child(group_ID).child("graph").child("months").child("members").push().setValue(mem);
 
-                finish();
+                Intent intent = new Intent(CreateNewGroupActivity.this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
             }
             @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
             @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}

@@ -473,7 +473,7 @@ public class AuctionActivity extends AppCompatActivity
 
 
                                                     //namapovat clenov pre graf
-                                                    db.child("user").child("groups").child("members").child(groupID).addChildEventListener(new ChildEventListener()
+                                                    db.child("user").child("groups").child("members").child(groupID).child("members").addChildEventListener(new ChildEventListener()
                                                     {
                                                         Integer memC = 0;
                                                         @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
@@ -542,7 +542,7 @@ public class AuctionActivity extends AppCompatActivity
                                                         db.child("groups").child(groupID).child("graph").child("months").child(actualMonth).child("users").removeValue();
 
                                                         //namapovat clenov pre graf
-                                                        db.child("user").child("groups").child("members").child(groupID).addChildEventListener(new ChildEventListener()
+                                                        db.child("user").child("groups").child("members").child(groupID).child("members").addChildEventListener(new ChildEventListener()
                                                         {
                                                             Integer memC = 0;
                                                             @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)

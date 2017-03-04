@@ -79,6 +79,8 @@ public class Tab_TODO extends Fragment
                     mProgress.setVisibility(View.GONE);
                 }
 
+
+
                 db.child("groups").child(groupID).child("works").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {

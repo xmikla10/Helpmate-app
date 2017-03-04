@@ -1,16 +1,20 @@
 package com.flatmate.flatmate.Activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flatmate.flatmate.Firebase.FirebaseHelperAuction;
 import com.flatmate.flatmate.Firebase.FirebaseHelperMyGroups;
@@ -48,6 +52,8 @@ public class MyGroupsActivity extends AppCompatActivity {
     FirebaseHelperMyGroups helper;
     CustomAdapterMyGroups adapter;
     ListView lv;
+    LinearLayout lin;
+    int positionHelp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,7 @@ public class MyGroupsActivity extends AppCompatActivity {
 
         adapter = new CustomAdapterMyGroups(MyGroupsActivity.this , helper.retrieve(), groupID);
         lv = (ListView) findViewById(R.id.listViewMyGroups);
+        lin = (LinearLayout) findViewById(R.id.groupInfoLinLayout);
 
         userID = firebaseAuth.getCurrentUser().getUid().toString();
 
@@ -114,26 +121,77 @@ public class MyGroupsActivity extends AppCompatActivity {
         lv.setAdapter(adapter);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
 
-                final NewGroup s= (NewGroup) adapter.getItem(position);
-                userID = firebaseAuth.getCurrentUser().getUid().toString();
+                positionHelp = position;
+                AlertDialog.Builder builder = new AlertDialog.Builder(MyGroupsActivity.this);
+                builder.setMessage("Activate group or group info ?")
+                        .setNegativeButton("Activate", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id)
+                            {
+                                final NewGroup s= (NewGroup) adapter.getItem(positionHelp);
+                                userID = firebaseAuth.getCurrentUser().getUid().toString();
 
-                db.child("user").child("users").child(userID).child("data").orderByChild("_ID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override public void onDataChange(DataSnapshot dataSnapshot)
-                    {
-                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
-                        {
-                            childKey = childSnapshot.getKey();
-                        }
-                        Map newUserData = new HashMap();
-                        newUserData.put("_group", s.get_group_ID());
+                                db.child("user").child("users").child(userID).child("data").orderByChild("_ID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                    {
+                                    for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                                    {
+                                    childKey = childSnapshot.getKey();
+                                    }
+                                    Map newUserData = new HashMap();
+                                    newUserData.put("_group", s.get_group_ID());
 
-                        db.child("user").child("users").child(userID).child("data").child(childKey).updateChildren(newUserData);
-                        finish();
-                    }
-                    @Override public void onCancelled(DatabaseError databaseError) {}
-                });
+                                    db.child("user").child("users").child(userID).child("data").child(childKey).updateChildren(newUserData);
+
+                                    Intent intent = new Intent(MyGroupsActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                        }
+                                    @Override public void onCancelled(DatabaseError databaseError) {}
+                            });
+                            }
+                        })
+                        .setPositiveButton("Info", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id)
+                            {
+                                final NewGroup s= (NewGroup) adapter.getItem(positionHelp);
+                                userID = firebaseAuth.getCurrentUser().getUid().toString();
+
+                                db.child("user").child("users").child(userID).child("data").orderByChild("_ID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                    {
+                                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                                        {
+                                            childKey = childSnapshot.getKey();
+                                        }
+
+                                        db.child("user").child("groups").child("user").child(userID).child("user").orderByChild("_group_ID").equalTo(s.get_group_ID()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                            {
+                                                String admin = "";
+                                                for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                                                {
+                                                    Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                    admin = value.get("_admin").toString();
+                                                }
+
+                                                Intent intent = new Intent(MyGroupsActivity.this, GroupInfoActivity.class);
+                                                intent.putExtra("group_ID", s.get_group_ID());
+                                                intent.putExtra("group_name", s.get_group_name());
+                                                intent.putExtra("admin", admin);
+                                                startActivity(intent);
+
+                                            }
+                                            @Override public void onCancelled(DatabaseError databaseError) {}
+                                        });
+                                    }
+                                    @Override public void onCancelled(DatabaseError databaseError) {}
+                                });
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
 

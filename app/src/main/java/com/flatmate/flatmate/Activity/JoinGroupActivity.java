@@ -107,7 +107,7 @@ public class JoinGroupActivity extends AppCompatActivity {
                         newGroupMembers.set_user_email(userEmail);
                         newGroupMembers.set_user_ID(userID);
                         newGroupMembers.set_user_name(userName);
-                        db.child("user").child("groups").child("members").child(newGroup.get_group_ID()).push().setValue(newGroupMembers);
+                        db.child("user").child("groups").child("members").child(newGroup.get_group_ID()).child("members").push().setValue(newGroupMembers);
 
                         finish();
 
