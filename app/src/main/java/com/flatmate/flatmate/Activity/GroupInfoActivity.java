@@ -361,16 +361,23 @@ public class GroupInfoActivity extends AppCompatActivity
 
                                     for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
                                     {
-                                        String childKey = childSnapshot.getKey();
                                         Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
-                                        String ID = value.get("_user_ID").toString();
-                                        System.out.println("---------> " + ID);
+                                        final String ID = value.get("_user_ID").toString();
 
-                                        AddMembers addMembers = new AddMembers();
-                                        addMembers.set_group_ID(groupID);
-                                        addMembers.set_sender_email(userEmail);
-                                        addMembers.set_group_name(group_name);
-                                        db.child("user").child("users").child(ID).child("messages").push().setValue(addMembers);
+                                        db.child("user").child("groups").child("members").child(groupID).child("members").orderByChild("_user_ID").equalTo(ID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                            {
+                                                if (dataSnapshot.getValue() == null)
+                                                {
+                                                    AddMembers addMembers = new AddMembers();
+                                                    addMembers.set_group_ID(groupID);
+                                                    addMembers.set_sender_email(userEmail);
+                                                    addMembers.set_group_name(group_name);
+                                                    db.child("user").child("users").child(ID).child("messages").push().setValue(addMembers);
+                                                }
+                                            }
+                                            @Override public void onCancelled(DatabaseError databaseError) {}
+                                        });
                                     }
                                     if ( memCount == itemCount)
                                     {

@@ -194,10 +194,8 @@ public class CreateNewGroupActivity extends AppCompatActivity {
 
                                     for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
                                     {
-                                        String childKey = childSnapshot.getKey();
                                         Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
                                         String ID = value.get("_user_ID").toString();
-                                        System.out.println("---------> " + ID);
 
                                         AddMembers addMembers = new AddMembers();
                                         addMembers.set_group_ID(group_ID);
