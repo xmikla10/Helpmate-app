@@ -65,6 +65,15 @@ public class AddNewWorkActivity extends AppCompatActivity {
         Button minus = (Button) findViewById(R.id.buttonminus);
         //final EditText duraction = (EditText) findViewById(R.id.editTextDuraction);
 
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null)
+        {
+            String work_name = extras.getString("work_name");
+            EditText ed = (EditText) findViewById(R.id.work_name);
+            ed.setText(work_name);
+        }
+
         plus.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
@@ -245,7 +254,10 @@ public class AddNewWorkActivity extends AppCompatActivity {
                 Switch switch1 = (Switch) findViewById(R.id.switchTime);
                 String[] split1 = data.getStringExtra(TimePopUp.SELETECTED_TIME_KEY).split("-");
                 str1 = Arrays.toString(split1).replace("[", "").replace("]", "");
-                ;
+                if (str1.length() == 4)
+                {
+                    str1 = "0" + str1;
+                }
                 switch1.setText("Time    -    " +  str1);
                 Toast.makeText(this, str1 , Toast.LENGTH_SHORT).show();
                 break;

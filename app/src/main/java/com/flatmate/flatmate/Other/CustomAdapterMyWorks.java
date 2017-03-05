@@ -1,6 +1,7 @@
 package com.flatmate.flatmate.Other;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,10 @@ public class CustomAdapterMyWorks extends BaseAdapter{
         TextView textViewTaskName = (TextView) convertView.findViewById(R.id.myWorkTaskName);
         TextView textViewStatus = (TextView) convertView.findViewById(R.id.myWorkStatus);
         TextView textViewtime = (TextView) convertView.findViewById(R.id.myWorkDate);
+        TextView textViewtime2 = (TextView) convertView.findViewById(R.id.myWorkTaskDuration);
 
+
+        textViewtime2.setText("Deadline :");
         textViewTaskName.setText(s.get_work_name());
         textViewStatus.setText(s.get_status());
         textViewtime.setText(s.get_time() +"  "+s.get_date());

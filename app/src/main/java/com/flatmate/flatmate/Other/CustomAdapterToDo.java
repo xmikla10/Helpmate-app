@@ -78,20 +78,38 @@ public class CustomAdapterToDo extends BaseAdapter{
         {
             textViewtime.setText("Duration of auction :");
             textViewStatus.setTextColor(Color.BLACK);
+            textViewTaskName.setTextColor(Color.BLACK);
             textViewtime2.setText(s.get_deadline());
         }
         else if(s.get_status().equals("Status : in progress"))
         {
             textViewtime2.setText(s.get_bidsLastUserName());
+            textViewTaskName.setTextColor(Color.BLACK);
             textViewtime.setText("Who won?");
+            textViewStatus.setTextColor(Color.BLACK);
             textViewtime.setTextSize(17);
         }
         else if(s.get_status().equals("Status : done"))
         {
             textViewtime2.setText(s.get_bidsLastUserName());
+            textViewTaskName.setTextColor(Color.BLACK);
             textViewtime.setText("Work completed by :");
             textViewtime.setTextSize(14);
             textViewStatus.setTextColor(Color.parseColor("#ff669900"));
+        }
+        else if (s.get_status().equals("Status : unauctioned"))
+        {
+            textViewtime2.setText("");
+            textViewtime.setText("Repeate ?");
+            textViewStatus.setTextColor(Color.RED);
+            textViewTaskName.setTextColor(Color.RED);
+        }
+        else if (s.get_status().equals("Status : uncompleted"))
+        {
+            textViewtime2.setText(s.get_bidsLastUserName());
+            textViewtime.setText("Work uncompleted by :");
+            textViewStatus.setTextColor(Color.RED);
+            textViewTaskName.setTextColor(Color.RED);
         }
         else
             textViewtime2.setText(s.get_deadline());

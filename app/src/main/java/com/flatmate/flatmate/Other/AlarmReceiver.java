@@ -1,6 +1,8 @@
 package com.flatmate.flatmate.Other;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -13,6 +15,7 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.flatmate.flatmate.Activity.MainActivity;
 import com.flatmate.flatmate.Firebase.NewBid;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -22,8 +25,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.content.Context.ALARM_SERVICE;
 
 public class AlarmReceiver extends WakefulBroadcastReceiver
 {
@@ -40,6 +46,9 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
     private FirebaseAuth firebaseAuth;
     String userID;
     String status;
+
+    String date;
+    String time;
 
 
     @Override
@@ -66,16 +75,28 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
                     bidsLastUser = value.get("_bidsLastUser").toString();
                     bidsLastUserName = value.get("_bidsLastUserName").toString();
                     status = value.get("_status").toString();
+                    date = value.get("_date").toString();
+                    time = value.get("_time").toString();
                 }
 
                 if ( status.equals("Status : auctioning"))
                 {
                     Map newEvaluationData = new HashMap();
 
-                    newEvaluationData.put("_userEmail", bidsLastUser);
-                    newEvaluationData.put("_status", "Status : in progress");
+                    if ( bidsLastUser.equals("null"))
+                    {
+                        newEvaluationData.put("_status", "Status : unauctioned");
 
-                    db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newEvaluationData);
+                        db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newEvaluationData);
+                    }
+                    else
+                    {
+                        newEvaluationData.put("_userEmail", bidsLastUser);
+                        newEvaluationData.put("_status", "Status : in progress");
+
+                        db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newEvaluationData);
+
+                    }
                 }
 
             }

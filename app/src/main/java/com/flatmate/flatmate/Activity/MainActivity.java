@@ -24,7 +24,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
 import com.flatmate.flatmate.Firebase.AddMembers;
+import com.flatmate.flatmate.Firebase.GraphUser;
 import com.flatmate.flatmate.Firebase.NewGroup;
+import com.flatmate.flatmate.Other.AlarmProgressReceiver;
 import com.flatmate.flatmate.Other.AlarmReceiver;
 import com.flatmate.flatmate.Other.AppPreferences;
 import com.flatmate.flatmate.Other.CustomAdapterToDo;
@@ -78,12 +80,15 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     public String userEmail;
     public String uniqueID;
     public String groupID;
+    public String actualMonth;
 
     public String evaluationBidsID;
     public String evaluationDeadline;
     public String evaluationStatus;
-
-
+    public String evaluationTime;
+    public String evaluationDate;
+    public String childKey;
+    public Integer finall;
 
     public DatabaseReference db;
     public FirebaseHelperWork helper;
@@ -160,6 +165,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                 evaluationBidsID = value.get("_bidsID").toString();
                                 evaluationDeadline = value.get("_deadline").toString();
                                 evaluationStatus = value.get("_status").toString();
+                                evaluationDate = value.get("_date").toString();
+                                evaluationTime = value.get("_time").toString();
 
                                 Integer Year, Month, Day, Hour, Minute;
 
@@ -228,8 +235,153 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
                                     cal = null;
                                 }
+
+                                if ( evaluationStatus.equals("Status : in progress"))
+                                {
+                                    evaluationDeadline = evaluationTime + " " + evaluationDate;
+                                    Hour = Integer.valueOf(evaluationDeadline.substring(0,2));
+                                    Minute = Integer.valueOf(evaluationDeadline.substring(3,5));
+                                    Day = Integer.valueOf(evaluationDeadline.substring(6,8));
+                                    Month = Integer.valueOf(evaluationDeadline.substring(9,11));
+                                    Year = Integer.valueOf(evaluationDeadline.substring(12,16));
+
+                                    Calendar cal = Calendar.getInstance();
+
+                                    cal.set(Calendar.YEAR, Year);
+                                    cal.set(Calendar.MONTH, Month-1);
+                                    cal.set(Calendar.DAY_OF_MONTH, Day);
+                                    cal.set(Calendar.HOUR_OF_DAY, Hour);
+                                    cal.set(Calendar.MINUTE, Minute);
+                                    cal.set(Calendar.SECOND, 0);
+                                    cal.set(Calendar.MILLISECOND, 0);
+
+                                    int _id = (int) System.currentTimeMillis();
+
+                                    Intent intent = new Intent(MainActivity.this, AlarmProgressReceiver.class);
+                                    intent.putExtra("alarmId", _id);
+                                    intent.putExtra("bidsID", evaluationBidsID);
+                                    intent.putExtra("groupID", groupID);
+
+                                    PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                    AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                    alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+                                    cal = null;
+                                }
+
+                                if ( evaluationStatus.equals("Status : uncompleted"))
+                                {
+                                    Hour = Integer.valueOf(evaluationDeadline.substring(0,2));
+                                    Minute = Integer.valueOf(evaluationDeadline.substring(3,5));
+                                    Day = Integer.valueOf(evaluationDeadline.substring(6,8));
+                                    Month = Integer.valueOf(evaluationDeadline.substring(9,11));
+                                    Year = Integer.valueOf(evaluationDeadline.substring(12,16));
+
+                                    Calendar cal = Calendar.getInstance();
+
+                                    cal.set(Calendar.YEAR, Year);
+                                    cal.set(Calendar.MONTH, Month-1);
+                                    cal.set(Calendar.DAY_OF_MONTH, Day);
+                                    cal.set(Calendar.HOUR_OF_DAY, Hour);
+                                    cal.set(Calendar.MINUTE, Minute);
+                                    cal.set(Calendar.SECOND, 0);
+                                    cal.set(Calendar.MILLISECOND, 0);
+
+                                    int _id = (int) System.currentTimeMillis();
+
+                                    Intent intent = new Intent(MainActivity.this, WorkDoneReceiver.class);
+                                    intent.putExtra("alarmId", _id);
+                                    intent.putExtra("bidsID", evaluationBidsID);
+                                    intent.putExtra("groupID", groupID);
+                                    intent.putExtra("groupID", groupID);
+                                    intent.putExtra("childKey", key);
+
+                                    PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                    AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                    alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+
+                                    cal = null;
+                                }
                         }
-                        @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                        @Override public void onChildChanged(DataSnapshot dataSnapshot, String s)
+                        {
+                            Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                            String key = dataSnapshot.getKey().toString();
+                            System.out.println("--------> " + key);
+                            evaluationBidsID = value.get("_bidsID").toString();
+                            evaluationDeadline = value.get("_deadline").toString();
+                            evaluationStatus = value.get("_status").toString();
+                            evaluationDate = value.get("_date").toString();
+                            evaluationTime = value.get("_time").toString();
+
+                            Integer Year, Month, Day, Hour, Minute;
+
+                            if ( evaluationStatus.equals("Status : in progress"))
+                            {
+                                evaluationDeadline = evaluationTime + " " + evaluationDate;
+                                Hour = Integer.valueOf(evaluationDeadline.substring(0,2));
+                                Minute = Integer.valueOf(evaluationDeadline.substring(3,5));
+                                Day = Integer.valueOf(evaluationDeadline.substring(6,8));
+                                Month = Integer.valueOf(evaluationDeadline.substring(9,11));
+                                Year = Integer.valueOf(evaluationDeadline.substring(12,16));
+
+                                Calendar cal = Calendar.getInstance();
+
+                                cal.set(Calendar.YEAR, Year);
+                                cal.set(Calendar.MONTH, Month-1);
+                                cal.set(Calendar.DAY_OF_MONTH, Day);
+                                cal.set(Calendar.HOUR_OF_DAY, Hour);
+                                cal.set(Calendar.MINUTE, Minute);
+                                cal.set(Calendar.SECOND, 0);
+                                cal.set(Calendar.MILLISECOND, 0);
+
+                                int _id = (int) System.currentTimeMillis();
+
+                                Intent intent = new Intent(MainActivity.this, AlarmProgressReceiver.class);
+                                intent.putExtra("alarmId", _id);
+                                intent.putExtra("bidsID", evaluationBidsID);
+                                intent.putExtra("groupID", groupID);
+
+                                PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+                                cal = null;
+                            }
+
+                            if ( evaluationStatus.equals("Status : uncompleted"))
+                            {
+                                Hour = Integer.valueOf(evaluationDeadline.substring(0,2));
+                                Minute = Integer.valueOf(evaluationDeadline.substring(3,5));
+                                Day = Integer.valueOf(evaluationDeadline.substring(6,8));
+                                Month = Integer.valueOf(evaluationDeadline.substring(9,11));
+                                Year = Integer.valueOf(evaluationDeadline.substring(12,16));
+
+                                Calendar cal = Calendar.getInstance();
+
+                                cal.set(Calendar.YEAR, Year);
+                                cal.set(Calendar.MONTH, Month-1);
+                                cal.set(Calendar.DAY_OF_MONTH, Day);
+                                cal.set(Calendar.HOUR_OF_DAY, Hour);
+                                cal.set(Calendar.MINUTE, Minute);
+                                cal.set(Calendar.SECOND, 0);
+                                cal.set(Calendar.MILLISECOND, 0);
+
+                                int _id = (int) System.currentTimeMillis();
+
+                                Intent intent = new Intent(MainActivity.this, WorkDoneReceiver.class);
+                                intent.putExtra("alarmId", _id);
+                                intent.putExtra("bidsID", evaluationBidsID);
+                                intent.putExtra("groupID", groupID);
+                                intent.putExtra("groupID", groupID);
+                                intent.putExtra("childKey", key);
+
+                                PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+
+                                cal = null;
+                            }
+
+                        }
                         @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
                         @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                         @Override public void onCancelled(DatabaseError databaseError) {}
@@ -280,6 +432,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                         public void onClick(DialogInterface dialog, int id)
                                         {
 
+                                            Date actDate= new Date();
+                                            Calendar actCal = Calendar.getInstance();
+                                            actCal.setTime(actDate);
+                                            Integer monthInInt = actCal.get(Calendar.MONTH) + 1;
+                                            actualMonth = getMonth(monthInInt);
+
                                             db.child("groups").child(addGroupID).child("graph").child("months").child("members").addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override public void onDataChange(DataSnapshot dataSnapshot)
                                                 {
@@ -293,13 +451,46 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                                         Integer memCount = Integer.valueOf(stringMemCount);
                                                         memCount = memCount + 1;
 
-                                                        System.out.println("-------------->" + memCount);
-                                                        System.out.println("-------------->" + childKey);
-                                                        System.out.println("-------------->" + stringMemCount);
-
                                                         Map newUserData = new HashMap();
                                                         newUserData.put("_membersCount", memCount.toString());
                                                         db.child("groups").child(addGroupID).child("graph").child("months").child("members").child(childKey).updateChildren(newUserData);
+
+                                                    }
+                                                }
+                                                @Override public void onCancelled(DatabaseError databaseError) {}
+                                            });
+
+                                            db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("control").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                                {
+                                                    for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                                                    {
+                                                        childKey = childSnapshot.getKey();
+                                                        Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                        String memC = value.get("_membersCount").toString();
+                                                        finall = Integer.valueOf(memC);
+
+                                                        db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("users").orderByChild("_ID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                                            {
+                                                                if (dataSnapshot.getValue() == null)
+                                                                {
+                                                                    GraphUser graphUser = new GraphUser();
+                                                                    graphUser.set_ID(userID);
+                                                                    graphUser.set_name(userName);
+                                                                    graphUser.set_email(userEmail);
+                                                                    graphUser.set_credits("0");
+                                                                    db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("users").push().setValue(graphUser);
+
+                                                                    finall++;
+
+                                                                    Map newUserData = new HashMap();
+                                                                    newUserData.put("_membersCount", finall.toString());
+                                                                    db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("control").child(childKey).updateChildren(newUserData);
+                                                                }
+                                                            }
+                                                            @Override public void onCancelled(DatabaseError databaseError) {}
+                                                        });
                                                     }
                                                 }
                                                 @Override public void onCancelled(DatabaseError databaseError) {}
@@ -390,6 +581,29 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
 
+    }
+
+    public String getMonth(Integer month)
+    {
+        String monthString;
+        switch (month)
+        {
+            case 1:  monthString = "January";break;
+            case 2:  monthString = "February";break;
+            case 3:  monthString = "March";break;
+            case 4:  monthString = "April";break;
+            case 5:  monthString = "May";break;
+            case 6:  monthString = "June";break;
+            case 7:  monthString = "July";break;
+            case 8:  monthString = "August";break;
+            case 9:  monthString = "September";break;
+            case 10: monthString = "October";break;
+            case 11: monthString = "November";break;
+            case 12: monthString = "December";break;
+            default: monthString = "Invalid month";break;
+        }
+
+        return monthString;
     }
 
     @Override

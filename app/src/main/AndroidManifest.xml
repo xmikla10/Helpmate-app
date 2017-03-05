@@ -45,6 +45,7 @@
 
         <receiver android:name=".Other.AlarmReceiver" />
         <receiver android:name=".Other.WorkDoneReceiver" />
+        <receiver android:name=".Other.AlarmProgressReceiver" />
 
 
         <activity

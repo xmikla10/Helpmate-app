@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.flatmate.flatmate.Activity.AddNewWorkActivity;
 import com.flatmate.flatmate.Activity.AuctionActivity;
 import com.flatmate.flatmate.Activity.MainActivity;
 import com.flatmate.flatmate.Firebase.NewWork;
@@ -33,6 +34,7 @@ import com.flatmate.flatmate.Firebase.FirebaseHelperWork;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -166,11 +168,12 @@ public class Tab_TODO extends Fragment
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 final NewWork s= (NewWork) adapter.getItem(position);
                 Intent intent = new Intent(getActivity(), AuctionActivity.class);
+                final Intent intentRe = new Intent(getActivity(), AddNewWorkActivity.class);
+
                 intent.putExtra("work_name", s.get_work_name());
                 intent.putExtra("status", s.get_status());
                 intent.putExtra("duration", s.get_duration());
@@ -184,7 +187,56 @@ public class Tab_TODO extends Fragment
                 intent.putExtra("workProgress", s.get_workProgress());
 
                 intent.putExtra("myWork", "0");
-                startActivity(intent);
+                if(s.get_status().equals("Status : unauctioned") || s.get_status().equals("Status : uncompleted"))
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setMessage("Want you repeat this work ?")
+                            .setPositiveButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(final DialogInterface dialog, int id)
+                                {
+                                    db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(s.get_bidsID()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot)
+                                        {
+                                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
+                                            {
+                                                Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                String childKey = childSnapshot.getKey();
+                                                if ( s.get_status().equals("Status : unauctioned"))
+                                                    db.child("groups").child(groupID).child("works").child("todo").child(childKey).setValue(null);
+                                            }
+                                            dialog.cancel();
+                                        }
+                                        @Override public void onCancelled(DatabaseError databaseError) {}
+                                    });
+                                }
+                            })
+                            .setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id)
+                                {
+                                    db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(s.get_bidsID()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot)
+                                        {
+                                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
+                                            {
+                                                Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                String childKey = childSnapshot.getKey();
+                                                db.child("groups").child(groupID).child("works").child("todo").child(childKey).setValue(null);
+                                            }
+                                            intentRe.putExtra("work_name", s.get_work_name());
+                                            startActivity(intentRe);
+                                        }
+
+                                        @Override public void onCancelled(DatabaseError databaseError) {}
+                                    });
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+                else
+                    startActivity(intent);
             }
 
         });
