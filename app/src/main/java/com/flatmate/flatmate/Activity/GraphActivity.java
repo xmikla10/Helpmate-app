@@ -231,7 +231,7 @@ public class GraphActivity extends AppCompatActivity
 
                         pieChart = (PieChart) findViewById(R.id.pieChart);
                         pieChart.setRotationEnabled(true);
-                        //pieChart.setUsePercentValues(true);
+                        pieChart.setUsePercentValues(true);
                         pieChart.setNoDataTextColor(Color.parseColor("#EF6C00"));
                         pieChart.setCenterTextColor(Color.BLACK);
                         pieChart.setHoleRadius(40f);

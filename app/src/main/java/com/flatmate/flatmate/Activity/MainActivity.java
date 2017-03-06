@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     public String uniqueID;
     public String groupID;
     public String actualMonth;
+    public String userGroupID;
+    public String userGroupIDChildKey;
 
     public String evaluationBidsID;
     public String evaluationDeadline;
@@ -161,144 +163,148 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                         {
                                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
                                 String key = dataSnapshot.getKey().toString();
-                                evaluationBidsID = value.get("_bidsID").toString();
-                                evaluationDeadline = value.get("_deadline").toString();
-                                evaluationStatus = value.get("_status").toString();
-                                evaluationDate = value.get("_date").toString();
-                                evaluationTime = value.get("_time").toString();
 
-                                Integer Year, Month, Day, Hour, Minute;
-
-                                if ( evaluationStatus.equals("Status : auctioning"))
+                                if( value.get("_bidsID") == null)
                                 {
-                                    Hour = Integer.valueOf(evaluationDeadline.substring(0,2));
-                                    Minute = Integer.valueOf(evaluationDeadline.substring(3,5));
-                                    Day = Integer.valueOf(evaluationDeadline.substring(6,8));
-                                    Month = Integer.valueOf(evaluationDeadline.substring(9,11));
-                                    Year = Integer.valueOf(evaluationDeadline.substring(12,16));
-
-                                    Calendar cal = Calendar.getInstance();
-
-                                    cal.set(Calendar.YEAR, Year);
-                                    cal.set(Calendar.MONTH, Month-1);
-                                    cal.set(Calendar.DAY_OF_MONTH, Day);
-                                    cal.set(Calendar.HOUR_OF_DAY, Hour);
-                                    cal.set(Calendar.MINUTE, Minute);
-                                    cal.set(Calendar.SECOND, 0);
-                                    cal.set(Calendar.MILLISECOND, 0);
-
-                                    int _id = (int) System.currentTimeMillis();
-
-                                    Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
-                                    intent.putExtra("alarmId", _id);
-                                    intent.putExtra("bidsID", evaluationBidsID);
-                                    intent.putExtra("groupID", groupID);
-
-                                    PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                    AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
-                                    alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
-
-                                    cal = null;
+                                    db.child("groups").child(groupID).child("works").child("todo").child(key).setValue(null);
                                 }
-
-                                if ( evaluationStatus.equals("Status : done"))
+                                else
                                 {
-                                    Hour = Integer.valueOf(evaluationDeadline.substring(0,2));
-                                    Minute = Integer.valueOf(evaluationDeadline.substring(3,5));
-                                    Day = Integer.valueOf(evaluationDeadline.substring(6,8));
-                                    Month = Integer.valueOf(evaluationDeadline.substring(9,11));
-                                    Year = Integer.valueOf(evaluationDeadline.substring(12,16));
+                                    evaluationBidsID = value.get("_bidsID").toString();
+                                    evaluationDeadline = value.get("_deadline").toString();
+                                    evaluationStatus = value.get("_status").toString();
+                                    evaluationDate = value.get("_date").toString();
+                                    evaluationTime = value.get("_time").toString();
 
-                                    Calendar cal = Calendar.getInstance();
+                                    Integer Year, Month, Day, Hour, Minute;
 
-                                    cal.set(Calendar.YEAR, Year);
-                                    cal.set(Calendar.MONTH, Month-1);
-                                    cal.set(Calendar.DAY_OF_MONTH, Day);
-                                    cal.set(Calendar.HOUR_OF_DAY, Hour);
-                                    cal.set(Calendar.MINUTE, Minute);
-                                    cal.set(Calendar.SECOND, 0);
-                                    cal.set(Calendar.MILLISECOND, 0);
+                                    if (evaluationStatus.equals("Status : auctioning")) {
+                                        Hour = Integer.valueOf(evaluationDeadline.substring(0, 2));
+                                        Minute = Integer.valueOf(evaluationDeadline.substring(3, 5));
+                                        Day = Integer.valueOf(evaluationDeadline.substring(6, 8));
+                                        Month = Integer.valueOf(evaluationDeadline.substring(9, 11));
+                                        Year = Integer.valueOf(evaluationDeadline.substring(12, 16));
 
-                                    int _id = (int) System.currentTimeMillis();
+                                        Calendar cal = Calendar.getInstance();
 
-                                    Intent intent = new Intent(MainActivity.this, WorkDoneReceiver.class);
-                                    intent.putExtra("alarmId", _id);
-                                    intent.putExtra("bidsID", evaluationBidsID);
-                                    intent.putExtra("groupID", groupID);
-                                    intent.putExtra("groupID", groupID);
-                                    intent.putExtra("childKey", key);
+                                        cal.set(Calendar.YEAR, Year);
+                                        cal.set(Calendar.MONTH, Month - 1);
+                                        cal.set(Calendar.DAY_OF_MONTH, Day);
+                                        cal.set(Calendar.HOUR_OF_DAY, Hour);
+                                        cal.set(Calendar.MINUTE, Minute);
+                                        cal.set(Calendar.SECOND, 0);
+                                        cal.set(Calendar.MILLISECOND, 0);
 
-                                    PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                    AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
-                                    alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+                                        int _id = (int) System.currentTimeMillis();
 
-                                    cal = null;
-                                }
+                                        Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+                                        intent.putExtra("alarmId", _id);
+                                        intent.putExtra("bidsID", evaluationBidsID);
+                                        intent.putExtra("groupID", groupID);
 
-                                if ( evaluationStatus.equals("Status : in progress"))
-                                {
-                                    evaluationDeadline = evaluationTime + " " + evaluationDate;
-                                    Hour = Integer.valueOf(evaluationDeadline.substring(0,2));
-                                    Minute = Integer.valueOf(evaluationDeadline.substring(3,5));
-                                    Day = Integer.valueOf(evaluationDeadline.substring(6,8));
-                                    Month = Integer.valueOf(evaluationDeadline.substring(9,11));
-                                    Year = Integer.valueOf(evaluationDeadline.substring(12,16));
+                                        PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                        AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                        alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
 
-                                    Calendar cal = Calendar.getInstance();
+                                        cal = null;
+                                    }
 
-                                    cal.set(Calendar.YEAR, Year);
-                                    cal.set(Calendar.MONTH, Month-1);
-                                    cal.set(Calendar.DAY_OF_MONTH, Day);
-                                    cal.set(Calendar.HOUR_OF_DAY, Hour);
-                                    cal.set(Calendar.MINUTE, Minute);
-                                    cal.set(Calendar.SECOND, 0);
-                                    cal.set(Calendar.MILLISECOND, 0);
+                                    if (evaluationStatus.equals("Status : done")) {
+                                        Hour = Integer.valueOf(evaluationDeadline.substring(0, 2));
+                                        Minute = Integer.valueOf(evaluationDeadline.substring(3, 5));
+                                        Day = Integer.valueOf(evaluationDeadline.substring(6, 8));
+                                        Month = Integer.valueOf(evaluationDeadline.substring(9, 11));
+                                        Year = Integer.valueOf(evaluationDeadline.substring(12, 16));
 
-                                    int _id = (int) System.currentTimeMillis();
+                                        Calendar cal = Calendar.getInstance();
 
-                                    Intent intent = new Intent(MainActivity.this, AlarmProgressReceiver.class);
-                                    intent.putExtra("alarmId", _id);
-                                    intent.putExtra("bidsID", evaluationBidsID);
-                                    intent.putExtra("groupID", groupID);
+                                        cal.set(Calendar.YEAR, Year);
+                                        cal.set(Calendar.MONTH, Month - 1);
+                                        cal.set(Calendar.DAY_OF_MONTH, Day);
+                                        cal.set(Calendar.HOUR_OF_DAY, Hour);
+                                        cal.set(Calendar.MINUTE, Minute);
+                                        cal.set(Calendar.SECOND, 0);
+                                        cal.set(Calendar.MILLISECOND, 0);
 
-                                    PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                    AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
-                                    alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
-                                    cal = null;
-                                }
+                                        int _id = (int) System.currentTimeMillis();
 
-                                if ( evaluationStatus.equals("Status : uncompleted"))
-                                {
-                                    Hour = Integer.valueOf(evaluationDeadline.substring(0,2));
-                                    Minute = Integer.valueOf(evaluationDeadline.substring(3,5));
-                                    Day = Integer.valueOf(evaluationDeadline.substring(6,8));
-                                    Month = Integer.valueOf(evaluationDeadline.substring(9,11));
-                                    Year = Integer.valueOf(evaluationDeadline.substring(12,16));
+                                        Intent intent = new Intent(MainActivity.this, WorkDoneReceiver.class);
+                                        intent.putExtra("alarmId", _id);
+                                        intent.putExtra("bidsID", evaluationBidsID);
+                                        intent.putExtra("groupID", groupID);
+                                        intent.putExtra("groupID", groupID);
+                                        intent.putExtra("childKey", key);
 
-                                    Calendar cal = Calendar.getInstance();
+                                        PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                        AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                        alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
 
-                                    cal.set(Calendar.YEAR, Year);
-                                    cal.set(Calendar.MONTH, Month-1);
-                                    cal.set(Calendar.DAY_OF_MONTH, Day);
-                                    cal.set(Calendar.HOUR_OF_DAY, Hour);
-                                    cal.set(Calendar.MINUTE, Minute);
-                                    cal.set(Calendar.SECOND, 0);
-                                    cal.set(Calendar.MILLISECOND, 0);
+                                        cal = null;
+                                    }
 
-                                    int _id = (int) System.currentTimeMillis();
+                                    if (evaluationStatus.equals("Status : in progress")) {
+                                        evaluationDeadline = evaluationTime + " " + evaluationDate;
+                                        Hour = Integer.valueOf(evaluationDeadline.substring(0, 2));
+                                        Minute = Integer.valueOf(evaluationDeadline.substring(3, 5));
+                                        Day = Integer.valueOf(evaluationDeadline.substring(6, 8));
+                                        Month = Integer.valueOf(evaluationDeadline.substring(9, 11));
+                                        Year = Integer.valueOf(evaluationDeadline.substring(12, 16));
 
-                                    Intent intent = new Intent(MainActivity.this, WorkDoneReceiver.class);
-                                    intent.putExtra("alarmId", _id);
-                                    intent.putExtra("bidsID", evaluationBidsID);
-                                    intent.putExtra("groupID", groupID);
-                                    intent.putExtra("groupID", groupID);
-                                    intent.putExtra("childKey", key);
+                                        Calendar cal = Calendar.getInstance();
 
-                                    PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                    AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
-                                    alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+                                        cal.set(Calendar.YEAR, Year);
+                                        cal.set(Calendar.MONTH, Month - 1);
+                                        cal.set(Calendar.DAY_OF_MONTH, Day);
+                                        cal.set(Calendar.HOUR_OF_DAY, Hour);
+                                        cal.set(Calendar.MINUTE, Minute);
+                                        cal.set(Calendar.SECOND, 0);
+                                        cal.set(Calendar.MILLISECOND, 0);
 
-                                    cal = null;
+                                        int _id = (int) System.currentTimeMillis();
+
+                                        Intent intent = new Intent(MainActivity.this, AlarmProgressReceiver.class);
+                                        intent.putExtra("alarmId", _id);
+                                        intent.putExtra("bidsID", evaluationBidsID);
+                                        intent.putExtra("groupID", groupID);
+
+                                        PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                        AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                        alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+                                        cal = null;
+                                    }
+
+                                    if (evaluationStatus.equals("Status : uncompleted")) {
+                                        Hour = Integer.valueOf(evaluationDeadline.substring(0, 2));
+                                        Minute = Integer.valueOf(evaluationDeadline.substring(3, 5));
+                                        Day = Integer.valueOf(evaluationDeadline.substring(6, 8));
+                                        Month = Integer.valueOf(evaluationDeadline.substring(9, 11));
+                                        Year = Integer.valueOf(evaluationDeadline.substring(12, 16));
+
+                                        Calendar cal = Calendar.getInstance();
+
+                                        cal.set(Calendar.YEAR, Year);
+                                        cal.set(Calendar.MONTH, Month - 1);
+                                        cal.set(Calendar.DAY_OF_MONTH, Day);
+                                        cal.set(Calendar.HOUR_OF_DAY, Hour);
+                                        cal.set(Calendar.MINUTE, Minute);
+                                        cal.set(Calendar.SECOND, 0);
+                                        cal.set(Calendar.MILLISECOND, 0);
+
+                                        int _id = (int) System.currentTimeMillis();
+
+                                        Intent intent = new Intent(MainActivity.this, WorkDoneReceiver.class);
+                                        intent.putExtra("alarmId", _id);
+                                        intent.putExtra("bidsID", evaluationBidsID);
+                                        intent.putExtra("groupID", groupID);
+                                        intent.putExtra("groupID", groupID);
+                                        intent.putExtra("childKey", key);
+
+                                        PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                        AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                        alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+
+                                        cal = null;
+                                    }
                                 }
                         }
                         @Override public void onChildChanged(DataSnapshot dataSnapshot, String s)
@@ -410,6 +416,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
                 userName = value.get("_name").toString();
                 userEmail = value.get("_email").toString();
+                userGroupID = value.get("_group").toString();
+                userGroupIDChildKey = dataSnapshot.getKey();
+
                 if(userName != null && userEmail != null)
                 {
                     userNameView.setText(userName);
@@ -466,7 +475,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                                         Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
                                                         String memC = value.get("_membersCount").toString();
                                                         finall = Integer.valueOf(memC);
-////////
+
                                                         db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("users").orderByChild("_ID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                                                             @Override public void onDataChange(DataSnapshot dataSnapshot)
                                                             {
@@ -508,6 +517,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                             db.child("user").child("groups").child("members").child(addGroupID).child("members").push().setValue(newGroupMembers);
 
                                             db.child("user").child("users").child(userID).child("messages").child(key).setValue(null);
+
+                                            if(userGroupID.equals(""))
+                                            {
+                                                Map newData = new HashMap();
+                                                newData.put("_group", addGroupID);
+                                                db.child("user").child("users").child(userID).child("data").child(userGroupIDChildKey).updateChildren(newData);
+                                            }
+
                                             dialog.cancel();
                                             Toast.makeText(MainActivity.this,"Group "+ addGroupName + "was added to your groups",Toast.LENGTH_LONG).show();
                                         }
@@ -801,13 +818,19 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
+
+        System.out.println("-------->" + "v maine");
 
         switch (requestCode) {
             case AddNewWorkActivity.ADD_FINISHED:
                 if ( data == null)
+                {
                     return;
+                }
+
                 String[] split = data.getStringExtra(AddNewWorkActivity.SELECTED_ADD_KEY).split("-");
                 String str = Arrays.toString(split).replace("[", "").replace("]", "");
                 dataresultTostrings(str);

@@ -191,8 +191,14 @@ public class Tab_TODO extends Fragment
                 if(s.get_status().equals("Status : unauctioned") || s.get_status().equals("Status : uncompleted"))
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setMessage("Want you repeat this work ?")
+                    builder.setMessage("Want you delete this work ?")
                             .setPositiveButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(final DialogInterface dialog, int id)
+                                {
+                                            dialog.cancel();
+                                }
+                            })
+                            .setNegativeButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(final DialogInterface dialog, int id)
                                 {
                                     db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(s.get_bidsID()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -207,26 +213,15 @@ public class Tab_TODO extends Fragment
                                                     db.child("groups").child(groupID).child("works").child("todo").child(childKey).setValue(null);
                                             }
                                             dialog.cancel();
-                                        }
-                                        @Override public void onCancelled(DatabaseError databaseError) {}
-                                    });
-                                }
-                            })
-                            .setNegativeButton("Yes", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id)
-                                {
-                                    db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(s.get_bidsID()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot)
-                                        {
-                                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
+                                            /*for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
                                             {
                                                 Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
                                                 String childKey = childSnapshot.getKey();
                                                 db.child("groups").child(groupID).child("works").child("todo").child(childKey).setValue(null);
                                             }
                                             intentRe.putExtra("work_name", s.get_work_name());
-                                            startActivity(intentRe);
+                                            startActivity(intentRe);*/
+
                                         }
 
                                         @Override public void onCancelled(DatabaseError databaseError) {}

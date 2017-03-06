@@ -71,6 +71,8 @@ public class CreateNewGroupActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     DatabaseReference db;
     String actualMonth;
+    public String userGroupID;
+    public String userGroupIDChildKey;
 
     private LinearLayout mLayout;
     private AutoCompleteTextView mEditText;
@@ -261,6 +263,8 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
                 user_email= value.get("_email").toString();
                 user_name = value.get("_name").toString();
+                userGroupID = value.get("_group").toString();
+                userGroupIDChildKey = dataSnapshot.getKey();
 
                 newGroupUser.set_group_ID(group_ID);
                 newGroupUser.set_user_email(user_email);
@@ -321,6 +325,13 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                     }
                     @Override public void onCancelled(DatabaseError databaseError) {}
                 });
+
+                if(userGroupID.equals(""))
+                {
+                    Map newData = new HashMap();
+                    newData.put("_group", group_ID);
+                    db.child("user").child("users").child(userID).child("data").child(userGroupIDChildKey).updateChildren(newData);
+                }
 
                 Intent intent = new Intent(CreateNewGroupActivity.this, MainActivity.class);
                 startActivity(intent);

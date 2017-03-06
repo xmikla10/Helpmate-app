@@ -201,10 +201,6 @@ public class AddNewWorkActivity extends AppCompatActivity {
         {
             Toast.makeText( getBaseContext(), "Please, enter a name of work" ,Toast.LENGTH_SHORT).show();
         }
-        else if(now.compareTo(myDateTime)>0)
-        {
-            Toast.makeText( getBaseContext(), "Wrong time or date" ,Toast.LENGTH_SHORT).show();
-        }
         else if ( Integer.parseInt(duration) <= 0)
         {
             Toast.makeText( getBaseContext(), "Please, enter a duration of work" ,Toast.LENGTH_SHORT).show();
@@ -216,6 +212,30 @@ public class AddNewWorkActivity extends AppCompatActivity {
         else if (switch2.isChecked() == false)
         {
             Toast.makeText( getBaseContext(), "Please, enter a date" ,Toast.LENGTH_SHORT).show();
+        }
+        else if(now != null && myDateTime != null)
+        {
+            if (now.compareTo(myDateTime) > 0 && switch2.isChecked() == true && switch1.isChecked() == true)
+                Toast.makeText(getBaseContext(), "Wrong time or date", Toast.LENGTH_SHORT).show();
+            else
+            {
+                if (checkbox.isChecked() == false)
+                {
+                    deadline_spinner = "null";
+                }
+
+                Toast.makeText( getBaseContext(), "New work has been added" ,Toast.LENGTH_SHORT).show();
+                String selectedDate = (work_name + "#"
+                        + duration + "#"
+                        + deadline_spinner + "#"
+                        + date + "#"
+                        + time + "#");
+                Intent intent = new Intent();
+                intent.putExtra(SELECTED_ADD_KEY, selectedDate);
+                setResult(ADD_FINISHED, intent);
+
+                finish();
+            }
         }
         else
         {

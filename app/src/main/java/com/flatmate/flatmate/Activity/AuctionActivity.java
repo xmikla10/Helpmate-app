@@ -73,6 +73,7 @@ public class AuctionActivity extends AppCompatActivity
     String bidsCount;
     String bidsAddUser;
     String childKey;
+    String childKeyFork;
     String statusToShow;
     String lastUser;
     String actualMonth;
@@ -213,12 +214,22 @@ public class AuctionActivity extends AppCompatActivity
                             Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
                             String progressValue = value.get("_workProgress").toString();
                             String bidsC = value.get("_bidsCount").toString();
+                            String evaluationEmailUser = value.get("_userEmail").toString();
                             if ( !bidsC.equals("0"))
                             {
                                 SeekBar mProgress= (SeekBar) findViewById(R.id.seekBarAuction);
                                 mProgress.setProgress(Integer.valueOf(progressValue));
                             }
-                            System.out.println("-----change----->" + dataSnapshot);
+                            System.out.println("-----change-tusom---->" + dataSnapshot);
+
+                            if (!evaluationEmailUser.equals("null"))
+                            {
+                                ListView bids = (ListView) findViewById(R.id.listViewAuction);
+                                if ( bids.getVisibility() != View.GONE)
+                                {
+                                    finish();
+                                }
+                            }
                         }
                         @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
                         @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
@@ -233,7 +244,7 @@ public class AuctionActivity extends AppCompatActivity
 
                         for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
                         {
-                            childKey = childSnapshot.getKey();
+                            childKeyFork = childSnapshot.getKey();
                             Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
                             statusToShow = value.get("_status").toString();
                             lastUser = value.get("_bidsLastUserName").toString();
@@ -250,7 +261,7 @@ public class AuctionActivity extends AppCompatActivity
                             {
                                 Map newWorkData = new HashMap();
                                 newWorkData.put("_workProgress", String.valueOf(progress));
-                                db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newWorkData);
+                                db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newWorkData);
                             }
                         });
 
@@ -311,7 +322,7 @@ public class AuctionActivity extends AppCompatActivity
                         String seekValue = null;
                         for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
                         {
-                            childKey = childSnapshot.getKey();
+                            childKeyFork = childSnapshot.getKey();
                             Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
                             statusToShow = value.get("_status").toString();
                             lastUser = value.get("_bidsLastUserName").toString();
@@ -330,9 +341,9 @@ public class AuctionActivity extends AppCompatActivity
                                 {
                                     Map newWorkData = new HashMap();
                                     newWorkData.put("_workProgress", String.valueOf(progress));
-                                    db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newWorkData);
+                                    db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newWorkData);
                                 }
-                            });   
+                            });
                         }
 
                         if ( !statusToShow.equals("Status : auctioning"))
@@ -411,7 +422,7 @@ public class AuctionActivity extends AppCompatActivity
 
                                 for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
                                 {
-                                    childKey = childSnapshot.getKey();
+                                    childKeyFork = childSnapshot.getKey();
                                     Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
                                     completedCredits = value.get("_bidsLastValue").toString();
                                     completedEmail = value.get("_bidsLastUser").toString();
@@ -437,7 +448,7 @@ public class AuctionActivity extends AppCompatActivity
                                 newCompletedData.put("_workProgress", "6");
                                 newCompletedData.put("_status", "Status : done");
 
-                                db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newCompletedData);
+                                db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newCompletedData);
 
                                 final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
                                 Calendar cal = Calendar.getInstance();
@@ -458,7 +469,7 @@ public class AuctionActivity extends AppCompatActivity
 
                                 Map dateData = new HashMap();
                                 dateData.put("_deadline", dateFormat.format(cal.getTime()));
-                                db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(dateData);
+                                db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(dateData);
 
 
                                 int _id = (int) System.currentTimeMillis();
@@ -467,7 +478,7 @@ public class AuctionActivity extends AppCompatActivity
                                 intent.putExtra("alarmId", _id);
                                 intent.putExtra("bidsID", bidsID);
                                 intent.putExtra("groupID", groupID);
-                                intent.putExtra("childKey", childKey);
+                                intent.putExtra("childKey", childKeyFork);
 
                                 PendingIntent pending = PendingIntent.getBroadcast(AuctionActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                                 AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -665,7 +676,7 @@ public class AuctionActivity extends AppCompatActivity
             //tu chcem už pridať
             credits = credits + Integer.valueOf(completedCredits);
             Map newData = new HashMap();
-            newData.put("_credits", credits);
+            newData.put("_credits", credits.toString());
             db.child("groups").child(groupID).child("graph").child("months").child(actualMonth).child("users").child(childKey).updateChildren(newData);
 
 
@@ -773,7 +784,7 @@ public class AuctionActivity extends AppCompatActivity
                         {
                             for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
                             {
-                                childKey = childSnapshot.getKey();
+                                childKeyFork = childSnapshot.getKey();
                                 Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
                                 bidsLastValue = value.get("_bidsLastValue").toString();
                                 bidsCount = value.get("_bidsCount").toString();
@@ -840,7 +851,7 @@ public class AuctionActivity extends AppCompatActivity
                                             evaluation = true;
                                         }
 
-                                        db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newWorkData);
+                                        db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newWorkData);
 
                                         NewBid newbid = new NewBid();
 
@@ -866,7 +877,7 @@ public class AuctionActivity extends AppCompatActivity
 
                                             newEvaluationData.put("_status", "Status : in progress");
 
-                                            db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newEvaluationData);
+                                            db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newEvaluationData);
                                         }
 
                                         finish();
