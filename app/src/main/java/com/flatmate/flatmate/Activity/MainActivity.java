@@ -526,7 +526,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                             }
 
                                             dialog.cancel();
-                                            Toast.makeText(MainActivity.this,"Group "+ addGroupName + "was added to your groups",Toast.LENGTH_LONG).show();
+                                            Toast.makeText(MainActivity.this,"Group "+ addGroupName + " was added to your groups",Toast.LENGTH_LONG).show();
                                         }
                                     })
                                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

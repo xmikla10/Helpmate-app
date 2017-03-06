@@ -61,6 +61,8 @@ public class CustomAdapterToDo extends BaseAdapter{
         String pom;
         String work_name = "";
 
+        System.out.println(s);
+
         if(s.get_work_name().length() > 20)
         {
             pom = s.get_work_name();

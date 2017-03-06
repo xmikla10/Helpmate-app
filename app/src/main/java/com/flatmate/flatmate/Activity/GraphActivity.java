@@ -143,6 +143,7 @@ public class GraphActivity extends AppCompatActivity
                                 @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                     Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
                                     String members = value.get("_membersCount").toString();
+                                    System.out.println("som pred setGraph" + members);
 
                                     /*Members member = new Members();
                                     member.set_membersCount("3");
@@ -223,6 +224,9 @@ public class GraphActivity extends AppCompatActivity
                     String name = value.get("_name").toString();
                     String credits = value.get("_credits").toString();
 
+                    System.out.println("som pred setGraph" + membersCount);
+                    System.out.println("som pred setGraph" + dataSnapshot);
+
                     yData[membersCount] = Integer.parseInt(credits);
                     xData[membersCount] = name;
 
@@ -286,6 +290,7 @@ public class GraphActivity extends AppCompatActivity
         }
         else
         {
+            membersCount = 0;
             //Log.d(TAG, "addDataSet started");
             ArrayList<PieEntry> yEntrys = new ArrayList<>();
             ArrayList<String> xEntrys = new ArrayList<>();

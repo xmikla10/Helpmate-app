@@ -215,19 +215,19 @@ public class AuctionActivity extends AppCompatActivity
                             String progressValue = value.get("_workProgress").toString();
                             String bidsC = value.get("_bidsCount").toString();
                             String evaluationEmailUser = value.get("_userEmail").toString();
-                            if ( !bidsC.equals("0"))
-                            {
-                                SeekBar mProgress= (SeekBar) findViewById(R.id.seekBarAuction);
-                                mProgress.setProgress(Integer.valueOf(progressValue));
-                            }
-                            System.out.println("-----change-tusom---->" + dataSnapshot);
+                            String status= value.get("_status").toString();
 
-                            if (!evaluationEmailUser.equals("null"))
-                            {
-                                ListView bids = (ListView) findViewById(R.id.listViewAuction);
-                                if ( bids.getVisibility() != View.GONE)
+                            if(status.equals("Status : in progress") || status.equals("Status : done")) {
+                                if (!bidsC.equals("0"))
                                 {
-                                    finish();
+                                    SeekBar mProgress = (SeekBar) findViewById(R.id.seekBarAuction);
+                                    mProgress.setProgress(Integer.valueOf(progressValue));
+                                }
+                                if (!evaluationEmailUser.equals("null")) {
+                                    ListView bids = (ListView) findViewById(R.id.listViewAuction);
+                                    if (bids.getVisibility() != View.GONE) {
+                                        finish();
+                                    }
                                 }
                             }
                         }

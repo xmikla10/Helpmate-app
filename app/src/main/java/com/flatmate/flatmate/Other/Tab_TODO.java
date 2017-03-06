@@ -188,6 +188,7 @@ public class Tab_TODO extends Fragment
                 intent.putExtra("workProgress", s.get_workProgress());
 
                 intent.putExtra("myWork", "0");
+
                 if(s.get_status().equals("Status : unauctioned") || s.get_status().equals("Status : uncompleted"))
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -232,7 +233,12 @@ public class Tab_TODO extends Fragment
                     alert.show();
                 }
                 else
-                    startActivity(intent);
+                {
+                    if(!s.get_status().equals("Status : done"))
+                    {
+                        startActivity(intent);
+                    }
+                }
             }
 
         });
