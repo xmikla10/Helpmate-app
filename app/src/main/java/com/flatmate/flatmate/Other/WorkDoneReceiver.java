@@ -27,8 +27,6 @@ public class WorkDoneReceiver extends WakefulBroadcastReceiver
     @Override
     public void onReceive(final Context context, Intent intent)
     {
-        System.out.println("Som tu");
-
         int alarmId = intent.getExtras().getInt("alarmId");
         bidsID = intent.getExtras().getString("bidsID");
         groupID = intent.getExtras().getString("groupID");

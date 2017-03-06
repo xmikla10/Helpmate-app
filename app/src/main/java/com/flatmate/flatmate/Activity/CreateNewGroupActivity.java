@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flatmate.flatmate.Firebase.AddMembers;
+import com.flatmate.flatmate.Firebase.GraphUser;
 import com.flatmate.flatmate.Firebase.Members;
 import com.flatmate.flatmate.Firebase.Months;
 import com.flatmate.flatmate.Firebase.NewBid;
@@ -45,6 +46,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -67,6 +70,7 @@ public class CreateNewGroupActivity extends AppCompatActivity {
     ArrayList<String> memberEmail;
     FirebaseAuth firebaseAuth;
     DatabaseReference db;
+    String actualMonth;
 
     private LinearLayout mLayout;
     private AutoCompleteTextView mEditText;
@@ -100,7 +104,6 @@ public class CreateNewGroupActivity extends AppCompatActivity {
         mAdapter = new SimpleAdapter(this, mPeopleList, R.layout.custcontview,
                 new String[] { "Name", "Phone" } , new int[] {
                 R.id.ccontName, R.id.ccontNo});
-        System.out.println(mPeopleList);
         mTxtPhoneNo.setAdapter(mAdapter);
         AutoCompleteTextView first = (AutoCompleteTextView) findViewById(R.id.mmWhoNo) ;
         editTexts.add(first);
@@ -174,18 +177,14 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                 {
                     final int itemCount = editTexts.size();
                     memCount = 0;
-                    System.out.println("----->" + itemCount);
-
 
                     for (EditText editText : editTexts)
                     {
                         final String email = editText.getText().toString();
-                        System.out.println("----->" + editTexts);
 
                             db.child("user").child("groups").child("find").orderByChild("_user_email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override public void onDataChange(DataSnapshot dataSnapshot)
                                 {
-                                    System.out.println("--------->" + email);
                                     memCount++;
                                     if (dataSnapshot.getValue() == null)
                                     {
@@ -205,8 +204,6 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                                     }
                                     if ( memCount == itemCount)
                                     {
-                                        System.out.println("----->" + itemCount);
-                                        System.out.println("----->" + memCount);
                                         createGroup();
                                     }
                                 }
@@ -290,6 +287,41 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                 db.child("groups").child(group_ID).child("graph").child("months").child("December").child("control").push().setValue(months12);
                 db.child("groups").child(group_ID).child("graph").child("months").child("members").push().setValue(mem);
 
+                Date actDate= new Date();
+                Calendar actCal = Calendar.getInstance();
+                actCal.setTime(actDate);
+                Integer monthInInt = actCal.get(Calendar.MONTH) + 1;
+                actualMonth = getMonth(monthInInt);
+
+                GraphUser graphUser = new GraphUser();
+                graphUser.set_ID(userID);
+                graphUser.set_name(user_name);
+                graphUser.set_email(userEmail);
+                graphUser.set_credits("0");
+                db.child("groups").child(group_ID).child("graph").child("months").child(actualMonth).child("users").push().setValue(graphUser);
+
+                db.child("groups").child(group_ID).child("graph").child("months").child(actualMonth).child("control").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override public void onDataChange(DataSnapshot dataSnapshot)
+                    {
+                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                        {
+                            String childKey = childSnapshot.getKey();
+                            Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+
+                            Date actDate= new Date();
+                            Calendar actCal = Calendar.getInstance();
+                            actCal.setTime(actDate);
+                            Integer year = actCal.get(Calendar.YEAR);
+
+                            Map newData = new HashMap();
+                            newData.put("_month", year);
+                            newData.put("_membersCount", "1");
+                            db.child("groups").child(group_ID).child("graph").child("months").child(actualMonth).child("control").child(childKey).updateChildren(newData);
+                        }
+                    }
+                    @Override public void onCancelled(DatabaseError databaseError) {}
+                });
+
                 Intent intent = new Intent(CreateNewGroupActivity.this, MainActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
@@ -300,6 +332,29 @@ public class CreateNewGroupActivity extends AppCompatActivity {
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
 
+    }
+
+    public String getMonth(Integer month)
+    {
+        String monthString;
+        switch (month)
+        {
+            case 1:  monthString = "January";break;
+            case 2:  monthString = "February";break;
+            case 3:  monthString = "March";break;
+            case 4:  monthString = "April";break;
+            case 5:  monthString = "May";break;
+            case 6:  monthString = "June";break;
+            case 7:  monthString = "July";break;
+            case 8:  monthString = "August";break;
+            case 9:  monthString = "September";break;
+            case 10: monthString = "October";break;
+            case 11: monthString = "November";break;
+            case 12: monthString = "December";break;
+            default: monthString = "Invalid month";break;
+        }
+
+        return monthString;
     }
 
     public final static boolean isValidEmail(CharSequence target)

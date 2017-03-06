@@ -61,8 +61,6 @@ public class CustomAdapterInfoGroup extends BaseAdapter{
 
         final NewGroup s= (NewGroup) this.getItem(position);
 
-        System.out.println(s.get_user_name());
-
         infoUserName.setText(s.get_user_name());
 
         return convertView;

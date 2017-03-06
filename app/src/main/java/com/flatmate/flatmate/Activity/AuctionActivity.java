@@ -203,6 +203,29 @@ public class AuctionActivity extends AppCompatActivity
                 groupID = value.get("_group").toString();
                 bidsExistListener(bidsID);
 
+                if(groupID.length() != 0)
+                {
+                    db.child("groups").child(groupID).child("works").child("todo").addChildEventListener(new ChildEventListener()
+                    {
+                        @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
+                        @Override public void onChildChanged(DataSnapshot dataSnapshot, String s)
+                        {
+                            Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                            String progressValue = value.get("_workProgress").toString();
+                            String bidsC = value.get("_bidsCount").toString();
+                            if ( !bidsC.equals("0"))
+                            {
+                                SeekBar mProgress= (SeekBar) findViewById(R.id.seekBarAuction);
+                                mProgress.setProgress(Integer.valueOf(progressValue));
+                            }
+                            System.out.println("-----change----->" + dataSnapshot);
+                        }
+                        @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                        @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                        @Override public void onCancelled(DatabaseError databaseError) {}
+                    });
+                }
+
                 db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(bidsID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override public void onDataChange(DataSnapshot dataSnapshot)
                     {
@@ -262,6 +285,25 @@ public class AuctionActivity extends AppCompatActivity
                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
                 groupID = value.get("_group").toString();
 
+                if(groupID.length() != 0)
+                {
+                    db.child("groups").child(groupID).child("works").child("todo").addChildEventListener(new ChildEventListener()
+                    {
+                        @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
+                        @Override public void onChildChanged(DataSnapshot dataSnapshot, String s)
+                        {
+                            Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                            String progressValue = value.get("_workProgress").toString();
+                            SeekBar mProgress= (SeekBar) findViewById(R.id.seekBarAuction);
+                            mProgress.setProgress(Integer.valueOf(progressValue));
+                            System.out.println("-----change----->" + dataSnapshot);
+                        }
+                        @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                        @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                        @Override public void onCancelled(DatabaseError databaseError) {}
+                    });
+                }
+
                 bidsExistListener(bidsID);
                 db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(bidsID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override public void onDataChange(DataSnapshot dataSnapshot)
@@ -276,19 +318,22 @@ public class AuctionActivity extends AppCompatActivity
                             seekValue = value.get("_workProgress").toString();
                         }
 
-                        SeekBar seekBar = (SeekBar) findViewById(R.id.seekBarAuction);
-                        seekBar.setProgress(Integer.valueOf(seekValue));
-                        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+                        if (seekValue != null)
                         {
-                            public void onStopTrackingTouch(SeekBar seekBar) {}
-                            public void onStartTrackingTouch(SeekBar seekBar) {}
-                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+                            SeekBar seekBar = (SeekBar) findViewById(R.id.seekBarAuction);
+                            seekBar.setProgress(Integer.valueOf(seekValue));
+                            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
                             {
-                                Map newWorkData = new HashMap();
-                                newWorkData.put("_workProgress", String.valueOf(progress));
-                                db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newWorkData);
-                            }
-                        });
+                                public void onStopTrackingTouch(SeekBar seekBar) {}
+                                public void onStartTrackingTouch(SeekBar seekBar) {}
+                                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+                                {
+                                    Map newWorkData = new HashMap();
+                                    newWorkData.put("_workProgress", String.valueOf(progress));
+                                    db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newWorkData);
+                                }
+                            });   
+                        }
 
                         if ( !statusToShow.equals("Status : auctioning"))
                         {
@@ -662,8 +707,16 @@ public class AuctionActivity extends AppCompatActivity
         TextView auctionStatus = (TextView) findViewById(R.id.auctionStatus);
         TextView auctionTime = (TextView) findViewById(R.id.auctionTime);
 
-        textViewTaskStatus.setText("Who won?");
-        textViewTaskStatus.setTextSize(17);
+        if ( status.equals("Status : done"))
+        {
+            textViewTaskStatus.setText("Work completed by  :");
+            textViewTaskStatus.setTextSize(15);
+        }
+        else
+        {
+            textViewTaskStatus.setText("Who won?");
+            textViewTaskStatus.setTextSize(17);
+        }
         auctionStatus.setText(status);
         auctionTime.setText(lastUser);
 

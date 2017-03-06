@@ -117,9 +117,6 @@ public class CustomAdapterToDo extends BaseAdapter{
         textViewTaskName.setText(work_name);
         textViewStatus.setText(s.get_status());
 
-        System.out.println("------->" + s.get_status());
-        System.out.println("------->" + work_name);
-
         return convertView;
     }
 }

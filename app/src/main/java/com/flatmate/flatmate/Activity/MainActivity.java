@@ -161,7 +161,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                         {
                                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
                                 String key = dataSnapshot.getKey().toString();
-                                System.out.println("--------> " + key);
                                 evaluationBidsID = value.get("_bidsID").toString();
                                 evaluationDeadline = value.get("_deadline").toString();
                                 evaluationStatus = value.get("_status").toString();
@@ -306,7 +305,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                         {
                             Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
                             String key = dataSnapshot.getKey().toString();
-                            System.out.println("--------> " + key);
                             evaluationBidsID = value.get("_bidsID").toString();
                             evaluationDeadline = value.get("_deadline").toString();
                             evaluationStatus = value.get("_status").toString();
@@ -443,7 +441,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                                 {
                                                     for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
                                                     {
-                                                        System.out.println("-------------->" + dataSnapshot);
                                                         Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
                                                         String childKey = childSnapshot.getKey();
                                                         String stringMemCount = value.get("_membersCount").toString();
@@ -469,7 +466,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                                         Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
                                                         String memC = value.get("_membersCount").toString();
                                                         finall = Integer.valueOf(memC);
-
+////////
                                                         db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("users").orderByChild("_ID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                                                             @Override public void onDataChange(DataSnapshot dataSnapshot)
                                                             {

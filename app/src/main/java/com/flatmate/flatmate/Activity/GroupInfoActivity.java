@@ -153,6 +153,8 @@ public class GroupInfoActivity extends AppCompatActivity
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
 
+
+        // todo - oštetriť aby ak sa vymaže admin, tak aby sa vymazala celá skupina ... aj samotné vymazanie skupiny by tam malo byť
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -220,10 +222,6 @@ public class GroupInfoActivity extends AppCompatActivity
                                                                         Integer memCount = Integer.valueOf(stringMemCount);
                                                                         memCount = memCount - 1;
 
-                                                                        System.out.println("-------------->" + memCount);
-                                                                        System.out.println("-------------->" + childKey);
-                                                                        System.out.println("-------------->" + stringMemCount);
-
                                                                         Map newUserData = new HashMap();
                                                                         newUserData.put("_membersCount", memCount.toString());
                                                                         db.child("groups").child(groupID).child("graph").child("months").child("members").child(childKey).updateChildren(newUserData);
@@ -273,7 +271,6 @@ public class GroupInfoActivity extends AppCompatActivity
         mAdapter = new SimpleAdapter(this, mPeopleList, R.layout.custcontview,
                 new String[] { "Name", "Phone" } , new int[] {
                 R.id.ccontName, R.id.ccontNo});
-        System.out.println(mPeopleList);
         mTxtPhoneNo.setAdapter(mAdapter);
 
         mLayout = (LinearLayout) findViewById(R.id.addInfoGroupNewMemberLayout);
@@ -352,7 +349,6 @@ public class GroupInfoActivity extends AppCompatActivity
                             db.child("user").child("groups").child("find").orderByChild("_user_email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override public void onDataChange(DataSnapshot dataSnapshot)
                                 {
-                                    System.out.println("--------->" + email);
                                     memCount++;
                                     if (dataSnapshot.getValue() == null)
                                     {

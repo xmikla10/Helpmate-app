@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.flatmate.flatmate.Activity.AddNewWorkActivity;
@@ -86,7 +87,6 @@ public class Tab_TODO extends Fragment
                 db.child("groups").child(groupID).child("works").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
-                        System.out.println(snapshot.getValue());
                         if (snapshot.getValue() == null)
                         {
                             ProgressBar mProgress = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
@@ -137,6 +137,7 @@ public class Tab_TODO extends Fragment
             {
                 Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
                 groupID = value.get("_group").toString();
+
                 db.child("groups").child(groupID).child("works").addChildEventListener(new ChildEventListener()
                 {
                     ProgressBar mProgress= (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);

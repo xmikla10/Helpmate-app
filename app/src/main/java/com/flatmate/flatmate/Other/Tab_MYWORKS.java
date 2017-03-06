@@ -81,7 +81,6 @@ public class Tab_MYWORKS extends Fragment {
                 db.child("groups").child(groupID).child("works").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
-                        System.out.println(snapshot.getValue());
                         if (snapshot.getValue() == null)
                         {
                             ProgressBar mProgress = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);

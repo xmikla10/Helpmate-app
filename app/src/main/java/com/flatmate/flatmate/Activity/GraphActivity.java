@@ -201,7 +201,6 @@ public class GraphActivity extends AppCompatActivity
             default: monthString = "Invalid month";
                 break;
         }
-        System.out.println("test   " + monthString);
         membersCount = 0;
 
         findInDB();

@@ -101,7 +101,6 @@ public class BidPopUp extends Activity
 
                         if (bidsAddUser.indexOf(userID) != -1)
                         {
-                            System.out.println("------->" + "Vyslo to");
                             checkboxbid.setVisibility(View.GONE);
                         }
                         else

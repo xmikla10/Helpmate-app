@@ -63,7 +63,6 @@ public class AlarmProgressReceiver extends WakefulBroadcastReceiver
 
                 if ( status.equals("Status : in progress"))
                 {
-                    System.out.println("--------> " + "Som v AlarmProgressReceiver");
 
                     final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
                     Calendar cal = Calendar.getInstance();

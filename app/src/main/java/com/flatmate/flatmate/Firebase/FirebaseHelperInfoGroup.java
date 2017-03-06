@@ -39,7 +39,6 @@ public class FirebaseHelperInfoGroup
         a.clear();
         for (DataSnapshot ds : dataSnapshot.getChildren())
         {
-            System.out.println(dataSnapshot.toString());
             NewGroup newGroup = ds.getValue(NewGroup.class);
             a.add(newGroup);
         }
