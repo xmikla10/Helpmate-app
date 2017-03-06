@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#efefef"
+    android:orientation="vertical"
     tools:context="com.flatmate.flatmate.Activity.SignInActivity">
 
     <include layout="@layout/content_main_activity"/>
 
-</android.support.design.widget.CoordinatorLayout>
+    <Space
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="20dp">
+    </Space>
+
+</LinearLayout>
