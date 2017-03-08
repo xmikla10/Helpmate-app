@@ -436,7 +436,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                             builder.setTitle("Request").setMessage("User " + senderEmail + " add you to group " + addGroupName)
                                     .setCancelable(false)
                                     .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id)
+                                        public void onClick(final DialogInterface dialog, int id)
                                         {
 
                                             Date actDate= new Date();
@@ -460,73 +460,71 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                                         Map newUserData = new HashMap();
                                                         newUserData.put("_membersCount", memCount.toString());
                                                         db.child("groups").child(addGroupID).child("graph").child("months").child("members").child(childKey).updateChildren(newUserData);
-
                                                     }
-                                                }
-                                                @Override public void onCancelled(DatabaseError databaseError) {}
-                                            });
 
-                                            db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("control").addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override public void onDataChange(DataSnapshot dataSnapshot)
-                                                {
-                                                    for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
-                                                    {
-                                                        childKey = childSnapshot.getKey();
-                                                        Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
-                                                        String memC = value.get("_membersCount").toString();
-                                                        finall = Integer.valueOf(memC);
-
-                                                        db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("users").orderByChild("_ID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                            @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                                    db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("control").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                                        {
+                                                            for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
                                                             {
-                                                                if (dataSnapshot.getValue() == null)
+                                                                childKey = childSnapshot.getKey();
+                                                                Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                                String memC = value.get("_membersCount").toString();
+                                                                finall = Integer.valueOf(memC);
+
+                                                                db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("users").orderByChild("_ID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                    @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                                                    {
+                                                                        if (dataSnapshot.getValue() == null)
+                                                                        {
+                                                                            GraphUser graphUser = new GraphUser();
+                                                                            graphUser.set_ID(userID);
+                                                                            graphUser.set_name(userName);
+                                                                            graphUser.set_email(userEmail);
+                                                                            graphUser.set_credits("0");
+                                                                            db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("users").push().setValue(graphUser);
+
+                                                                            finall++;
+
+                                                                            Map newUserData = new HashMap();
+                                                                            newUserData.put("_membersCount", finall.toString());
+                                                                            db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("control").child(childKey).updateChildren(newUserData);
+                                                                        }
+                                                                    }
+                                                                    @Override public void onCancelled(DatabaseError databaseError) {}
+                                                                });
+
+                                                                final NewGroup newGroupUser = new NewGroup();
+                                                                final NewGroup newGroupMembers = new NewGroup();
+
+                                                                newGroupUser.set_group_ID(addGroupID);
+                                                                newGroupUser.set_user_email(userEmail);
+                                                                newGroupUser.set_group_name(addGroupName);
+                                                                newGroupUser.set_admin("false");
+                                                                db.child("user").child("groups").child("user").child(userID).child("user").push().setValue(newGroupUser);
+
+                                                                newGroupMembers.set_user_email(userEmail);
+                                                                newGroupMembers.set_user_ID(userID);
+                                                                newGroupMembers.set_user_name(userName);
+                                                                db.child("user").child("groups").child("members").child(addGroupID).child("members").push().setValue(newGroupMembers);
+
+                                                                db.child("user").child("users").child(userID).child("messages").child(key).setValue(null);
+
+                                                                if(userGroupID.equals(""))
                                                                 {
-                                                                    GraphUser graphUser = new GraphUser();
-                                                                    graphUser.set_ID(userID);
-                                                                    graphUser.set_name(userName);
-                                                                    graphUser.set_email(userEmail);
-                                                                    graphUser.set_credits("0");
-                                                                    db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("users").push().setValue(graphUser);
-
-                                                                    finall++;
-
-                                                                    Map newUserData = new HashMap();
-                                                                    newUserData.put("_membersCount", finall.toString());
-                                                                    db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("control").child(childKey).updateChildren(newUserData);
+                                                                    Map newData = new HashMap();
+                                                                    newData.put("_group", addGroupID);
+                                                                    db.child("user").child("users").child(userID).child("data").child(userGroupIDChildKey).updateChildren(newData);
                                                                 }
+
+                                                                dialog.cancel();
+                                                                Toast.makeText(MainActivity.this,"Group "+ addGroupName + " was added to your groups",Toast.LENGTH_LONG).show();
+
                                                             }
-                                                            @Override public void onCancelled(DatabaseError databaseError) {}
-                                                        });
-                                                    }
-                                                }
-                                                @Override public void onCancelled(DatabaseError databaseError) {}
+                                                        }@Override public void onCancelled(DatabaseError databaseError) {}
+                                                    });
+                                                }@Override public void onCancelled(DatabaseError databaseError) {}
                                             });
-
-                                            final NewGroup newGroupUser = new NewGroup();
-                                            final NewGroup newGroupMembers = new NewGroup();
-
-                                            newGroupUser.set_group_ID(addGroupID);
-                                            newGroupUser.set_user_email(userEmail);
-                                            newGroupUser.set_group_name(addGroupName);
-                                            newGroupUser.set_admin("false");
-                                            db.child("user").child("groups").child("user").child(userID).child("user").push().setValue(newGroupUser);
-
-                                            newGroupMembers.set_user_email(userEmail);
-                                            newGroupMembers.set_user_ID(userID);
-                                            newGroupMembers.set_user_name(userName);
-                                            db.child("user").child("groups").child("members").child(addGroupID).child("members").push().setValue(newGroupMembers);
-
-                                            db.child("user").child("users").child(userID).child("messages").child(key).setValue(null);
-
-                                            if(userGroupID.equals(""))
-                                            {
-                                                Map newData = new HashMap();
-                                                newData.put("_group", addGroupID);
-                                                db.child("user").child("users").child(userID).child("data").child(userGroupIDChildKey).updateChildren(newData);
-                                            }
-
-                                            dialog.cancel();
-                                            Toast.makeText(MainActivity.this,"Group "+ addGroupName + " was added to your groups",Toast.LENGTH_LONG).show();
                                         }
                                     })
                                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -553,12 +551,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
     }
-    public void showAuction(View view)
-    {
-        Intent intent = new Intent(this, AuctionActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
-    }
 
     public void showZaire(View view)
     {
@@ -569,14 +561,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
                 {
                     Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
-                    String childKey = childSnapshot.getKey();
                     String existGroupID = value.get("_group").toString();
 
                     if (!existGroupID.equals(""))
                     {
-                        Intent intent = new Intent(MainActivity.this, AddNewWorkActivity.class);
                         startActivityForResult(new Intent(MainActivity.this, AddNewWorkActivity.class), AddNewWorkActivity.ADD_FINISHED);
-                        //startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                     }
                     else
@@ -588,18 +577,18 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
     @Override
-    public void onTabSelected(TabLayout.Tab tab) {
+    public void onTabSelected(TabLayout.Tab tab)
+    {
         viewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-
-    }
+    public void onTabUnselected(TabLayout.Tab tab) {}
 
     public String getMonth(Integer month)
     {
         String monthString;
+
         switch (month)
         {
             case 1:  monthString = "January";break;
@@ -621,9 +610,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
     @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-
-    }
+    public void onTabReselected(TabLayout.Tab tab) {}
 
     public void notifPref(View view)
     {

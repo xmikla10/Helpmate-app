@@ -102,7 +102,7 @@ public class CustomAdapterToDo extends BaseAdapter{
         else if (s.get_status().equals("Status : unauctioned"))
         {
             textViewtime2.setText("");
-            textViewtime.setText("Repeate ?");
+            textViewtime.setText("Delete ?");
             textViewStatus.setTextColor(Color.RED);
             textViewTaskName.setTextColor(Color.RED);
         }

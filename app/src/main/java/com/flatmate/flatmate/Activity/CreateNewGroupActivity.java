@@ -61,6 +61,7 @@ import java.util.UUID;
 
 public class CreateNewGroupActivity extends AppCompatActivity {
 
+    private ProgressDialog progressDialogCreating;
     String group_name;
     String user_name;
     String user_email;
@@ -73,6 +74,7 @@ public class CreateNewGroupActivity extends AppCompatActivity {
     String actualMonth;
     public String userGroupID;
     public String userGroupIDChildKey;
+    public String isEmailEnteredAlready;
 
     private LinearLayout mLayout;
     private AutoCompleteTextView mEditText;
@@ -86,18 +88,22 @@ public class CreateNewGroupActivity extends AppCompatActivity {
     private AutoCompleteTextView mTxtPhoneNo;
     Integer oneClick;
     Integer cnt;
-    private ProgressDialog progressDialog;
     ArrayList<AutoCompleteTextView> editTexts = new ArrayList<>();
     Integer count;
     Integer memCount;
+    Integer isContactLoaded;
 
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_group_layout);
+        progressDialogCreating = new ProgressDialog(this);
+
         oneClick = 1;
+        isContactLoaded = 1;
         count = 0;
         memberEmail = new ArrayList<String>();
 
@@ -115,7 +121,6 @@ public class CreateNewGroupActivity extends AppCompatActivity {
         mButton.setOnClickListener(onClick());
         TextView textView = new TextView(this);
         textView.setText("email");
-        progressDialog = new ProgressDialog(CreateNewGroupActivity.this);
 
         mTxtPhoneNo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -135,8 +140,9 @@ public class CreateNewGroupActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus)
             {
-                if (hasFocus)
+                if (hasFocus && isContactLoaded == 1)
                 {
+                    isContactLoaded++;
                     openprogresdialog(v);
                 }
             }
@@ -150,6 +156,11 @@ public class CreateNewGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
+                progressDialogCreating.setMessage("Creating new group, please wait");
+                progressDialogCreating.setCancelable(false);
+                progressDialogCreating.show();
+                isEmailEnteredAlready = "";
+
                 int size = memberEmail.size();
                 String wrongEmail = "";
                 cnt = 0 ;
@@ -198,11 +209,19 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                                         Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
                                         String ID = value.get("_user_ID").toString();
 
-                                        AddMembers addMembers = new AddMembers();
-                                        addMembers.set_group_ID(group_ID);
-                                        addMembers.set_sender_email(userEmail);
-                                        addMembers.set_group_name(group_name);
-                                        db.child("user").child("users").child(ID).child("messages").push().setValue(addMembers);
+                                        if (isEmailEnteredAlready.indexOf(email) != -1 || userEmail.equals(email))
+                                        {
+                                            System.out.println("------->" + "Zhoda - email bol už zadaný");
+                                        }
+                                        else
+                                        {
+                                            isEmailEnteredAlready = isEmailEnteredAlready + email + " ,";
+                                            AddMembers addMembers = new AddMembers();
+                                            addMembers.set_group_ID(group_ID);
+                                            addMembers.set_sender_email(userEmail);
+                                            addMembers.set_group_name(group_name);
+                                            db.child("user").child("users").child(ID).child("messages").push().setValue(addMembers);
+                                        }
                                     }
                                     if ( memCount == itemCount)
                                     {
@@ -214,7 +233,10 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                     }
                 }
                 else
+                {
+                    progressDialogCreating.dismiss();
                     Toast.makeText(CreateNewGroupActivity.this, wrongEmail +" - wrong email address", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -322,20 +344,21 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                             newData.put("_membersCount", "1");
                             db.child("groups").child(group_ID).child("graph").child("months").child(actualMonth).child("control").child(childKey).updateChildren(newData);
                         }
+
+                        if(userGroupID.equals(""))
+                        {
+                            Map newData = new HashMap();
+                            newData.put("_group", group_ID);
+                            db.child("user").child("users").child(userID).child("data").child(userGroupIDChildKey).updateChildren(newData);
+                        }
+
+                        progressDialogCreating.dismiss();
+                        Intent intent = new Intent(CreateNewGroupActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
                     }
                     @Override public void onCancelled(DatabaseError databaseError) {}
                 });
-
-                if(userGroupID.equals(""))
-                {
-                    Map newData = new HashMap();
-                    newData.put("_group", group_ID);
-                    db.child("user").child("users").child(userID).child("data").child(userGroupIDChildKey).updateChildren(newData);
-                }
-
-                Intent intent = new Intent(CreateNewGroupActivity.this, MainActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
             }
             @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
             @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}

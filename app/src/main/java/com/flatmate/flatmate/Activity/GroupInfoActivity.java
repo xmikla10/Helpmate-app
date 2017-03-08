@@ -67,6 +67,7 @@ public class GroupInfoActivity extends AppCompatActivity
     String group_ID;
     String group_name;
     Integer memCount;
+    Integer isContactLoaded;
 
     private FirebaseAuth firebaseAuth;
     String userID;
@@ -97,6 +98,7 @@ public class GroupInfoActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_group);
         Bundle extras = getIntent().getExtras();
+        isContactLoaded = 1;
 
         groupName = extras.getString("group_name");
         groupID = extras.getString("group_ID");
@@ -134,7 +136,8 @@ public class GroupInfoActivity extends AppCompatActivity
 
         db.child("user").child("groups").child("members").child(groupID).child("members").addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s)
+            {
                 adapter = new CustomAdapterInfoGroup(GroupInfoActivity.this, helper.retrieve(groupID));
                 lv.setAdapter(adapter);
             }
@@ -225,30 +228,19 @@ public class GroupInfoActivity extends AppCompatActivity
                                                                         Map newUserData = new HashMap();
                                                                         newUserData.put("_membersCount", memCount.toString());
                                                                         db.child("groups").child(groupID).child("graph").child("months").child("members").child(childKey).updateChildren(newUserData);
+
+                                                                        Intent intent = new Intent(GroupInfoActivity.this, MainActivity.class);
+                                                                        startActivity(intent);
+                                                                        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                                                                     }
                                                                 }
-
-                                                                @Override
-                                                                public void onCancelled(DatabaseError databaseError) {
-                                                                }
-                                                            });
-                                                        }
-
-                                                        @Override
-                                                        public void onCancelled(DatabaseError databaseError) {
-                                                        }
-                                                    });
-                                                }
-
-                                                @Override
-                                                public void onCancelled(DatabaseError databaseError) {
-                                                }
-                                            });
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-                                        }
+                                                                @Override public void onCancelled(DatabaseError databaseError) {}
+                                                            });}
+                                                        @Override public void onCancelled(DatabaseError databaseError) {}
+                                                    });}
+                                                @Override public void onCancelled(DatabaseError databaseError) {}
+                                            });}
+                                        @Override public void onCancelled(DatabaseError databaseError) {}
                                     });
                                 }
                                 else
@@ -298,8 +290,9 @@ public class GroupInfoActivity extends AppCompatActivity
             @Override
             public void onFocusChange(View v, boolean hasFocus)
             {
-                if (hasFocus)
+                if (hasFocus && isContactLoaded == 1)
                 {
+                    isContactLoaded++;
                     openprogresdialog(v);
                 }
             }
@@ -342,7 +335,7 @@ public class GroupInfoActivity extends AppCompatActivity
                     final int itemCount = editTexts.size();
                     memCount = 0;
 
-                    for (EditText editText : editTexts)
+                    for (final EditText editText : editTexts)
                     {
                         final String email = editText.getText().toString();
 
@@ -352,6 +345,7 @@ public class GroupInfoActivity extends AppCompatActivity
                                     memCount++;
                                     if (dataSnapshot.getValue() == null)
                                     {
+                                        //generovat email
                                         System.out.println("--------->" + "nenasiel som");
                                     }
 
@@ -377,12 +371,17 @@ public class GroupInfoActivity extends AppCompatActivity
                                     }
                                     if ( memCount == itemCount)
                                     {
-                                        if ( memCount == 1)
+                                        if ( memCount == 1 && isContactLoaded != 1)
                                             Toast.makeText(GroupInfoActivity.this, " Request send", Toast.LENGTH_SHORT).show();
                                         else
-                                            Toast.makeText(GroupInfoActivity.this, " Requests send", Toast.LENGTH_SHORT).show();
+                                        {
+                                            if ( isContactLoaded != 1)
+                                                Toast.makeText(GroupInfoActivity.this, " Requests send", Toast.LENGTH_SHORT).show();
+                                        }
 
-                                        finish();
+                                        Intent intent = new Intent(GroupInfoActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
                                     }
                                 }
                                 @Override public void onCancelled(DatabaseError databaseError) {}

@@ -63,6 +63,7 @@ public class AuctionActivity extends AppCompatActivity
     DatabaseReference db;
     private String groupID;
     public String bidsID;
+    public String bidsIDUpdateSeek;
 
     String userID;
     String bid;
@@ -74,6 +75,7 @@ public class AuctionActivity extends AppCompatActivity
     String bidsAddUser;
     String childKey;
     String childKeyFork;
+    String childKeyUpdateSeek;
     String statusToShow;
     String lastUser;
     String actualMonth;
@@ -115,6 +117,7 @@ public class AuctionActivity extends AppCompatActivity
             String time = extras.getString("time");
             String myWork = extras.getString("myWork");
             bidsID = extras.getString("bidsID");
+            bidsIDUpdateSeek = extras.getString("bidsID");
             seekEditable = extras.getString("workProgress");
 
             bidsLastUser = extras.getString("bidsLastUser");
@@ -206,6 +209,50 @@ public class AuctionActivity extends AppCompatActivity
 
                 if(groupID.length() != 0)
                 {
+
+                    SeekBar seekBar = (SeekBar) findViewById(R.id.seekBarAuction);
+                    seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+                    {
+                        public void onStopTrackingTouch(SeekBar seekBar) {}
+                        public void onStartTrackingTouch(SeekBar seekBar) {}
+                        public void onProgressChanged(final SeekBar seekBar, int progress, boolean fromUser)
+                        {
+                            db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(bidsIDUpdateSeek).addListenerForSingleValueEvent(new ValueEventListener()
+                            {
+                                @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                {
+                                    String userCanUpdateSeek = "";
+                                    String seekValue = "";
+
+                                    for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                                    {
+                                        System.out.println("--------> " + dataSnapshot);
+                                        childKeyUpdateSeek = childSnapshot.getKey();
+                                        Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                        userCanUpdateSeek = value.get("_userEmail").toString();
+                                        seekValue = value.get("_workProgress").toString();
+                                    }
+
+                                    System.out.println("--------> " + bidsIDUpdateSeek);
+                                    //System.out.println("--------> " + seekBar.getProgress());
+                                    //System.out.println("--------> " + "som v listeneri");
+
+                                    if( userCanUpdateSeek.equals(userEmail))
+                                    {
+                                        Map newWorkData = new HashMap();
+                                        newWorkData.put("_workProgress", String.valueOf(seekBar.getProgress()));
+                                        db.child("groups").child(groupID).child("works").child("todo").child(childKeyUpdateSeek).updateChildren(newWorkData);
+                                    }
+                                    else
+                                        seekBar.setProgress(Integer.valueOf(seekValue));
+
+                                }
+                                @Override public void onCancelled(DatabaseError databaseError) {}
+                            });
+                        }
+                    });
+
+
                     db.child("groups").child(groupID).child("works").child("todo").addChildEventListener(new ChildEventListener()
                     {
                         @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
@@ -217,7 +264,8 @@ public class AuctionActivity extends AppCompatActivity
                             String evaluationEmailUser = value.get("_userEmail").toString();
                             String status= value.get("_status").toString();
 
-                            if(status.equals("Status : in progress") || status.equals("Status : done")) {
+                            if(status.equals("Status : in progress") || status.equals("Status : done") || status.equals("Status : unauctioned") )
+                            {
                                 if (!bidsC.equals("0"))
                                 {
                                     SeekBar mProgress = (SeekBar) findViewById(R.id.seekBarAuction);
@@ -229,6 +277,9 @@ public class AuctionActivity extends AppCompatActivity
                                         finish();
                                     }
                                 }
+
+                                if(status.equals("Status : unauctioned"))
+                                    finish();
                             }
                         }
                         @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
@@ -240,30 +291,13 @@ public class AuctionActivity extends AppCompatActivity
                 db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(bidsID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override public void onDataChange(DataSnapshot dataSnapshot)
                     {
-                        String seekValue = null;
-
                         for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
                         {
                             childKeyFork = childSnapshot.getKey();
                             Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
                             statusToShow = value.get("_status").toString();
                             lastUser = value.get("_bidsLastUserName").toString();
-                            seekValue = value.get("_workProgress").toString();
                         }
-
-                        SeekBar seekBar = (SeekBar) findViewById(R.id.seekBarAuction);
-                        seekBar.setProgress(Integer.valueOf(seekValue));
-                        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-                        {
-                            public void onStopTrackingTouch(SeekBar seekBar) {}
-                            public void onStartTrackingTouch(SeekBar seekBar) {}
-                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-                            {
-                                Map newWorkData = new HashMap();
-                                newWorkData.put("_workProgress", String.valueOf(progress));
-                                db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newWorkData);
-                            }
-                        });
 
                         if ( !statusToShow.equals("Status : auctioning"))
                         {
@@ -293,27 +327,6 @@ public class AuctionActivity extends AppCompatActivity
             }
             @Override public void onChildChanged(DataSnapshot dataSnapshot, String s)
             {
-                Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                groupID = value.get("_group").toString();
-
-                if(groupID.length() != 0)
-                {
-                    db.child("groups").child(groupID).child("works").child("todo").addChildEventListener(new ChildEventListener()
-                    {
-                        @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
-                        @Override public void onChildChanged(DataSnapshot dataSnapshot, String s)
-                        {
-                            Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                            String progressValue = value.get("_workProgress").toString();
-                            SeekBar mProgress= (SeekBar) findViewById(R.id.seekBarAuction);
-                            mProgress.setProgress(Integer.valueOf(progressValue));
-                            System.out.println("-----change----->" + dataSnapshot);
-                        }
-                        @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                        @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                        @Override public void onCancelled(DatabaseError databaseError) {}
-                    });
-                }
 
                 bidsExistListener(bidsID);
                 db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(bidsID).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -322,28 +335,9 @@ public class AuctionActivity extends AppCompatActivity
                         String seekValue = null;
                         for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
                         {
-                            childKeyFork = childSnapshot.getKey();
                             Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
                             statusToShow = value.get("_status").toString();
                             lastUser = value.get("_bidsLastUserName").toString();
-                            seekValue = value.get("_workProgress").toString();
-                        }
-
-                        if (seekValue != null)
-                        {
-                            SeekBar seekBar = (SeekBar) findViewById(R.id.seekBarAuction);
-                            seekBar.setProgress(Integer.valueOf(seekValue));
-                            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-                            {
-                                public void onStopTrackingTouch(SeekBar seekBar) {}
-                                public void onStartTrackingTouch(SeekBar seekBar) {}
-                                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-                                {
-                                    Map newWorkData = new HashMap();
-                                    newWorkData.put("_workProgress", String.valueOf(progress));
-                                    db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newWorkData);
-                                }
-                            });
                         }
 
                         if ( !statusToShow.equals("Status : auctioning"))
@@ -829,7 +823,7 @@ public class AuctionActivity extends AppCompatActivity
                                         {
                                             if (bidsAddUser.indexOf(userID) != -1)
                                             {
-                                                System.out.println("------->" + "Vyslo to");
+                                                System.out.println("------->" + "Zhoda");
                                             }
                                             else
                                             {
@@ -865,9 +859,12 @@ public class AuctionActivity extends AppCompatActivity
                                         newbid.set_userName(userName);
                                         helper.save(newbid, bidsID, groupID);
 
+                                        //vyhodnotenie
                                         if ( Integer.valueOf(members) <= Integer.valueOf(bidsCount))
                                         {
                                             Map newEvaluationData = new HashMap();
+                                            Map newEvaluationData2 = new HashMap();
+
                                             if ( evaluation == true)
                                             {
                                                 newEvaluationData.put("_userEmail", userEmail);
@@ -875,13 +872,26 @@ public class AuctionActivity extends AppCompatActivity
                                             else
                                                 newEvaluationData.put("_userEmail", bidsLastUser);
 
-                                            newEvaluationData.put("_status", "Status : in progress");
+                                            if ( bidsLastUser.equals("null") && evaluation != true)
+                                            {
+                                                newEvaluationData2.put("_status", "Status : unauctioned");
+                                                db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newEvaluationData2);
+                                            }
+                                            else
+                                            {
+                                                newEvaluationData.put("_status", "Status : in progress");
+                                                db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newEvaluationData);
+                                            }
 
-                                            db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newEvaluationData);
+                                            Intent intent = new Intent(AuctionActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                            overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                                         }
-
-                                        finish();
-                                        startActivity(getIntent());
+                                        else
+                                        {
+                                            finish();
+                                            startActivity(getIntent());
+                                        }
                                     }
                                     @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
                                     @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
