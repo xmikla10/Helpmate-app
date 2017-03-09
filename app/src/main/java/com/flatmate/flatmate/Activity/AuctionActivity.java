@@ -65,6 +65,7 @@ public class AuctionActivity extends AppCompatActivity
     private String groupID;
     public String bidsID;
     public String bidsIDUpdateSeek;
+    public String toastCompletedCredits;
 
     String userID;
     String bid;
@@ -441,6 +442,7 @@ public class AuctionActivity extends AppCompatActivity
                                     childKeyFork = childSnapshot.getKey();
                                     Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
                                     completedCredits = value.get("_bidsLastValue").toString();
+                                    toastCompletedCredits = value.get("_bidsLastValue").toString();
                                     completedEmail = value.get("_bidsLastUser").toString();
                                     completedWorkName = value.get("_work_name").toString();
                                     completedName = value.get("_bidsLastUserName").toString();
@@ -652,9 +654,15 @@ public class AuctionActivity extends AppCompatActivity
 
                                     }
                                     @Override public void onCancelled(DatabaseError databaseError) {}});
+
+                                if (Integer.valueOf(toastCompletedCredits) == 1 )
+                                    Toast.makeText(getBaseContext(), "Congratulation, You win " + toastCompletedCredits + " credit", Toast.LENGTH_SHORT).show();
+                                else
+                                    Toast.makeText(getBaseContext(), "Congratulation, You win " + toastCompletedCredits + " credits", Toast.LENGTH_SHORT).show();
                             }
                             @Override public void onCancelled(DatabaseError databaseError) {}
                         });
+
                        AuctionActivity.this.finish();
                     }
                 })

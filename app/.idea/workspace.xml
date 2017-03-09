@@ -27,8 +27,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/../.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/AuctionActivity.java" afterPath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/AuctionActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_TODO.java" afterPath="$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Other/Tab_TODO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/res/layout/content_auction_layout.xml" afterPath="$PROJECT_DIR$/src/main/res/layout/content_auction_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/../build/intermediates/dex-cache/cache.xml" />
     </list>
     <ignored path="app.iws" />
@@ -77,11 +75,13 @@
       <file leaf-file-name="AuctionActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/AuctionActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="271" column="44" selection-start-line="271" selection-start-column="44" selection-end-line="271" selection-end-column="44" />
+            <state relative-caret-position="205">
+              <caret line="665" column="53" selection-start-line="665" selection-start-column="53" selection-end-line="665" selection-end-column="53" />
               <folding>
-                <element signature="e#7148#7454#0" expanded="true" />
-                <element signature="e#7453#7454#0" expanded="true" />
+                <element signature="e#7189#7495#0" expanded="true" />
+                <element signature="e#7494#7495#0" expanded="true" />
+                <element signature="e#20507#37845#0" expanded="true" />
+                <element signature="e#37844#37845#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2366,7 +2366,7 @@
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="last_opened_file_path" value="$USER_HOME$/Documents/Git/IVS kalkulačka/Kalkulačka" />
     <property name="UI_DESIGNER_EDITOR_MODE.NlPaletteManager-NlPreviewForm.SHOW" value="false" />
-    <property name="device.picker.selection" value="3204e4a3c32c7165" />
+    <property name="device.picker.selection" value="03157df3f3a55e25" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="full.screen.before.presentation.mode" value="true" />
@@ -3307,11 +3307,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/flatmate/flatmate/Activity/AuctionActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="271" column="44" selection-start-line="271" selection-start-column="44" selection-end-line="271" selection-end-column="44" />
+        <state relative-caret-position="205">
+          <caret line="665" column="53" selection-start-line="665" selection-start-column="53" selection-end-line="665" selection-end-column="53" />
           <folding>
-            <element signature="e#7148#7454#0" expanded="true" />
-            <element signature="e#7453#7454#0" expanded="true" />
+            <element signature="e#7189#7495#0" expanded="true" />
+            <element signature="e#7494#7495#0" expanded="true" />
+            <element signature="e#20507#37845#0" expanded="true" />
+            <element signature="e#37844#37845#0" expanded="true" />
           </folding>
         </state>
       </provider>
