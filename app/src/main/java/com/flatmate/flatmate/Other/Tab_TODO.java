@@ -210,7 +210,7 @@ public class Tab_TODO extends Fragment
                                             {
                                                 Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
                                                 String childKey = childSnapshot.getKey();
-                                                if ( s.get_status().equals("Status : unauctioned"))
+                                                if ( s.get_status().equals("Status : unauctioned") || s.get_status().equals("Status : uncompleted") )
                                                     db.child("groups").child(groupID).child("works").child("todo").child(childKey).setValue(null);
                                             }
                                             dialog.cancel();

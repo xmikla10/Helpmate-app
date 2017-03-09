@@ -3,6 +3,7 @@ package com.flatmate.flatmate.Activity;
 import android.app.AlarmManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.DiscretePathEffect;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -92,6 +93,7 @@ public class AuctionActivity extends AppCompatActivity
 
     String seekEditable;
     boolean setSeekEditable;
+    public SeekBar seekBar2;
 
     ArrayList<NewWork> a =new ArrayList<>();
     public static final String TAG = AuctionActivity.class.getSimpleName();
@@ -154,12 +156,13 @@ public class AuctionActivity extends AppCompatActivity
                 TextView auctiontext = (TextView) findViewById(R.id.textViewAuctionText);
                 ListView bids = (ListView) findViewById(R.id.listViewAuction);
                 LinearLayout bar = (LinearLayout) findViewById(R.id.seekBar2);
+                LinearLayout seek = (LinearLayout) findViewById(R.id.layoutForSeekBar);
                 LinearLayout lay = (LinearLayout) findViewById(R.id.layMyWorks);
                 FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_bid);
-                SeekBar seekBar = (SeekBar) findViewById(R.id.seekBarAuction);
 
                 auctiontext.setVisibility(View.GONE);
                 bids.setVisibility(View.GONE);
+                seek.setVisibility(View.VISIBLE);
                 bar.setVisibility(View.VISIBLE);
                 lay.setVisibility(View.VISIBLE);
                 fab.setVisibility(View.GONE);
@@ -168,22 +171,6 @@ public class AuctionActivity extends AppCompatActivity
             }
             else
                 setSeekEditable = false;
-
-            SeekBar seekBar = (SeekBar) findViewById(R.id.seekBarAuction);
-            final LinearLayout lay2 = (LinearLayout) findViewById(R.id.layMyWorks);
-            seekBar.setProgress(Integer.valueOf(seekEditable));
-
-            seekBar.setOnTouchListener(new View.OnTouchListener(){
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (setSeekEditable == true)
-                    {
-                        return false;
-                    }
-                    else
-                        return true;
-                }
-            });
 
         }
 
@@ -195,6 +182,32 @@ public class AuctionActivity extends AppCompatActivity
 
         adapter = new CustomAdapterAuction( AuctionActivity.this, helper.retrieve(bidsID));
         lv = (ListView) findViewById(R.id.listViewAuction);
+
+
+        LinearLayout mLayout = (LinearLayout) findViewById(R.id.layoutForSeekBar);
+        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        seekBar2 = new SeekBar(this);
+        seekBar2.setLayoutParams(lparams);
+        seekBar2.setProgress(1);
+        seekBar2.setMax(6);
+        seekBar2.setScrollBarStyle(1);
+        seekBar2.setVisibility(View.VISIBLE);
+        seekBar2.setProgress(Integer.valueOf(seekEditable));
+        mLayout.addView(seekBar2);
+
+        seekBar2.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (setSeekEditable == true)
+                {
+                    return false;
+                }
+                else
+                    return true;
+            }
+        });
+
+
 
         firebaseAuth = FirebaseAuth.getInstance();
         userID = firebaseAuth.getCurrentUser().getUid().toString();
@@ -209,47 +222,60 @@ public class AuctionActivity extends AppCompatActivity
 
                 if(groupID.length() != 0)
                 {
-
-                    SeekBar seekBar = (SeekBar) findViewById(R.id.seekBarAuction);
-                    seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+                    seekBar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
                     {
-                        public void onStopTrackingTouch(SeekBar seekBar) {}
-                        public void onStartTrackingTouch(SeekBar seekBar) {}
-                        public void onProgressChanged(final SeekBar seekBar, int progress, boolean fromUser)
+                        public void onStopTrackingTouch(SeekBar seekBar2) {}
+                        public void onStartTrackingTouch(SeekBar seekBar2) {}
+                        public void onProgressChanged(final SeekBar seekBar2, int progress, boolean fromUser)
                         {
                             db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(bidsIDUpdateSeek).addListenerForSingleValueEvent(new ValueEventListener()
                             {
                                 @Override public void onDataChange(DataSnapshot dataSnapshot)
                                 {
                                     String userCanUpdateSeek = "";
-                                    String seekValue = "";
 
                                     for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
                                     {
-                                        System.out.println("--------> " + dataSnapshot);
                                         childKeyUpdateSeek = childSnapshot.getKey();
                                         Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
                                         userCanUpdateSeek = value.get("_userEmail").toString();
-                                        seekValue = value.get("_workProgress").toString();
                                     }
-
-                                    System.out.println("--------> " + bidsIDUpdateSeek);
-                                    //System.out.println("--------> " + seekBar.getProgress());
-                                    //System.out.println("--------> " + "som v listeneri");
 
                                     if( userCanUpdateSeek.equals(userEmail))
                                     {
                                         Map newWorkData = new HashMap();
-                                        newWorkData.put("_workProgress", String.valueOf(seekBar.getProgress()));
+                                        newWorkData.put("_workProgress", String.valueOf(seekBar2.getProgress()));
                                         db.child("groups").child(groupID).child("works").child("todo").child(childKeyUpdateSeek).updateChildren(newWorkData);
                                     }
-                                    else
-                                        seekBar.setProgress(Integer.valueOf(seekValue));
 
                                 }
                                 @Override public void onCancelled(DatabaseError databaseError) {}
                             });
                         }
+                    });
+
+                    db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(bidsIDUpdateSeek).addChildEventListener(new ChildEventListener()
+                    {
+                        @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
+                        @Override public void onChildChanged(DataSnapshot dataSnapshot, String s)
+                        {
+                            String userCanUpdateSeek = "";
+                            String seekValue = "";
+
+                            Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                            userCanUpdateSeek = value.get("_userEmail").toString();
+                            seekValue = value.get("_workProgress").toString();
+
+                            System.out.println("--------> " + dataSnapshot);
+                            System.out.println("--------> " + seekValue);
+
+                            if( !userCanUpdateSeek.equals(userEmail))
+                                seekBar2.setProgress(Integer.valueOf(seekValue));
+
+                        }
+                        @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                        @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                        @Override public void onCancelled(DatabaseError databaseError) {}
                     });
 
 
@@ -266,11 +292,7 @@ public class AuctionActivity extends AppCompatActivity
 
                             if(status.equals("Status : in progress") || status.equals("Status : done") || status.equals("Status : unauctioned") )
                             {
-                                if (!bidsC.equals("0"))
-                                {
-                                    SeekBar mProgress = (SeekBar) findViewById(R.id.seekBarAuction);
-                                    mProgress.setProgress(Integer.valueOf(progressValue));
-                                }
+
                                 if (!evaluationEmailUser.equals("null")) {
                                     ListView bids = (ListView) findViewById(R.id.listViewAuction);
                                     if (bids.getVisibility() != View.GONE) {
@@ -706,6 +728,7 @@ public class AuctionActivity extends AppCompatActivity
         TextView auctiontext = (TextView) findViewById(R.id.textViewAuctionText);
         ListView bids = (ListView) findViewById(R.id.listViewAuction);
         LinearLayout bar = (LinearLayout) findViewById(R.id.seekBar2);
+        LinearLayout seek = (LinearLayout) findViewById(R.id.layoutForSeekBar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_bid);
 
         TextView textViewTaskStatus = (TextView) findViewById(R.id.textViewTaskStatus);
@@ -727,6 +750,7 @@ public class AuctionActivity extends AppCompatActivity
 
         auctiontext.setVisibility(View.GONE);
         bids.setVisibility(View.GONE);
+        seek.setVisibility(View.VISIBLE);
         bar.setVisibility(View.VISIBLE);
         fab.setVisibility(View.GONE);
     }
