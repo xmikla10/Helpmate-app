@@ -13,6 +13,9 @@ import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -33,6 +36,7 @@ import com.flatmate.flatmate.Firebase.FirebaseHelperWorkCompleted;
 import com.flatmate.flatmate.Firebase.GraphUser;
 import com.flatmate.flatmate.Firebase.NewGroup;
 import com.flatmate.flatmate.Firebase.NewWork;
+import com.flatmate.flatmate.Other.AppPreferences;
 import com.flatmate.flatmate.Other.CustomAdapterCompleted;
 import com.flatmate.flatmate.Other.CustomAdapterInfoGroup;
 import com.flatmate.flatmate.R;
@@ -97,6 +101,16 @@ public class GroupInfoActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_group);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMyGroups);
+        setSupportActionBar(toolbar);
+
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         Bundle extras = getIntent().getExtras();
         isContactLoaded = 1;
 
@@ -372,11 +386,11 @@ public class GroupInfoActivity extends AppCompatActivity
                                     if ( memCount == itemCount)
                                     {
                                         if ( memCount == 1 && isContactLoaded != 1)
-                                            Toast.makeText(GroupInfoActivity.this, " Request send", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(GroupInfoActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
                                         else
                                         {
                                             if ( isContactLoaded != 1)
-                                                Toast.makeText(GroupInfoActivity.this, " Requests send", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(GroupInfoActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
                                         }
 
                                         Intent intent = new Intent(GroupInfoActivity.this, MainActivity.class);
@@ -481,6 +495,32 @@ public class GroupInfoActivity extends AppCompatActivity
         }
         cursor.close();
         startManagingCursor(cursor);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        int id = item.getItemId();
+
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        if (id == R.id.nav_settings)
+        {
+            Intent intent6 = new Intent(this, AppPreferences.class);
+            startActivity(intent6);
+            overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.to_do, menu);
+        return true;
     }
 
 }

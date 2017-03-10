@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentStart="true">
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/fab_margin"
@@ -9,12 +15,6 @@
     android:focusableInTouchMode="true"
     android:id="@+id/notificationButton">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
         <LinearLayout
             android:id="@+id/addNewLayout"
             android:layout_width="match_parent"
@@ -66,14 +66,13 @@
                 android:textSize="17sp"
                 android:gravity="center_vertical"/>
 
-            <ListView
-                android:id="@+id/listViewInfoGroup"
-                android:divider="@null"
-                android:dividerHeight="0dp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                />
-            
+                <ListView
+                    android:id="@+id/listViewInfoGroup"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    />
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="10dp" />
@@ -123,5 +122,5 @@
                 style="@style/Base.Widget.AppCompat.Button" />
 
         </LinearLayout>
-    </ScrollView>
 </RelativeLayout>
+    </ScrollView>

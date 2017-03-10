@@ -561,11 +561,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
                 {
                     Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                    String childKey = childSnapshot.getKey();
                     String existGroupID = value.get("_group").toString();
 
                     if (!existGroupID.equals(""))
                     {
+                        Intent intent = new Intent(MainActivity.this, AddNewWorkActivity.class);
                         startActivityForResult(new Intent(MainActivity.this, AddNewWorkActivity.class), AddNewWorkActivity.ADD_FINISHED);
+                        //startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                     }
                     else

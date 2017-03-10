@@ -50,18 +50,22 @@
 
         <activity
             android:label="Add new work"
+            android:theme="@style/AppTheme.NoActionBar"
             android:name=".Activity.AddNewWorkActivity"/>
 
         <activity
             android:label="My Groups"
+            android:theme="@style/AppTheme.NoActionBar"
             android:name=".Activity.MyGroupsActivity"/>
 
         <activity
             android:label="Group Info"
+            android:theme="@style/AppTheme.NoActionBar"
             android:name=".Activity.GroupInfoActivity"/>
 
         <activity
             android:label="Add Group"
+            android:theme="@style/AppTheme.NoActionBar"
             android:name=".Activity.CreateNewGroupActivity"/>
 
         <activity
@@ -76,10 +80,12 @@
 
         <activity
             android:label="Activity Graph"
+            android:theme="@style/AppTheme.NoActionBar"
             android:name=".Activity.GraphActivity"/>
 
         <activity
             android:label="Work details"
+            android:theme="@style/AppTheme.NoActionBar"
             android:name=".Activity.AuctionActivity"/>
 
         <activity
@@ -95,6 +101,8 @@
             android:theme="@style/AppTheme.CustomTheme" />
 
         <activity
+            android:label="Settings"
+            android:theme="@style/AppTheme.NoActionBar"
             android:name=".Other.AppPreferences"/>
 
     </application>

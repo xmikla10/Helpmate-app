@@ -3,8 +3,13 @@ package com.flatmate.flatmate.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -21,6 +26,7 @@ import com.flatmate.flatmate.Firebase.FirebaseHelperMyGroups;
 import com.flatmate.flatmate.Firebase.FirebaseHelperMyWorks;
 import com.flatmate.flatmate.Firebase.NewGroup;
 import com.flatmate.flatmate.Firebase.NewWork;
+import com.flatmate.flatmate.Other.AppPreferences;
 import com.flatmate.flatmate.Other.CustomAdapterMyGroups;
 import com.flatmate.flatmate.Other.CustomAdapterMyWorks;
 import com.flatmate.flatmate.R;
@@ -59,6 +65,15 @@ public class MyGroupsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_groups_layout);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMyGroups);
+        setSupportActionBar(toolbar);
+
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         db = FirebaseDatabase.getInstance().getReference();
         helper = new FirebaseHelperMyGroups(db);
@@ -195,6 +210,32 @@ public class MyGroupsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        int id = item.getItemId();
+
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        if (id == R.id.nav_settings)
+        {
+            Intent intent6 = new Intent(this, AppPreferences.class);
+            startActivity(intent6);
+            overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.to_do, menu);
+        return true;
     }
 
 }

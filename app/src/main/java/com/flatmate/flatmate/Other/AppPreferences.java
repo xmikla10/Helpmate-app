@@ -2,6 +2,7 @@ package com.flatmate.flatmate.Other;
 
 import android.app.Activity;
 import android.preference.CheckBoxPreference;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.CompoundButton;
 
@@ -23,7 +24,6 @@ public class AppPreferences extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
 
         getFragmentManager().beginTransaction().replace(android.R.id.content,
                 new PrefsFragment()).commit();

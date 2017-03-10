@@ -1,16 +1,21 @@
 package com.flatmate.flatmate.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import android.graphics.Color;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
+import com.flatmate.flatmate.Other.AppPreferences;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -58,6 +63,16 @@ public class GraphActivity extends AppCompatActivity
         startGraph = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_layout);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMyGroups);
+        setSupportActionBar(toolbar);
+
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         Log.d(TAG, "onCreate: starting to create chart");
 
         Calendar calendar = Calendar.getInstance();
@@ -370,4 +385,31 @@ public class GraphActivity extends AppCompatActivity
         });
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        int id = item.getItemId();
+
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        if (id == R.id.nav_settings)
+        {
+            Intent intent6 = new Intent(this, AppPreferences.class);
+            startActivity(intent6);
+            overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.to_do, menu);
+        return true;
+    }
+
 }
