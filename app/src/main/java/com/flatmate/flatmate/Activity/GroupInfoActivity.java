@@ -39,6 +39,7 @@ import com.flatmate.flatmate.Firebase.NewWork;
 import com.flatmate.flatmate.Other.AppPreferences;
 import com.flatmate.flatmate.Other.CustomAdapterCompleted;
 import com.flatmate.flatmate.Other.CustomAdapterInfoGroup;
+import com.flatmate.flatmate.Other.SetNotification;
 import com.flatmate.flatmate.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -242,6 +243,9 @@ public class GroupInfoActivity extends AppCompatActivity
                                                                         Map newUserData = new HashMap();
                                                                         newUserData.put("_membersCount", memCount.toString());
                                                                         db.child("groups").child(groupID).child("graph").child("months").child("members").child(childKey).updateChildren(newUserData);
+
+                                                                        SetNotification set = new SetNotification();
+                                                                        set.Set(groupID, 3, s.get_user_name());
 
                                                                         Intent intent = new Intent(GroupInfoActivity.this, MainActivity.class);
                                                                         startActivity(intent);

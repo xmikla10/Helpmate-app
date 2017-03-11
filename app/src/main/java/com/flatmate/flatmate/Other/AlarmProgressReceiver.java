@@ -33,6 +33,7 @@ public class AlarmProgressReceiver extends WakefulBroadcastReceiver
     private FirebaseAuth firebaseAuth;
     String userID;
     String status;
+    String work_name;
 
 
     @Override
@@ -59,6 +60,7 @@ public class AlarmProgressReceiver extends WakefulBroadcastReceiver
                     bidsLastUser = value.get("_bidsLastUser").toString();
                     bidsLastUserName = value.get("_bidsLastUserName").toString();
                     status = value.get("_status").toString();
+                    work_name = value.get("_work_name").toString();
                 }
 
                 if ( status.equals("Status : in progress"))
@@ -85,6 +87,8 @@ public class AlarmProgressReceiver extends WakefulBroadcastReceiver
                     newEvaluationData.put("_status", "Status : uncompleted");
                     newEvaluationData.put("_deadline", dateFormat.format(cal.getTime()));
                     db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newEvaluationData);
+                    SetNotification set = new SetNotification();
+                    set.Set(groupID, 8, work_name );
 
                 }
 

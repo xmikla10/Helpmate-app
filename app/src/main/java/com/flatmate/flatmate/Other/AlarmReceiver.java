@@ -41,6 +41,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
     String bidsAddUser;
     String bidsLastUserName;
     String childKey;
+    String work_name;
     DatabaseReference db;
     String  bidsID;
     private FirebaseAuth firebaseAuth;
@@ -74,6 +75,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
                     bidsAddUser = value.get("_bidsAddUsers").toString();
                     bidsLastUser = value.get("_bidsLastUser").toString();
                     bidsLastUserName = value.get("_bidsLastUserName").toString();
+                    work_name = value.get("_work_name").toString();
                     status = value.get("_status").toString();
                     date = value.get("_date").toString();
                     time = value.get("_time").toString();
@@ -88,6 +90,8 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
                         newEvaluationData.put("_status", "Status : unauctioned");
 
                         db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newEvaluationData);
+                        SetNotification set = new SetNotification();
+                        set.Set(groupID, 8, work_name );
                     }
                     else
                     {
@@ -95,6 +99,9 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
                         newEvaluationData.put("_status", "Status : in progress");
 
                         db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newEvaluationData);
+                        SetNotification set = new SetNotification();
+                        set.Set(groupID, 6, work_name );
+                        set.Set(groupID, 4, work_name );
 
                     }
                 }

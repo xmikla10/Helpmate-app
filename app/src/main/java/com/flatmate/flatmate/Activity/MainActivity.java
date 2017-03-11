@@ -2,9 +2,12 @@
 package com.flatmate.flatmate.Activity;
 
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -33,6 +36,7 @@ import com.flatmate.flatmate.Other.CustomAdapterToDo;
 import com.flatmate.flatmate.Firebase.NewWork;
 import com.flatmate.flatmate.Other.FontsOverride;
 import com.flatmate.flatmate.Other.Pager;
+import com.flatmate.flatmate.Other.SetNotification;
 import com.flatmate.flatmate.Other.WorkDoneReceiver;
 import com.flatmate.flatmate.R;
 import com.google.firebase.database.ChildEventListener;
@@ -118,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         init();
         setUserName();
+        control_notification();
         setEvaluationByDB();
 
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -400,6 +405,50 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     }
 
+    public void control_notification()
+    {
+        db = FirebaseDatabase.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+        userID = firebaseAuth.getCurrentUser().getUid().toString();
+
+        db.child("user").child("users").child(userID).child("notifications").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s)
+            {
+                Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                String notif_group_name = value.get("_group_name").toString();
+                String notif_message = value.get("_message").toString();
+                String childKey = dataSnapshot.getKey();
+
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, (int) System.currentTimeMillis(), intent, 0);
+
+                Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                long[] vibrate = { 0, 200 };
+
+                Notification notif = new Notification.Builder(MainActivity.this)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setVibrate(vibrate)
+                        .setSound(alarmSound)
+                        .setContentTitle(notif_message)
+                        .setContentText(notif_group_name)
+                        .setContentIntent(pIntent).build();
+                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+                notif.flags |= Notification.FLAG_AUTO_CANCEL;
+
+                notificationManager.notify(0, notif);
+                db.child("user").child("users").child(userID).child("notifications").child(childKey).setValue(null);
+
+
+            }
+            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
     public void setUserName(){
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -489,6 +538,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                                                             Map newUserData = new HashMap();
                                                                             newUserData.put("_membersCount", finall.toString());
                                                                             db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("control").child(childKey).updateChildren(newUserData);
+
+                                                                            SetNotification set = new SetNotification();
+                                                                            set.Set(groupID, 2, userName);
                                                                         }
                                                                     }
                                                                     @Override public void onCancelled(DatabaseError databaseError) {}

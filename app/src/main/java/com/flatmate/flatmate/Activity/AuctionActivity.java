@@ -37,6 +37,7 @@ import com.flatmate.flatmate.Other.BidPopUp;
 import com.flatmate.flatmate.Other.CustomAdapterAuction;
 import com.flatmate.flatmate.Other.CustomAdapterMyWorks;
 import com.flatmate.flatmate.Other.CustomAdapterToDo;
+import com.flatmate.flatmate.Other.SetNotification;
 import com.flatmate.flatmate.Other.WorkDoneReceiver;
 import com.flatmate.flatmate.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -85,6 +86,7 @@ public class AuctionActivity extends AppCompatActivity
     String statusToShow;
     String lastUser;
     String actualMonth;
+    String work_name;
 
     Boolean bidsLastIsNull;
     FirebaseHelperAuction helper;
@@ -205,7 +207,7 @@ public class AuctionActivity extends AppCompatActivity
         seekBar2.setLayoutParams(lparams);
         seekBar2.setProgress(1);
         seekBar2.setMax(6);
-        seekBar2.setScrollBarStyle(1);
+        seekBar2.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
         seekBar2.setVisibility(View.VISIBLE);
         seekBar2.setProgress(Integer.valueOf(seekEditable));
         mLayout.addView(seekBar2);
@@ -473,6 +475,9 @@ public class AuctionActivity extends AppCompatActivity
                                 completedWork.set_date(date);
 
                                 db.child("groups").child(groupID).child("completed").child("works").push().setValue(completedWork);
+
+                                SetNotification set = new SetNotification();
+                                set.Set(groupID, 5, completedWorkName);
 
                                 Map newCompletedData = new HashMap();
 
@@ -830,6 +835,7 @@ public class AuctionActivity extends AppCompatActivity
                                 bidsCount = value.get("_bidsCount").toString();
                                 bidsAddUser = value.get("_bidsAddUsers").toString();
                                 bidsLastUser = value.get("_bidsLastUser").toString();
+                                work_name = value.get("_work_name").toString();
                             }
 
                             if(!bidsLastValue.equals("null") && !bid.equals("not interested"))
@@ -922,11 +928,16 @@ public class AuctionActivity extends AppCompatActivity
                                             {
                                                 newEvaluationData2.put("_status", "Status : unauctioned");
                                                 db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newEvaluationData2);
+                                                SetNotification set = new SetNotification();
+                                                set.Set(groupID, 8, work_name );
                                             }
                                             else
                                             {
                                                 newEvaluationData.put("_status", "Status : in progress");
                                                 db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newEvaluationData);
+                                                SetNotification set = new SetNotification();
+                                                set.Set(groupID, 6, work_name );
+                                                set.Set(groupID, 4, work_name );
                                             }
 
                                             Intent intent = new Intent(AuctionActivity.this, MainActivity.class);

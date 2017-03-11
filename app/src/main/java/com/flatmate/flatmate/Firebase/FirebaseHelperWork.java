@@ -52,7 +52,7 @@ public class FirebaseHelperWork
                          {
                              db.child("groups").child(groupID).child("works").child("todo").push().setValue(newWork1);
                              SetNotification set = new SetNotification();
-                             set.Set(groupID, 1);
+                             set.Set(groupID, 1, newWork.get_work_name());
                          }
                      }
                      @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
