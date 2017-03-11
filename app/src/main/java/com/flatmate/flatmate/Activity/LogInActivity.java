@@ -73,12 +73,12 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
         //checking if email and passwords are empty
         if(TextUtils.isEmpty(email)){
-            Toast.makeText(this,"Please enter email",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.enter_email,Toast.LENGTH_LONG).show();
             return;
         }
 
         if(TextUtils.isEmpty(password)){
-            Toast.makeText(this,"Please enter password",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.enter_password,Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -86,7 +86,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         //displaying a progress dialog
 
 
-        progressDialog.setMessage("Log In Please Wait...");
+        progressDialog.setMessage(getString(R.string.log_in_wait));
         progressDialog.show();
 
         //logging in the user

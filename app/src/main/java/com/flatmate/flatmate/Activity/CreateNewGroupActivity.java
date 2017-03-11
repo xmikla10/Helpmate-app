@@ -169,7 +169,7 @@ public class CreateNewGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                progressDialogCreating.setMessage("Creating new group, please wait");
+                progressDialogCreating.setMessage(getString(R.string.progress_creating_group));
                 progressDialogCreating.setCancelable(false);
                 progressDialogCreating.show();
                 isEmailEnteredAlready = "";
@@ -214,7 +214,8 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                                     memCount++;
                                     if (dataSnapshot.getValue() == null)
                                     {
-                                        System.out.println("--------->" + "nenasiel som");
+                                        //generovat email
+                                        System.out.println("" + "");
                                     }
 
                                     for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
@@ -248,7 +249,7 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                 else
                 {
                     progressDialogCreating.dismiss();
-                    Toast.makeText(CreateNewGroupActivity.this, wrongEmail +" - wrong email address", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateNewGroupActivity.this, wrongEmail +getString(R.string.wrong_email), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -411,7 +412,7 @@ public class CreateNewGroupActivity extends AppCompatActivity {
 
     private void openprogresdialog(final View view) {
         // TODO Auto-generated method stub
-        final ProgressDialog progDailog = ProgressDialog.show(CreateNewGroupActivity.this, "Loading contacts", "Please wait...", true);
+        final ProgressDialog progDailog = ProgressDialog.show(CreateNewGroupActivity.this, getString(R.string.loading_contacts), getString(R.string.please_wait), true);
 
         new Thread() {
             public void run() {
@@ -434,7 +435,7 @@ public class CreateNewGroupActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                mLayout.addView(createNewTextView("name@email.com"));
+                mLayout.addView(createNewTextView(getString(R.string.name_email)));
             }
         };
     }
@@ -446,7 +447,7 @@ public class CreateNewGroupActivity extends AppCompatActivity {
         editTexts.add( editText);
         editText.setLayoutParams(lparams);
         editText.setTop(25);
-        editText.setHint("name@email.com");
+        editText.setHint(getString(R.string.name_email));
         editText.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#fb7b0a")));
         editText.setHintTextColor(Color.parseColor("#d1d1d1"));
         mAdapter = new SimpleAdapter(this, mPeopleList, R.layout.custcontview, new String[] { "Name", "Phone" } , new int[] {R.id.ccontName, R.id.ccontNo});
@@ -469,8 +470,9 @@ public class CreateNewGroupActivity extends AppCompatActivity {
     private void readContacts()
     {
         mPeopleList.clear();
-        ContentResolver cr =getContentResolver();
+        ContentResolver cr = getContentResolver();
         Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+
         while (cursor.moveToNext())
         {
             displayName="";emailAddress=""; phoneNumber="";
@@ -489,7 +491,6 @@ public class CreateNewGroupActivity extends AppCompatActivity {
             emails.close();
         }
         cursor.close();
-        startManagingCursor(cursor);
     }
 
     @Override

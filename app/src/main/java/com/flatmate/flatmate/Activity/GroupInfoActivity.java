@@ -183,11 +183,14 @@ public class GroupInfoActivity extends AppCompatActivity
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(GroupInfoActivity.this);
                 builder.setMessage("Want you delete user " + s.get_user_name() +" ?")
-                        .setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id)
                             {
                                 if( admin.equals("true") || userID.equals(s.get_user_ID()))
                                 {
+                                    SetNotification set = new SetNotification();
+                                    set.Set(groupID, 3, s.get_user_name());
+
                                     db.child("user").child("groups").child("members").child(groupID).child("members").addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -244,9 +247,6 @@ public class GroupInfoActivity extends AppCompatActivity
                                                                         newUserData.put("_membersCount", memCount.toString());
                                                                         db.child("groups").child(groupID).child("graph").child("months").child("members").child(childKey).updateChildren(newUserData);
 
-                                                                        SetNotification set = new SetNotification();
-                                                                        set.Set(groupID, 3, s.get_user_name());
-
                                                                         Intent intent = new Intent(GroupInfoActivity.this, MainActivity.class);
                                                                         startActivity(intent);
                                                                         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
@@ -262,7 +262,7 @@ public class GroupInfoActivity extends AppCompatActivity
                                     });
                                 }
                                 else
-                                    Toast.makeText(GroupInfoActivity.this, "Just creator of the group can delete other users", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(GroupInfoActivity.this, R.string.toast_delete, Toast.LENGTH_SHORT).show();
 
                             }
                         }).setPositiveButton("No", new DialogInterface.OnClickListener() {
@@ -364,7 +364,7 @@ public class GroupInfoActivity extends AppCompatActivity
                                     if (dataSnapshot.getValue() == null)
                                     {
                                         //generovat email
-                                        System.out.println("--------->" + "nenasiel som");
+                                        System.out.println("" + "");
                                     }
 
                                     for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
@@ -390,11 +390,11 @@ public class GroupInfoActivity extends AppCompatActivity
                                     if ( memCount == itemCount)
                                     {
                                         if ( memCount == 1 && isContactLoaded != 1)
-                                            Toast.makeText(GroupInfoActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(GroupInfoActivity.this, R.string.changes_saved, Toast.LENGTH_SHORT).show();
                                         else
                                         {
                                             if ( isContactLoaded != 1)
-                                                Toast.makeText(GroupInfoActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(GroupInfoActivity.this, getString(R.string.changes_saved), Toast.LENGTH_SHORT).show();
                                         }
 
                                         Intent intent = new Intent(GroupInfoActivity.this, MainActivity.class);
@@ -407,7 +407,7 @@ public class GroupInfoActivity extends AppCompatActivity
                     }
                 }
                 else
-                    Toast.makeText(GroupInfoActivity.this, wrongEmail +" - wrong email address", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GroupInfoActivity.this, wrongEmail + getString(R.string.wrong_email), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -420,7 +420,7 @@ public class GroupInfoActivity extends AppCompatActivity
 
     private void openprogresdialog(final View view) {
         // TODO Auto-generated method stub
-        final ProgressDialog progDailog = ProgressDialog.show(GroupInfoActivity.this, "Loading contacts", "Please wait...", true);
+        final ProgressDialog progDailog = ProgressDialog.show(GroupInfoActivity.this, getString(R.string.loading_contacts), getString(R.string.please_wait), true);
 
         new Thread() {
             public void run() {
@@ -443,7 +443,7 @@ public class GroupInfoActivity extends AppCompatActivity
 
             @Override
             public void onClick(View v) {
-                mLayout.addView(createNewTextView("name@email.com"));
+                mLayout.addView(createNewTextView(getString(R.string.name_email)));
             }
         };
     }
@@ -455,7 +455,7 @@ public class GroupInfoActivity extends AppCompatActivity
         editTexts.add( editText);
         editText.setLayoutParams(lparams);
         editText.setTop(25);
-        editText.setHint("name@email.com");
+        editText.setHint(getString(R.string.name_email));
         editText.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#fb7b0a")));
         editText.setHintTextColor(Color.parseColor("#d1d1d1"));
         mAdapter = new SimpleAdapter(this, mPeopleList, R.layout.custcontview, new String[] { "Name", "Phone" } , new int[] {R.id.ccontName, R.id.ccontNo});
@@ -480,6 +480,7 @@ public class GroupInfoActivity extends AppCompatActivity
         mPeopleList.clear();
         ContentResolver cr =getContentResolver();
         Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+
         while (cursor.moveToNext())
         {
             displayName="";emailAddress=""; phoneNumber="";
@@ -498,7 +499,6 @@ public class GroupInfoActivity extends AppCompatActivity
             emails.close();
         }
         cursor.close();
-        startManagingCursor(cursor);
     }
 
     @Override

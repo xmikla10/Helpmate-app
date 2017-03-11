@@ -74,24 +74,24 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
         //checking if email and passwords are empty
         if(TextUtils.isEmpty(email)){
-            Toast.makeText(this,"Please enter email",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,getString(R.string.enter_email),Toast.LENGTH_LONG).show();
             return;
         }
 
         if(TextUtils.isEmpty(password)){
-            Toast.makeText(this,"Please enter password",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,getString(R.string.enter_password),Toast.LENGTH_LONG).show();
             return;
         }
 
         if( password.length() < 7){
-            Toast.makeText(this,"Password must have at least 7 characters",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.password_must,Toast.LENGTH_LONG).show();
             return;
         }
 
         //if the email and password are not empty
         //displaying a progress dialog
 
-        progressDialog.setMessage("Registering Please Wait...");
+        progressDialog.setMessage(getString(R.string.registering));
         progressDialog.show();
 
         //creating a new user
@@ -102,7 +102,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         //checking if success
                         if(task.isSuccessful()){
                             //display some message here
-                            Toast.makeText(SignInActivity.this,"Successfully registered",Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignInActivity.this, R.string.successfully_registered,Toast.LENGTH_LONG).show();
 
                             db = FirebaseDatabase.getInstance().getReference();
                             helper = new FirebaseHelperUser(db);
@@ -125,7 +125,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
                         }else{
                             //display some message here
-                            Toast.makeText(SignInActivity.this,"Registration Error",Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignInActivity.this, R.string.reg_error,Toast.LENGTH_LONG).show();
                         }
                         progressDialog.dismiss();
                     }

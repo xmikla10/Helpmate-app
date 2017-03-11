@@ -283,9 +283,6 @@ public class AuctionActivity extends AppCompatActivity
                             userCanUpdateSeek = value.get("_userEmail").toString();
                             seekValue = value.get("_workProgress").toString();
 
-                            System.out.println("--------> " + dataSnapshot);
-                            System.out.println("--------> " + seekValue);
-
                             if( !userCanUpdateSeek.equals(userEmail))
                                 seekBar2.setProgress(Integer.valueOf(seekValue));
 
@@ -307,7 +304,7 @@ public class AuctionActivity extends AppCompatActivity
                             String evaluationEmailUser = value.get("_userEmail").toString();
                             String status= value.get("_status").toString();
 
-                            if(status.equals("Status : in progress") || status.equals("Status : done") || status.equals("Status : unauctioned") )
+                            if(status.equals(getString(R.string.status_progress)) || status.equals(getString(R.string.status_done)) || status.equals(getString(R.string.status_unauctioned)) )
                             {
 
                                 if (!evaluationEmailUser.equals("null")) {
@@ -317,7 +314,7 @@ public class AuctionActivity extends AppCompatActivity
                                     }
                                 }
 
-                                if(status.equals("Status : unauctioned"))
+                                if(status.equals(getString(R.string.status_unauctioned)))
                                     finish();
                             }
                         }
@@ -338,7 +335,7 @@ public class AuctionActivity extends AppCompatActivity
                             lastUser = value.get("_bidsLastUserName").toString();
                         }
 
-                        if ( !statusToShow.equals("Status : auctioning"))
+                        if ( !statusToShow.equals(getString(R.string.status_auctioning)))
                         {
                             endOfEvaluation(lastUser, statusToShow);
                         }
@@ -379,7 +376,7 @@ public class AuctionActivity extends AppCompatActivity
                             lastUser = value.get("_bidsLastUserName").toString();
                         }
 
-                        if ( !statusToShow.equals("Status : auctioning"))
+                        if ( !statusToShow.equals(getString(R.string.status_auctioning)))
                         {
                             endOfEvaluation(lastUser, statusToShow);
                         }
@@ -444,9 +441,9 @@ public class AuctionActivity extends AppCompatActivity
     public void onClickButtonWorkDone(View view)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to finish this work?")
+        builder.setMessage(R.string.dialog_finish_work)
                 .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id)
                     {
                         db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(bidsID).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -469,7 +466,7 @@ public class AuctionActivity extends AppCompatActivity
                                 completedWork.set_work_name(completedWorkName);
                                 completedWork.set_bidsLastUserName(completedName);
                                 completedWork.set_bidsLastUser(completedEmail);
-                                completedWork.set_credits(completedCredits + " credits");
+                                completedWork.set_credits(completedCredits + getString(R.string.credits));
                                 completedWork.set_workProgress("6");
                                 String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
                                 completedWork.set_date(date);
@@ -483,7 +480,7 @@ public class AuctionActivity extends AppCompatActivity
 
                                 newCompletedData.put("_userEmail", "null");
                                 newCompletedData.put("_workProgress", "6");
-                                newCompletedData.put("_status", "Status : done");
+                                newCompletedData.put("_status", getString(R.string.status_done));
 
                                 db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newCompletedData);
 
@@ -675,9 +672,9 @@ public class AuctionActivity extends AppCompatActivity
                                     @Override public void onCancelled(DatabaseError databaseError) {}});
 
                                 if (Integer.valueOf(toastCompletedCredits) == 1 )
-                                    Toast.makeText(getBaseContext(), "Congratulation, You win " + toastCompletedCredits + " credit", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getBaseContext(), getString(R.string.congrat) + toastCompletedCredits + getString(R.string.credits), Toast.LENGTH_SHORT).show();
                                 else
-                                    Toast.makeText(getBaseContext(), "Congratulation, You win " + toastCompletedCredits + " credits", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getBaseContext(), getString(R.string.congrat) + toastCompletedCredits + getString(R.string.credits), Toast.LENGTH_SHORT).show();
                             }
                             @Override public void onCancelled(DatabaseError databaseError) {}
                         });
@@ -685,7 +682,7 @@ public class AuctionActivity extends AppCompatActivity
                        AuctionActivity.this.finish();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id)
                     {
                         dialog.cancel();
@@ -712,8 +709,6 @@ public class AuctionActivity extends AppCompatActivity
                 Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
                 String cred = value.get("_credits").toString();
                 credits = Integer.valueOf(cred);
-                Log.d("Control - childKey", "childKey");
-
             }
 
             //tu chcem už pridať
@@ -762,14 +757,14 @@ public class AuctionActivity extends AppCompatActivity
         TextView auctionStatus = (TextView) findViewById(R.id.auctionStatus);
         TextView auctionTime = (TextView) findViewById(R.id.auctionTime);
 
-        if ( status.equals("Status : done"))
+        if ( status.equals(getString(R.string.status_done)))
         {
-            textViewTaskStatus.setText("Work completed by  :");
+            textViewTaskStatus.setText(R.string.work_completed_by);
             textViewTaskStatus.setTextSize(15);
         }
         else
         {
-            textViewTaskStatus.setText("Who won?");
+            textViewTaskStatus.setText(R.string.who_won);
             textViewTaskStatus.setTextSize(17);
         }
         auctionStatus.setText(status);
@@ -838,7 +833,7 @@ public class AuctionActivity extends AppCompatActivity
                                 work_name = value.get("_work_name").toString();
                             }
 
-                            if(!bidsLastValue.equals("null") && !bid.equals("not interested"))
+                            if(!bidsLastValue.equals("null") && !bid.equals(getString(R.string.not_interested)))
                             {
                                 bidsLast = Integer.valueOf(bidsLastValue);
                                 bidsActual = Integer.valueOf(bid);
@@ -852,7 +847,7 @@ public class AuctionActivity extends AppCompatActivity
 
                             if (bidsLast <= bidsActual && bidsLastIsNull == false)
                             {
-                                Toast.makeText(getBaseContext(), "Please, enter a lesser bid then a last user", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getBaseContext(), R.string.lesser_bid, Toast.LENGTH_SHORT).show();
                             }
                             else
                             {
@@ -875,7 +870,7 @@ public class AuctionActivity extends AppCompatActivity
                                         {
                                             if (bidsAddUser.indexOf(userID) != -1)
                                             {
-                                                System.out.println("------->" + "Zhoda");
+                                                System.out.println("" + "");
                                             }
                                             else
                                             {
@@ -887,7 +882,7 @@ public class AuctionActivity extends AppCompatActivity
                                             }
                                         }
 
-                                        if(!bid.equals("not interested"))
+                                        if(!bid.equals(getString(R.string.not_interested)))
                                         {
                                             bidsLastValue = bid;
                                             newWorkData.put("_bidsLastValue", bidsLastValue);
@@ -901,12 +896,12 @@ public class AuctionActivity extends AppCompatActivity
 
                                         NewBid newbid = new NewBid();
 
-                                        if(bid.equals("not interested"))
+                                        if(bid.equals(getString(R.string.not_interested)))
                                         {
                                             newbid.set_credits(bid);
                                         }
                                         else
-                                            newbid.set_credits(bid + " credits");
+                                            newbid.set_credits(bid + getString(R.string.credits));
 
                                         newbid.set_userName(userName);
                                         helper.save(newbid, bidsID, groupID);
@@ -926,14 +921,14 @@ public class AuctionActivity extends AppCompatActivity
 
                                             if ( bidsLastUser.equals("null") && evaluation != true)
                                             {
-                                                newEvaluationData2.put("_status", "Status : unauctioned");
+                                                newEvaluationData2.put("_status", getString(R.string.status_unauctioned));
                                                 db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newEvaluationData2);
                                                 SetNotification set = new SetNotification();
                                                 set.Set(groupID, 8, work_name );
                                             }
                                             else
                                             {
-                                                newEvaluationData.put("_status", "Status : in progress");
+                                                newEvaluationData.put("_status", getString(R.string.status_progress));
                                                 db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newEvaluationData);
                                                 SetNotification set = new SetNotification();
                                                 set.Set(groupID, 6, work_name );

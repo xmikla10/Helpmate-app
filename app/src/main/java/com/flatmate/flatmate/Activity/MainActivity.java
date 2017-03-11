@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
                                     Integer Year, Month, Day, Hour, Minute;
 
-                                    if (evaluationStatus.equals("Status : auctioning")) {
+                                    if (evaluationStatus.equals(getString(R.string.status_auctioning))) {
                                         Hour = Integer.valueOf(evaluationDeadline.substring(0, 2));
                                         Minute = Integer.valueOf(evaluationDeadline.substring(3, 5));
                                         Day = Integer.valueOf(evaluationDeadline.substring(6, 8));
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                         cal = null;
                                     }
 
-                                    if (evaluationStatus.equals("Status : done")) {
+                                    if (evaluationStatus.equals(getString(R.string.status_done))) {
                                         Hour = Integer.valueOf(evaluationDeadline.substring(0, 2));
                                         Minute = Integer.valueOf(evaluationDeadline.substring(3, 5));
                                         Day = Integer.valueOf(evaluationDeadline.substring(6, 8));
@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                         cal = null;
                                     }
 
-                                    if (evaluationStatus.equals("Status : in progress")) {
+                                    if (evaluationStatus.equals(getString(R.string.status_progress))) {
                                         evaluationDeadline = evaluationTime + " " + evaluationDate;
                                         Hour = Integer.valueOf(evaluationDeadline.substring(0, 2));
                                         Minute = Integer.valueOf(evaluationDeadline.substring(3, 5));
@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                         cal = null;
                                     }
 
-                                    if (evaluationStatus.equals("Status : uncompleted")) {
+                                    if (evaluationStatus.equals(getString(R.string.status_uncompleted))) {
                                         Hour = Integer.valueOf(evaluationDeadline.substring(0, 2));
                                         Minute = Integer.valueOf(evaluationDeadline.substring(3, 5));
                                         Day = Integer.valueOf(evaluationDeadline.substring(6, 8));
@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
                             Integer Year, Month, Day, Hour, Minute;
 
-                            if ( evaluationStatus.equals("Status : in progress"))
+                            if ( evaluationStatus.equals(getString(R.string.status_progress)))
                             {
                                 evaluationDeadline = evaluationTime + " " + evaluationDate;
                                 Hour = Integer.valueOf(evaluationDeadline.substring(0,2));
@@ -356,7 +356,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                 cal = null;
                             }
 
-                            if ( evaluationStatus.equals("Status : uncompleted"))
+                            if ( evaluationStatus.equals(getString(R.string.status_uncompleted)))
                             {
                                 Hour = Integer.valueOf(evaluationDeadline.substring(0,2));
                                 Minute = Integer.valueOf(evaluationDeadline.substring(3,5));
@@ -428,7 +428,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
                 Notification notif = new Notification.Builder(MainActivity.this)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setVibrate(vibrate)
                         .setSound(alarmSound)
                         .setContentTitle(notif_message)
                         .setContentText(notif_group_name)
@@ -482,9 +481,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                             final String key = dataSnapshot.getKey().toString();
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                            builder.setTitle("Request").setMessage("User " + senderEmail + " add you to group " + addGroupName)
+                            builder.setTitle(R.string.Request).setMessage(getString(R.string.user) + senderEmail + getString(R.string.add_you) + addGroupName)
                                     .setCancelable(false)
-                                    .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                                    .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                                         public void onClick(final DialogInterface dialog, int id)
                                         {
 
@@ -493,6 +492,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                             actCal.setTime(actDate);
                                             Integer monthInInt = actCal.get(Calendar.MONTH) + 1;
                                             actualMonth = getMonth(monthInInt);
+                                            SetNotification set = new SetNotification();
+                                            set.Set(addGroupID, 2, userName);
 
                                             db.child("groups").child(addGroupID).child("graph").child("months").child("members").addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override public void onDataChange(DataSnapshot dataSnapshot)
@@ -539,8 +540,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                                                             newUserData.put("_membersCount", finall.toString());
                                                                             db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("control").child(childKey).updateChildren(newUserData);
 
-                                                                            SetNotification set = new SetNotification();
-                                                                            set.Set(groupID, 2, userName);
                                                                         }
                                                                     }
                                                                     @Override public void onCancelled(DatabaseError databaseError) {}
@@ -570,7 +569,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                                                 }
 
                                                                 dialog.cancel();
-                                                                Toast.makeText(MainActivity.this,"Group "+ addGroupName + " was added to your groups",Toast.LENGTH_LONG).show();
+                                                                Toast.makeText(MainActivity.this,getString(R.string.group)+ addGroupName + getString(R.string.group_added),Toast.LENGTH_LONG).show();
 
                                                             }
                                                         }@Override public void onCancelled(DatabaseError databaseError) {}
@@ -579,7 +578,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                             });
                                         }
                                     })
-                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id)
                                         {
                                             db.child("user").child("users").child(userID).child("messages").child(key).setValue(null);
@@ -624,7 +623,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                     }
                     else
-                        Toast.makeText(MainActivity.this,"You must have selected group for add new work. If you are not a member of any group, you must create a group",Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, R.string.add_new_work_toast,Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -769,31 +768,31 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         Calendar cal = new GregorianCalendar();
         cal.setTime(myDateTime);
 
-        if ( deadlineR.equals("1 hour"))
+        if ( deadlineR.equals(getString(R.string.one_hour)))
         {
             cal.add(Calendar.HOUR_OF_DAY, 1);
         }
-        else if ( deadlineR.equals("3 hours"))
+        else if ( deadlineR.equals(getString(R.string.three_hours)))
         {
             cal.add(Calendar.HOUR_OF_DAY, 2);
         }
-        else if ( deadlineR.equals("6 hours"))
+        else if ( deadlineR.equals(getString(R.string.six_hours)))
         {
             cal.add(Calendar.HOUR_OF_DAY, 6);
         }
-        else if ( deadlineR.equals("12 hours"))
+        else if ( deadlineR.equals(getString(R.string.twelve_hours)))
         {
             cal.add(Calendar.HOUR_OF_DAY, 12);
         }
-        else if ( deadlineR.equals("24 hours"))
+        else if ( deadlineR.equals(getString(R.string.twentyfour_hours)))
         {
             cal.add(Calendar.HOUR_OF_DAY, 24);
         }
-        else if ( deadlineR.equals("48 hours"))
+        else if ( deadlineR.equals(getString(R.string.fourtyeight_hours)))
         {
             cal.add(Calendar.HOUR_OF_DAY, 48);
         }
-        else if ( deadlineR.equals("week"))
+        else if ( deadlineR.equals(getString(R.string.week)))
         {
             cal.add(Calendar.HOUR_OF_DAY, 168);
         }
@@ -864,8 +863,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        System.out.println("-------->" + "v maine");
-
         switch (requestCode) {
             case AddNewWorkActivity.ADD_FINISHED:
                 if ( data == null)
@@ -896,7 +893,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 newWork.set_deadline(deadlineR);
                 newWork.set_date(dateR);
                 newWork.set_time(timeR);
-                newWork.set_status("Status : auctioning");
+                newWork.set_status(getString(R.string.status_auctioning));
                 newWork.set_bidsID(uniqueID);
                 newWork.set_bidsID(uniqueID);
                 newWork.set_userEmail("null");

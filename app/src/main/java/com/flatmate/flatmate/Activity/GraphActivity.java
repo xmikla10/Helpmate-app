@@ -117,18 +117,18 @@ public class GraphActivity extends AppCompatActivity
         dropdown1 = (Spinner) findViewById(R.id.spinnerGraph);
         String[] items = new String[]
                 {
-                        "January",
-                        "February",
-                        "March",
-                        "April",
-                        "May",
-                        "June",
-                        "July",
-                        "August",
-                        "September",
-                        "October",
-                        "November",
-                        "December"
+                        getString(R.string.january),
+                        getString(R.string.february),
+                        getString(R.string.march),
+                        getString(R.string.april),
+                        getString(R.string.may),
+                        getString(R.string.june),
+                        getString(R.string.july),
+                        getString(R.string.august),
+                        getString(R.string.september),
+                        getString(R.string.october),
+                        getString(R.string.november),
+                        getString(R.string.december)
                 };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown1.setAdapter(adapter);
@@ -158,7 +158,6 @@ public class GraphActivity extends AppCompatActivity
                                 @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                     Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
                                     String members = value.get("_membersCount").toString();
-                                    System.out.println("som pred setGraph" + members);
 
                                     /*Members member = new Members();
                                     member.set_membersCount("3");
@@ -222,6 +221,51 @@ public class GraphActivity extends AppCompatActivity
         findInDB();
     }
 
+    public String monthToShow(String month1)
+    {
+        String returnMonth = "";
+        switch (month1) {
+            case "January":
+                returnMonth = getString(R.string.january);
+                break;
+            case "February":
+                returnMonth = getString(R.string.february);
+                break;
+            case "March":
+                returnMonth = getString(R.string.march);
+                break;
+            case "April":
+                returnMonth = getString(R.string.april);
+                break;
+            case "May":
+                returnMonth = getString(R.string.may);
+                break;
+            case "June":
+                returnMonth = getString(R.string.june);
+                break;
+            case "July":
+                returnMonth = getString(R.string.july);
+                break;
+            case "August":
+                returnMonth = getString(R.string.august);
+                break;
+            case "September":
+                returnMonth = getString(R.string.september);
+                break;
+            case "October":
+                returnMonth = getString(R.string.october);
+                break;
+            case "November":
+                returnMonth = getString(R.string.november);
+                break;
+            case "December":
+                returnMonth = getString(R.string.december);
+                break;
+        }
+
+        return returnMonth;
+    }
+
     public void setGraph(String members)
     {
         db = FirebaseDatabase.getInstance().getReference();
@@ -239,9 +283,6 @@ public class GraphActivity extends AppCompatActivity
                     String name = value.get("_name").toString();
                     String credits = value.get("_credits").toString();
 
-                    System.out.println("som pred setGraph" + membersCount);
-                    System.out.println("som pred setGraph" + dataSnapshot);
-
                     yData[membersCount] = Integer.parseInt(credits);
                     xData[membersCount] = name;
 
@@ -255,7 +296,7 @@ public class GraphActivity extends AppCompatActivity
                         pieChart.setCenterTextColor(Color.BLACK);
                         pieChart.setHoleRadius(40f);
                         pieChart.setTransparentCircleAlpha(0);
-                        pieChart.setCenterText(monthString + " " + monthYear);
+                        pieChart.setCenterText(monthToShow(monthString) + " " + monthYear);
                         pieChart.setCenterTextSize(15);
                         pieChart.setEntryLabelTextSize(12);
                         addDataSet();
@@ -276,7 +317,7 @@ public class GraphActivity extends AppCompatActivity
             pieChart.setCenterTextColor(Color.BLACK);
             pieChart.setHoleRadius(40f);
             pieChart.setTransparentCircleAlpha(0);
-            pieChart.setCenterText(monthString + " " + "- no data");
+            pieChart.setCenterText(monthToShow(monthString) + " " + getString(R.string.no_data));
             pieChart.setCenterTextSize(15);
             pieChart.setEntryLabelTextSize(12);
             addDataSet();
@@ -299,8 +340,8 @@ public class GraphActivity extends AppCompatActivity
             membersCount = 0;
             pieDataSet = new PieDataSet(yEntrys, "");
 
-            yEntrys.add(new PieEntry( 1 , "No available data"));
-            xEntrys.add("No available data");
+            yEntrys.add(new PieEntry( 1 , getString(R.string.no_available_data)));
+            xEntrys.add(getString(R.string.no_available_data));
             pieChart.setUsePercentValues(true);
         }
         else

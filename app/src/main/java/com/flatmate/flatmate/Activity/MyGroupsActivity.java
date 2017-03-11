@@ -141,8 +141,8 @@ public class MyGroupsActivity extends AppCompatActivity {
 
                 positionHelp = position;
                 AlertDialog.Builder builder = new AlertDialog.Builder(MyGroupsActivity.this);
-                builder.setMessage("Activate group or group info ?")
-                        .setNegativeButton("Activate", new DialogInterface.OnClickListener() {
+                builder.setMessage(R.string.activate_group)
+                        .setNegativeButton(R.string.activate, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id)
                             {
                                 final NewGroup s= (NewGroup) adapter.getItem(positionHelp);
@@ -167,7 +167,7 @@ public class MyGroupsActivity extends AppCompatActivity {
                             });
                             }
                         })
-                        .setPositiveButton("Info", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.info, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id)
                             {
                                 final NewGroup s= (NewGroup) adapter.getItem(positionHelp);
