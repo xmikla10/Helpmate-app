@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.flatmate.flatmate.Other.SetNotification;
 import com.flatmate.flatmate.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -50,6 +51,8 @@ public class FirebaseHelperWork
                          if(groupID.length() != 0)
                          {
                              db.child("groups").child(groupID).child("works").child("todo").push().setValue(newWork1);
+                             SetNotification set = new SetNotification();
+                             set.Set(groupID, 1);
                          }
                      }
                      @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
