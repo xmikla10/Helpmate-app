@@ -15,16 +15,16 @@
       },
       "oauth_client": [
         {
-          "client_id": "106635181777-rr95k2ssb7n545sff191nijm5so8qbvs.apps.googleusercontent.com",
+          "client_id": "106635181777-kidaidh6pg71dbp3sp2a8vru52odjgo7.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "106635181777-cri5dd3rbt01nahle14nhj54vm7b61l0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.flatmate.flatmate",
-            "certificate_hash": "B0C29A8F29B308CB8E427EE1F24497313BE55E9A"
+            "certificate_hash": "a2b34109cab0464abed41617304b94549270c7b4"
           }
-        },
-        {
-          "client_id": "106635181777-q4b1cf0s3mcb5j59akh8emq8oqm61ubp.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "106635181777-q4b1cf0s3mcb5j59akh8emq8oqm61ubp.apps.googleusercontent.com",
+              "client_id": "106635181777-kidaidh6pg71dbp3sp2a8vru52odjgo7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
