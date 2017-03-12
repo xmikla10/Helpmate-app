@@ -83,7 +83,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         buttonSignup = (Button) findViewById(R.id.buttonSignup);
         googleBut = (SignInButton) findViewById(R.id.signingoogle);
         TextView textView = (TextView) googleBut.getChildAt(0);
-        textView.setText("Sign In with Google");
+        textView.setText(getString(R.string.sign_in_google));
 
         progressDialog = new ProgressDialog(this);
 
@@ -96,9 +96,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
-
-        System.out.println("--------> " + gso.getAccount());
-
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this , this )
@@ -219,8 +216,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
     {
-        Log.d(TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.google_play_service_error, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -248,13 +244,11 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         if (requestCode == RC_SIGN_IN)
         {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            System.out.println("--------> " + result.getStatus());
 
             if (result.isSuccess())
             {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
-                System.out.println("--------> " + result.getSignInAccount());
                 firebaseAuthWithGoogle(account);
             }
         }
@@ -264,6 +258,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     // [START auth_with_google]
     private void firebaseAuthWithGoogle(final GoogleSignInAccount acct)
     {
+        progressDialog.setMessage(getString(R.string.sign_in));
         progressDialog.show();
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -272,12 +267,9 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
                         if (!task.isSuccessful())
                         {
-                            Log.w(TAG, "signInWithCredential", task.getException());
-                            Toast.makeText(SignInActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignInActivity.this, R.string.authentication_failed, Toast.LENGTH_SHORT).show();
                         }
                         else
                         {
@@ -309,7 +301,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
                                     startActivity(new Intent(SignInActivity.this, LogInActivity.class));
                                     overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
-                                    Toast.makeText(SignInActivity.this, "Sign In with Google",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SignInActivity.this, R.string.sign_in_google,Toast.LENGTH_LONG).show();
                                     progressDialog.cancel();
                                 }
                                 @Override public void onCancelled(DatabaseError databaseError) {}});

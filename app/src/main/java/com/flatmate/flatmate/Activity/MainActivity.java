@@ -735,7 +735,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 } else if (id == R.id.nav_log_out) {
                     firebaseAuth.signOut();
                     finish();
-                    startActivity(new Intent(MainActivity.this, LogInActivity.class));
+                    startActivity(new Intent(MainActivity.this, SignInActivity.class));
                     overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
                 }
 

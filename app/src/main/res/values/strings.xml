@@ -72,4 +72,8 @@
     <string name="twentyfour_hours">24 hours</string>
     <string name="fourtyeight_hours">48 hours</string>
     <string name="week">week</string>
+    <string name="sign_in">Sign In, Please wait...</string>
+    <string name="sign_in_google">Sign In with Google</string>
+    <string name="authentication_failed">Authentication failed.</string>
+    <string name="google_play_service_error">Google Play Services error.</string>
 </resources>
