@@ -14,6 +14,16 @@ import android.widget.Toast;
 import android.widget.TextView;
 
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
+import com.facebook.login.widget.LoginButton;
 import com.flatmate.flatmate.Firebase.FirebaseHelperUser;
 import com.flatmate.flatmate.Firebase.NewGroup;
 import com.flatmate.flatmate.Firebase.NewUser;
@@ -26,10 +36,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -38,6 +50,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.facebook.login.LoginResult;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Map;
 import java.util.UUID;
@@ -45,11 +61,14 @@ import java.util.UUID;
 public class SignInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,View.OnClickListener {
 
     private static final String TAG = "GoogleActivity";
+    private static final String TAG2 = "FacebookLogin";
     private static final int RC_SIGN_IN = 9001;
 
-    private FirebaseAuth mAuth;
+    public FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private GoogleApiClient mGoogleApiClient;
+    public GoogleApiClient mGoogleApiClient;
+    private String fbEmail;
+    private String fbName;
 
     //defining view objects
     private EditText editName;
@@ -58,6 +77,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     private Button buttonSignup;
     private Button buttonLogin;
     private SignInButton googleBut;
+    private LoginButton facebookBut;
     private ProgressDialog progressDialog;
 
     private FirebaseAuth firebaseAuth;
@@ -65,10 +85,12 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     FirebaseHelperUser helper;
     String email;
     String name;
+    private CallbackManager mCallbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(SignInActivity.this);
         setContentView(R.layout.activity_sign_in_layout);
 
         //initializing firebase auth object
@@ -79,6 +101,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
 
+        facebookBut = (LoginButton) findViewById(R.id.login_facebook_button);
         buttonLogin = (Button) findViewById(R.id.buttonLogin);
         buttonSignup = (Button) findViewById(R.id.buttonSignup);
         googleBut = (SignInButton) findViewById(R.id.signingoogle);
@@ -117,6 +140,55 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 }
             }
         };
+
+        mCallbackManager = CallbackManager.Factory.create();
+        LoginButton loginButton = (LoginButton) findViewById(R.id.login_facebook_button);
+        loginButton.setReadPermissions("email", "public_profile");
+        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(final LoginResult loginResult)
+            {
+
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback()
+                        {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response)
+                            {
+                                Log.v("Main", response.toString());
+                                setProfileToView(object);
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender, birthday");
+                request.setParameters(parameters);
+                request.executeAsync();
+                handleFacebookAccessToken(loginResult.getAccessToken());
+
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "facebook:onCancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d(TAG, "facebook:onError", error);
+            }
+        });
+    }
+
+    private void setProfileToView(JSONObject jsonObject) {
+        try {
+            fbEmail = jsonObject.getString("email");
+            fbName = jsonObject.getString("name");
+
+        } catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private void registerUser(){
@@ -208,6 +280,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
         if ( view == googleBut)
         {
+            signOut();
             signIn();
         }
 
@@ -252,6 +325,10 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 firebaseAuthWithGoogle(account);
             }
         }
+        else
+        {
+            mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        }
     }
     // [END onactivityresult]
 
@@ -294,7 +371,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                                         newUser.set_group("");
                                         helper.save(newUser);
 
-                                        newFindUser.set_user_email(email);
+                                        newFindUser.set_user_email(acct.getEmail());
                                         newFindUser.set_user_ID(userId);
                                         db.child("user").child("groups").child("find").push().setValue(newFindUser);
                                     }
@@ -308,6 +385,78 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                         }
                     }
                 });
+    }
+
+    private void handleFacebookAccessToken(AccessToken token)
+    {
+
+        progressDialog.setMessage(getString(R.string.sign_in));
+        progressDialog.show();
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG2, "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        if (!task.isSuccessful())
+                        {
+                            Log.w(TAG2, "signInWithCredential", task.getException());
+                            try {
+                                LoginManager.getInstance().logOut();
+                            }
+                            catch (Exception e) {}
+                            Toast.makeText(SignInActivity.this, R.string.fb_try_login, Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            String userId = mAuth.getCurrentUser().getUid().toString();
+                            db = FirebaseDatabase.getInstance().getReference();
+
+                            db.child("user").child("users").child(userId).child("data").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                {
+                                    if ( dataSnapshot.getValue() == null)
+                                    {
+                                        db = FirebaseDatabase.getInstance().getReference();
+                                        helper = new FirebaseHelperUser(db);
+
+                                        NewUser newUser = new NewUser();
+                                        NewGroup newFindUser = new NewGroup();
+
+                                        String userId = mAuth.getCurrentUser().getUid().toString();
+                                        newUser.set_ID(userId);
+
+                                        newUser.set_name(fbName);
+                                        newUser.set_email(fbEmail);
+                                        newUser.set_group("");
+                                        helper.save(newUser);
+
+                                        newFindUser.set_user_email(fbEmail);
+                                        newFindUser.set_user_ID(userId);
+                                        db.child("user").child("groups").child("find").push().setValue(newFindUser);
+                                    }
+
+                                    startActivity(new Intent(SignInActivity.this, LogInActivity.class));
+                                    overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
+                                    Toast.makeText(SignInActivity.this, R.string.sign_in_facebook,Toast.LENGTH_LONG).show();
+                                    progressDialog.cancel();
+                                }
+                                @Override public void onCancelled(DatabaseError databaseError) {}});
+                        }
+
+                        // [START_EXCLUDE]
+                        progressDialog.cancel();
+                        // [END_EXCLUDE]
+                    }
+                });
+    }
+
+    public void signOut()
+    {
+        // Google sign out
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
     }
 
 }

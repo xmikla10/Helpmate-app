@@ -25,7 +25,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="660961d5e183a1a2cca8ce3a0cc2082d56085954">
+        sha1="77ac447de96a455e19801706c7f8dd4275c3c112">
         <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_07b1f564cf740290377acda49cccbf2bdc04ff74/classes.dex" />
     </item>
     <item
@@ -43,7 +43,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="df5de4b35e665a37e6adb01cc65ec2dcdc862272">
+        sha1="e320c926a0f0bb2be54d2100811ed3cb7aa46913">
         <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_fca7c28c1a56d71ab6ac6e13f3f2202e8ba6f0e9/classes.dex" />
     </item>
     <item
@@ -156,6 +156,15 @@
     </item>
     <item
         is-multidex="true"
+        jar="/Users/enterprise/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.2.0/6ee2953ccf51ce72b6d548c30c4633b99eb4f9dd/bolts-android-1.2.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="6ee2953ccf51ce72b6d548c30c4633b99eb4f9dd">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/bolts-android-1.2.0_f3251041641085311c339941c755e7d0445977bf/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.1/jars/libs/internal_impl-25.0.1.jar"
         jumboMode="true"
         optimize="true"
@@ -252,6 +261,15 @@
         revision="25.0.0"
         sha1="6a1479afe9f1b3645e1cd9a87318976893472818">
         <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-media-compat-25.0.1_365d785f46c4d2a89b556f2f1ac530349532d157/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.6.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="1c1afa0ab2a8197a5da1b36c4167a9e479cb74d9">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.facebook.android-facebook-android-sdk-4.6.0_7f32535a9310d4e59c101a2cb33c50c455ebe004/classes.dex" />
     </item>
     <item
         is-multidex="true"

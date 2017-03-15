@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -26,6 +27,7 @@ import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
+import com.facebook.login.LoginManager;
 import com.flatmate.flatmate.Firebase.AddMembers;
 import com.flatmate.flatmate.Firebase.GraphUser;
 import com.flatmate.flatmate.Firebase.NewGroup;
@@ -39,6 +41,12 @@ import com.flatmate.flatmate.Other.Pager;
 import com.flatmate.flatmate.Other.SetNotification;
 import com.flatmate.flatmate.Other.WorkDoneReceiver;
 import com.flatmate.flatmate.R;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -66,7 +74,7 @@ import com.flatmate.flatmate.Firebase.FirebaseHelperWork;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener{
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,TabLayout.OnTabSelectedListener{
     TextView testView;
     //This is our tablayout
     private TabLayout tabLayout;
@@ -733,6 +741,18 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 else if (id == R.id.nav_add_group) {
                     startActivity(new Intent(MainActivity.this, CreateNewGroupActivity.class));
                 } else if (id == R.id.nav_log_out) {
+                    try {
+                        LoginManager.getInstance().logOut();
+                    }
+                    catch (Exception e) {}
+
+                    try
+                    {
+                        SignInActivity signIn = new SignInActivity();
+                        signIn.signOut();
+                    }
+                    catch (Exception e) {}
+
                     firebaseAuth.signOut();
                     finish();
                     startActivity(new Intent(MainActivity.this, SignInActivity.class));
@@ -744,6 +764,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 return true;
             }
         });
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
+    {
+        Toast.makeText(this, R.string.google_play_service_error, Toast.LENGTH_SHORT).show();
+
     }
 
     public void setAuctionDeadline()
