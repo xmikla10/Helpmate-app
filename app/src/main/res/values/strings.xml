@@ -74,7 +74,7 @@
     <string name="week">week</string>
     <string name="sign_in">Sign In, Please wait...</string>
     <string name="sign_in_google">Sign In with Google</string>
-    <string name="sign_in_facebook">Sign In with Facebook</string>
+    <string name="sign_in_facebook">Log In with Facebook</string>
     <string name="authentication_failed">Authentication failed.</string>
     <string name="google_play_service_error">Google Play Services error.</string>
     <string name="id_facebook">563357540528663</string>
