@@ -25,7 +25,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="4889f45b6a01ae3d5a92376bd17c9a4ecd2cafc6">
+        sha1="161fe7a05e867cb1a1634c9a889171a2ed525ae6">
         <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_07b1f564cf740290377acda49cccbf2bdc04ff74/classes.dex" />
     </item>
     <item
@@ -39,12 +39,66 @@
     </item>
     <item
         is-multidex="true"
+        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.google.firebase/firebase-database-connection/10.2.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="0e301f24b283f14b564f660c9abe863af6be5896">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-database-connection-10.2.0_60076bb28839252aac33b3c6a537036924347bb2/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/enterprise/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.0.1/support-annotations-25.0.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="a09194311f8f89c3e6db09d79f50897a889d615e">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.0.1_8869c9eb2cbe2b189451613bbe29543d6fd8a873/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="51eba4a4dd73044f90a9d58dd7ca34adbebfcf4e">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-compat-25.0.1_3e8b822d73ff9983d5ea6fbfea49a2148bcd11f2/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="297d4bcf6ed4e747a1bf7d0d094a2d911a8d3a8e">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-25.0.1_2463f6ea5b0ca8cb1b300418f1d4ba7b08f87f4c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics/10.2.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="a61e7010aa7be5da53cd1bc5279630510c9a4912">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-analytics-10.2.0_df7c98033e6053749300f899863c74c69b183718/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/Users/enterprise/Flatmate/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="30a4144951525025f5a13171b42171b02dbd0b10">
+        sha1="54f2f35afa0f56e9a3c434e0e59d7c07ce59aa44">
         <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_fca7c28c1a56d71ab6ac6e13f3f2202e8ba6f0e9/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/design/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3b236883e0df6002cabb01ce57d00a5b1e5de610">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-design-25.0.1_835e9b67ba08cb21013aa653037aac8f92ac44b7/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -102,12 +156,57 @@
     </item>
     <item
         is-multidex="true"
+        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/10.2.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3d13e510077b35fe8e49930a627dd849ad5da0dc">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-base-10.2.0_8517bc05f1fae07320f608662f286fb5418414ed/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.0.1/jars/libs/internal_impl-25.0.1.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="3af8cc51ef7088e56f132780da8c0bd858b6a6ad">
         <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-25.0.1_daeeeda2fc8de3fc61e0523fddf223367e443caa/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.google.firebase/firebase-common/10.2.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="0d5cbbbfe040201c7569478b70a13b58fd11aab4">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-common-10.2.0_fa7db9a1ec02895a1c22249b5903dfb14364d9fb/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="6a1479afe9f1b3645e1cd9a87318976893472818">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-media-compat-25.0.1_365d785f46c4d2a89b556f2f1ac530349532d157/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.6.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="1c1afa0ab2a8197a5da1b36c4167a9e479cb74d9">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.facebook.android-facebook-android-sdk-4.6.0_7f32535a9310d4e59c101a2cb33c50c455ebe004/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-25.0.1_32a5880ea7fa44d0833a2be0a4a0452d7284f112/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -126,6 +225,24 @@
         revision="25.0.0"
         sha1="48532a016bb0dfbe7970c147ce784598a515406b">
         <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-auth-10.2.0_666e45db2621181b3406f9414322b7591f362790/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-auth-base/10.2.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="4e01b82d664e1a8253b2b9658e74b5da35c8771d">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-auth-base-10.2.0_e2e751ec693d5923efc88aeff6a011c678cea852/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="00d4c8eebf2b681073c72a26bd0849549e51c7cb">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-utils-25.0.1_e29ff0a1b9c7530983723aae6f69e05268259889/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -174,138 +291,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="bc7e99e8d0fc279a05aa91378530f467ad62d443">
-        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-ui-25.0.1_127414c83705de092a5502b51389fd4e49bc491e/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.google.firebase/firebase-database-connection/10.2.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="0e301f24b283f14b564f660c9abe863af6be5896">
-        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-database-connection-10.2.0_60076bb28839252aac33b3c6a537036924347bb2/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/enterprise/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.0.1/support-annotations-25.0.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="a09194311f8f89c3e6db09d79f50897a889d615e">
-        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.0.1_8869c9eb2cbe2b189451613bbe29543d6fd8a873/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.0.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="51eba4a4dd73044f90a9d58dd7ca34adbebfcf4e">
-        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-compat-25.0.1_3e8b822d73ff9983d5ea6fbfea49a2148bcd11f2/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.0.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="297d4bcf6ed4e747a1bf7d0d094a2d911a8d3a8e">
-        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-25.0.1_2463f6ea5b0ca8cb1b300418f1d4ba7b08f87f4c/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics/10.2.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="a61e7010aa7be5da53cd1bc5279630510c9a4912">
-        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-analytics-10.2.0_df7c98033e6053749300f899863c74c69b183718/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/design/25.0.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="3b236883e0df6002cabb01ce57d00a5b1e5de610">
-        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-design-25.0.1_835e9b67ba08cb21013aa653037aac8f92ac44b7/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/10.2.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="3d13e510077b35fe8e49930a627dd849ad5da0dc">
-        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-base-10.2.0_8517bc05f1fae07320f608662f286fb5418414ed/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.google.firebase/firebase-common/10.2.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="0d5cbbbfe040201c7569478b70a13b58fd11aab4">
-        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-common-10.2.0_fa7db9a1ec02895a1c22249b5903dfb14364d9fb/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.0.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="6a1479afe9f1b3645e1cd9a87318976893472818">
-        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-media-compat-25.0.1_365d785f46c4d2a89b556f2f1ac530349532d157/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.6.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="1c1afa0ab2a8197a5da1b36c4167a9e479cb74d9">
-        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.facebook.android-facebook-android-sdk-4.6.0_7f32535a9310d4e59c101a2cb33c50c455ebe004/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.0.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-25.0.1_32a5880ea7fa44d0833a2be0a4a0452d7284f112/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-auth-base/10.2.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="4e01b82d664e1a8253b2b9658e74b5da35c8771d">
-        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-auth-base-10.2.0_e2e751ec693d5923efc88aeff6a011c678cea852/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.0.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="00d4c8eebf2b681073c72a26bd0849549e51c7cb">
-        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-utils-25.0.1_e29ff0a1b9c7530983723aae6f69e05268259889/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics-impl/10.2.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="ce9112e08a027c8620ae693983e38cdbb9f6371b">
         <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-analytics-impl-10.2.0_347672882058806e39d967b8468098d8c985d835/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="bc7e99e8d0fc279a05aa91378530f467ad62d443">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-ui-25.0.1_127414c83705de092a5502b51389fd4e49bc491e/classes.dex" />
     </item>
     <item
         is-multidex="true"

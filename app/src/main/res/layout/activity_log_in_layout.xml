@@ -16,7 +16,9 @@
 
     <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,8 +27,11 @@
             android:layout_alignParentStart="true">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="1in"
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp"
+                android:layout_weight="1"
                 app:srcCompat="@drawable/flatmatesign"
                 android:id="@+id/imageView6" />
 
