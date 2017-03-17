@@ -258,6 +258,12 @@ public class GroupInfoActivity extends AppCompatActivity
                                                                             newUserData.put("_membersCount", memCount.toString());
                                                                             db.child("groups").child(groupID).child("graph").child("months").child("members").child(childKey).updateChildren(newUserData);
 
+                                                                            if ( memCount == 0)
+                                                                            {
+                                                                                db.child("groups").child(groupID).setValue(null);
+                                                                                db.child("user").child("groups").child("members").child(groupID).setValue(null);
+                                                                            }
+
                                                                             Intent intent = new Intent(GroupInfoActivity.this, MainActivity.class);
                                                                             startActivity(intent);
                                                                             overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
