@@ -96,6 +96,8 @@ public class GroupInfoActivity extends AppCompatActivity
     private AutoCompleteTextView mEditText;
     private Button mButton;
     String admin;
+    ImageView renameGroup;
+    public String actualGroupName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -118,6 +120,7 @@ public class GroupInfoActivity extends AppCompatActivity
         userID = firebaseAuth.getCurrentUser().getUid().toString();
         userEmail = firebaseAuth.getCurrentUser().getEmail().toString();
 
+
         groupName = extras.getString("group_name");
         groupID = extras.getString("group_ID");
         admin = extras.getString("admin");
@@ -133,6 +136,12 @@ public class GroupInfoActivity extends AppCompatActivity
             textView.setVisibility(View.GONE);
             autocom.setVisibility(View.GONE);
             addBut.setVisibility(View.GONE);
+        }
+        else
+        {
+            renameGroup = (ImageView) findViewById(R.id.renameGroup);
+            renameGroup.setVisibility(View.VISIBLE);
+            renameGroup.setOnClickListener(renameGroupListener);
         }
 
         memberEmail = new ArrayList<String>();
@@ -450,6 +459,75 @@ public class GroupInfoActivity extends AppCompatActivity
             }
         };
     }
+
+    private View.OnClickListener renameGroupListener = new View.OnClickListener() {
+        public void onClick(View v)
+        {
+            final AlertDialog.Builder alert = new AlertDialog.Builder(GroupInfoActivity.this);
+
+            alert.setTitle(R.string.rename_group_title);
+            final EditText input = new EditText(GroupInfoActivity.this);
+            alert.setView(input);
+
+            alert.setPositiveButton(R.string.rename_group, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    String value = input.getText().toString();
+                    actualGroupName = value;
+
+                    if (value.equals("")) {
+                        Toast.makeText(GroupInfoActivity.this, R.string.group_name_empty_toast, Toast.LENGTH_SHORT).show();
+                    }
+                    else if ( groupName.equals(value))
+                    {
+                        Toast.makeText(GroupInfoActivity.this, R.string.gropu_rename_toast, Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        db.child("user").child("groups").child("members").child(groupID).child("members").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override public void onDataChange(DataSnapshot dataSnapshot)
+                            {
+                                for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                                {
+                                    Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                    final String renameGroupUserID = value.get("_user_ID").toString();
+
+                                    db.child("user").child("groups").child("user").child(renameGroupUserID).child("user").orderByChild("_group_ID").equalTo(groupID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                        {
+                                            for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                                            {
+                                                String childKey = childSnapshot.getKey();
+                                                Map newGroupName = new HashMap();
+                                                newGroupName.put("_group_name", actualGroupName);
+                                                db.child("user").child("groups").child("user").child(renameGroupUserID).child("user").child(childKey).updateChildren(newGroupName);
+
+                                            }
+                                        }
+                                        @Override public void onCancelled(DatabaseError databaseError) {}
+                                    });
+                                }
+                            }
+                            @Override public void onCancelled(DatabaseError databaseError) {}
+                        });
+                        TextView groupNameText = (TextView) findViewById(R.id.textViewInfoGroupName);
+                        groupNameText.setText(actualGroupName);
+                        groupName = actualGroupName;
+                        Toast.makeText(GroupInfoActivity.this, R.string.gropu_rename_toast, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+            alert.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton)
+                {
+
+                }
+            });
+
+            alert.show();
+
+        }
+    };
 
     private EditText createNewTextView(String text) {
         final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

@@ -80,4 +80,8 @@
     <string name="id_facebook">563357540528663</string>
     <string name="login_facebook">Log in with Facebook</string>
     <string name="fb_try_login">Try Log in with Google</string>
+    <string name="rename_group">Rename</string>
+    <string name="rename_group_title">Rename group</string>
+    <string name="group_name_empty_toast">Groupname can\'t be empty</string>
+    <string name="gropu_rename_toast">The group was renamed</string>
 </resources>

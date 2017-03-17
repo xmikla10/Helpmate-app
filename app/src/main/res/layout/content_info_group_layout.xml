@@ -37,22 +37,42 @@
                 android:gravity="center_vertical"
                 android:textSize="17sp"/>
 
-            <TextView
-                android:text="Name of group :"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp"
-                android:layout_alignParentStart="true"
-                android:id="@+id/textViewInfoGroupName"
-                android:layout_alignBottom="@+id/editText2"
-                android:layout_toStartOf="@+id/editText2"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textStyle="normal|bold"
-                android:fontFamily="sans-serif" />
+                android:weightSum="20"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="Name of group :"
+                    android:layout_width="0dp"
+                    android:layout_weight="19"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/textViewInfoGroupName"
+                    android:layout_alignBottom="@+id/editText2"
+                    android:layout_toStartOf="@+id/editText2"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="normal|bold"
+                    android:fontFamily="sans-serif" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center|right"
+                    android:src="@drawable/auction_icon"
+                    android:id="@+id/renameGroup"
+                    android:visibility="gone"
+
+                    />
+
+            </LinearLayout>
 
             <TextView
                 android:text="Members :"
