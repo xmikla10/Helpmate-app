@@ -114,6 +114,9 @@ public class GroupInfoActivity extends AppCompatActivity
 
         Bundle extras = getIntent().getExtras();
         isContactLoaded = 1;
+        firebaseAuth = FirebaseAuth.getInstance();
+        userID = firebaseAuth.getCurrentUser().getUid().toString();
+        userEmail = firebaseAuth.getCurrentUser().getEmail().toString();
 
         groupName = extras.getString("group_name");
         groupID = extras.getString("group_ID");
@@ -143,28 +146,25 @@ public class GroupInfoActivity extends AppCompatActivity
         db = FirebaseDatabase.getInstance().getReference();
         helper = new FirebaseHelperInfoGroup(db);
 
-        adapter = new CustomAdapterInfoGroup(GroupInfoActivity.this, helper.retrieve(groupID));
+        adapter = new CustomAdapterInfoGroup(GroupInfoActivity.this, helper.retrieve(groupID), userEmail, admin);
         lv = (ListView) findViewById(R.id.listViewInfoGroup);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        userID = firebaseAuth.getCurrentUser().getUid().toString();
 
         db.child("user").child("groups").child("members").child(groupID).child("members").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s)
             {
-                adapter = new CustomAdapterInfoGroup(GroupInfoActivity.this, helper.retrieve(groupID));
+                adapter = new CustomAdapterInfoGroup(GroupInfoActivity.this, helper.retrieve(groupID), userEmail, admin);
                 lv.setAdapter(adapter);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                adapter = new CustomAdapterInfoGroup(GroupInfoActivity.this, helper.retrieve(groupID));
+                adapter = new CustomAdapterInfoGroup(GroupInfoActivity.this, helper.retrieve(groupID), userEmail, admin);
                 lv.setAdapter(adapter);
             }
             @Override public void onChildRemoved(DataSnapshot dataSnapshot)
             {
-                adapter = new CustomAdapterInfoGroup(GroupInfoActivity.this, helper.retrieve(groupID));
+                adapter = new CustomAdapterInfoGroup(GroupInfoActivity.this, helper.retrieve(groupID), userEmail, admin);
                 lv.setAdapter(adapter);
             }
             @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
@@ -181,98 +181,101 @@ public class GroupInfoActivity extends AppCompatActivity
                 positionHelp = position;
                 final NewGroup s= (NewGroup) adapter.getItem(position);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(GroupInfoActivity.this);
-                builder.setMessage("Want you delete user " + s.get_user_name() +" ?")
-                        .setNegativeButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id)
-                            {
-                                if( admin.equals("true") || userID.equals(s.get_user_ID()))
+                if ( userID.equals(s.get_user_ID()) || admin.equals("true"))
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(GroupInfoActivity.this);
+                    builder.setMessage("Want you delete user " + s.get_user_name() +" ?")
+                            .setNegativeButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id)
                                 {
-                                    SetNotification set = new SetNotification();
-                                    set.Set(groupID, 3, s.get_user_name());
+                                    if( admin.equals("true") || userID.equals(s.get_user_ID()))
+                                    {
+                                        SetNotification set = new SetNotification();
+                                        set.Set(groupID, 3, s.get_user_name());
 
-                                    db.child("user").child("groups").child("members").child(groupID).child("members").addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                                Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
-                                                String childKey = childSnapshot.getKey();
-                                                String delUserID = value.get("_user_ID").toString();
+                                        db.child("user").child("groups").child("members").child(groupID).child("members").addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                                    Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                    String childKey = childSnapshot.getKey();
+                                                    String delUserID = value.get("_user_ID").toString();
 
-                                                if (delUserID.equals(s.get_user_ID())) {
-                                                    db.child("user").child("groups").child("members").child(groupID).child("members").child(childKey).setValue(null);
-                                                }
-                                            }
-
-                                            db.child("user").child("groups").child("user").child(s.get_user_ID()).child("user").addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                                        Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
-                                                        String childKey = childSnapshot.getKey();
-                                                        String delGroupID = value.get("_group_ID").toString();
-
-                                                        if (delGroupID.equals(groupID)) {
-                                                            db.child("user").child("groups").child("user").child(s.get_user_ID()).child("user").child(childKey).setValue(null);
-                                                        }
+                                                    if (delUserID.equals(s.get_user_ID())) {
+                                                        db.child("user").child("groups").child("members").child(groupID).child("members").child(childKey).setValue(null);
                                                     }
+                                                }
 
-                                                    db.child("user").child("users").child(s.get_user_ID()).child("data").addListenerForSingleValueEvent(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                                                Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
-                                                                String childKey = childSnapshot.getKey();
-                                                                String delGroupID = value.get("_group").toString();
+                                                db.child("user").child("groups").child("user").child(s.get_user_ID()).child("user").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                                            Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                            String childKey = childSnapshot.getKey();
+                                                            String delGroupID = value.get("_group_ID").toString();
 
-                                                                if (delGroupID.equals(groupID)) {
-                                                                    Map newUserData = new HashMap();
-                                                                    newUserData.put("_group", "");
-                                                                    db.child("user").child("users").child(s.get_user_ID()).child("data").child(childKey).updateChildren(newUserData);
-                                                                }
+                                                            if (delGroupID.equals(groupID)) {
+                                                                db.child("user").child("groups").child("user").child(s.get_user_ID()).child("user").child(childKey).setValue(null);
                                                             }
+                                                        }
 
-                                                            db.child("groups").child(groupID).child("graph").child("months").child("members").addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                @Override
-                                                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                                                        Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
-                                                                        String childKey = childSnapshot.getKey();
-                                                                        String stringMemCount = value.get("_membersCount").toString();
+                                                        db.child("user").child("users").child(s.get_user_ID()).child("data").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                                                    Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                                    String childKey = childSnapshot.getKey();
+                                                                    String delGroupID = value.get("_group").toString();
 
-                                                                        Integer memCount = Integer.valueOf(stringMemCount);
-                                                                        memCount = memCount - 1;
-
+                                                                    if (delGroupID.equals(groupID)) {
                                                                         Map newUserData = new HashMap();
-                                                                        newUserData.put("_membersCount", memCount.toString());
-                                                                        db.child("groups").child(groupID).child("graph").child("months").child("members").child(childKey).updateChildren(newUserData);
-
-                                                                        Intent intent = new Intent(GroupInfoActivity.this, MainActivity.class);
-                                                                        startActivity(intent);
-                                                                        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+                                                                        newUserData.put("_group", "");
+                                                                        db.child("user").child("users").child(s.get_user_ID()).child("data").child(childKey).updateChildren(newUserData);
                                                                     }
                                                                 }
-                                                                @Override public void onCancelled(DatabaseError databaseError) {}
-                                                            });}
-                                                        @Override public void onCancelled(DatabaseError databaseError) {}
-                                                    });}
-                                                @Override public void onCancelled(DatabaseError databaseError) {}
-                                            });}
-                                        @Override public void onCancelled(DatabaseError databaseError) {}
-                                    });
-                                }
-                                else
-                                    Toast.makeText(GroupInfoActivity.this, R.string.toast_delete, Toast.LENGTH_SHORT).show();
 
-                            }
-                        }).setPositiveButton("No", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id)
-                            {
-                                //nothing
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
+                                                                db.child("groups").child(groupID).child("graph").child("months").child("members").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                    @Override
+                                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                                                            Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                                            String childKey = childSnapshot.getKey();
+                                                                            String stringMemCount = value.get("_membersCount").toString();
+
+                                                                            Integer memCount = Integer.valueOf(stringMemCount);
+                                                                            memCount = memCount - 1;
+
+                                                                            Map newUserData = new HashMap();
+                                                                            newUserData.put("_membersCount", memCount.toString());
+                                                                            db.child("groups").child(groupID).child("graph").child("months").child("members").child(childKey).updateChildren(newUserData);
+
+                                                                            Intent intent = new Intent(GroupInfoActivity.this, MainActivity.class);
+                                                                            startActivity(intent);
+                                                                            overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+                                                                        }
+                                                                    }
+                                                                    @Override public void onCancelled(DatabaseError databaseError) {}
+                                                                });}
+                                                            @Override public void onCancelled(DatabaseError databaseError) {}
+                                                        });}
+                                                    @Override public void onCancelled(DatabaseError databaseError) {}
+                                                });}
+                                            @Override public void onCancelled(DatabaseError databaseError) {}
+                                        });
+                                    }
+                                    else
+                                        Toast.makeText(GroupInfoActivity.this, R.string.toast_delete, Toast.LENGTH_SHORT).show();
+
+                                }
+                            }).setPositiveButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id)
+                                {
+                                    //nothing
+                                }
+                            });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                }
             }
         });
 

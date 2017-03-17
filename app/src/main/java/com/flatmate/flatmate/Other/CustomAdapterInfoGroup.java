@@ -32,10 +32,14 @@ public class CustomAdapterInfoGroup extends BaseAdapter{
 
     Context c;
     ArrayList<NewGroup> a;
+    public String isUserAdmin;
+    public String userEmail;
 
-    public CustomAdapterInfoGroup(Context c, ArrayList<NewGroup> a) {
+    public CustomAdapterInfoGroup(Context c, ArrayList<NewGroup> a, String email, String admin) {
         this.c = c;
         this.a = a;
+        isUserAdmin = admin;
+        userEmail = email;
     }
     @Override
     public int getCount() {
@@ -50,16 +54,38 @@ public class CustomAdapterInfoGroup extends BaseAdapter{
         return position;
     }
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        if(convertView==null)
-        {
-            convertView= LayoutInflater.from(c).inflate(R.layout.task_info_members_final,parent,false);
-        }
-
-        TextView infoUserName = (TextView) convertView.findViewById(R.id.infoUserName);
-
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
         final NewGroup s= (NewGroup) this.getItem(position);
+        TextView infoUserName;
+
+        if (isUserAdmin.equals("false") && userEmail.equals(s.get_user_email()))
+        {
+            if(convertView==null)
+            {
+                convertView= LayoutInflater.from(c).inflate(R.layout.task_info_members_final,parent,false);
+            }
+
+            infoUserName = (TextView) convertView.findViewById(R.id.infoUserName);
+        }
+        else if (isUserAdmin.equals("false") && !userEmail.equals(s.get_user_email()))
+        {
+            if(convertView==null)
+            {
+                convertView= LayoutInflater.from(c).inflate(R.layout.task_info_members_final_2,parent,false);
+            }
+
+            infoUserName = (TextView) convertView.findViewById(R.id.infoUserName);
+        }
+        else
+        {
+            if(convertView==null)
+            {
+                convertView= LayoutInflater.from(c).inflate(R.layout.task_info_members_final,parent,false);
+            }
+
+            infoUserName = (TextView) convertView.findViewById(R.id.infoUserName);
+        }
 
         infoUserName.setText(s.get_user_name());
 
