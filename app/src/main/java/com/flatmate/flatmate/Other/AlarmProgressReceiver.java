@@ -88,7 +88,7 @@ public class AlarmProgressReceiver extends WakefulBroadcastReceiver
                     newEvaluationData.put("_deadline", dateFormat.format(cal.getTime()));
                     db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newEvaluationData);
                     SetNotification set = new SetNotification();
-                    set.Set(groupID, 8, work_name, bidsID);
+                    set.Set(groupID, 8, work_name, bidsID, "");
 
                 }
 

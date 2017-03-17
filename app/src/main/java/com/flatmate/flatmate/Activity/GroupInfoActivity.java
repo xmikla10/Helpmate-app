@@ -200,7 +200,7 @@ public class GroupInfoActivity extends AppCompatActivity
                                     if( admin.equals("true") || userID.equals(s.get_user_ID()))
                                     {
                                         SetNotification set = new SetNotification();
-                                        set.Set(groupID, 3, s.get_user_name(), "1");
+                                        set.Set(groupID, 3, s.get_user_name(), "1", "");
 
                                         db.child("user").child("groups").child("members").child(groupID).child("members").addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override

@@ -517,7 +517,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                             Integer monthInInt = actCal.get(Calendar.MONTH) + 1;
                                             actualMonth = getMonth(monthInInt);
                                             SetNotification set = new SetNotification();
-                                            set.Set(addGroupID, 2, userName, "1");
+                                            set.Set(addGroupID, 2, userName, "1", "");
 
                                             db.child("groups").child(addGroupID).child("graph").child("months").child("members").addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override public void onDataChange(DataSnapshot dataSnapshot)
@@ -806,18 +806,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         Date afterAddingMins = new Date(curTimeInMs + ( 1440 * ONE_MINUTE_IN_MILLIS));
 
-        System.out.println("----work----->" + afterAddingMins);
-        System.out.println("----actual----->" + now);
-
-
         if ( now.compareTo(afterAddingMins) > 0 )
         {
-            System.out.println("--------->" + "vymazat");
             return false;
         }
         else
         {
-            System.out.println("--------->" + "nehať");
             return true;
         }
     }

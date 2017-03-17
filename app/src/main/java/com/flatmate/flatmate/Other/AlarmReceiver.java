@@ -91,7 +91,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
 
                         db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newEvaluationData);
                         SetNotification set = new SetNotification();
-                        set.Set(groupID, 8, work_name, bidsID);
+                        set.Set(groupID, 8, work_name, bidsID, "");
                     }
                     else
                     {
@@ -100,8 +100,8 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
 
                         db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newEvaluationData);
                         SetNotification set = new SetNotification();
-                        set.Set(groupID, 6, work_name, bidsID);
-                        set.Set(groupID, 4, work_name, bidsID);
+                        set.Set(groupID, 6, work_name, bidsID, bidsLastUser);
+                        set.Set(groupID, 4, work_name, bidsID, bidsLastUser);
 
                     }
                 }

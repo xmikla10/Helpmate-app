@@ -45,14 +45,12 @@ public class SetNotification
 
     public SetNotification() {}
 
-    public void Set(final String groupID, final Integer control, final String string, final String workID)
+    public void Set(final String groupID, final Integer control, final String string, final String workID, final String evaluationEmail)
     {
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance().getReference();
         userID = firebaseAuth.getCurrentUser().getUid().toString();
         work_ID = workID;
-
-        System.out.println("------->" + workID);
 
         if ( control == 2 )
         {
@@ -123,13 +121,11 @@ public class SetNotification
                                     for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                                         Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
                                         String find_user = value.get("_user_ID").toString();
-                                        System.out.println("------->" + find_user);
-
+                                        String find_email = value.get("_user_email").toString();
 
                                         if (control == 1) {
                                             if (!find_user.equals(userID))
                                             {
-                                                System.out.println("------->" + "som v IFe 1");
                                                 String message_1 = "New work added - " + string;
                                                 sendNotification(message_1, group_name, find_user);
                                             }
@@ -148,7 +144,7 @@ public class SetNotification
                                         }
 
                                         if (control == 4) {
-                                            if (find_user.equals(userID)) {
+                                            if (find_email.equals(evaluationEmail)) {
                                                 String message_4 = "You win auction for: " + string;
                                                 sendNotification(message_4, group_name, find_user);
                                             }
@@ -162,7 +158,7 @@ public class SetNotification
                                         }
 
                                         if (control == 6) {
-                                            if (!find_user.equals(userID)) {
+                                            if (!find_email.equals(evaluationEmail)) {
                                                 String message_6 = "Work " + string + " change status";
                                                 sendNotification(message_6, group_name, find_user);
                                             }
@@ -195,9 +191,6 @@ public class SetNotification
         db.child("user").child("users").child(find_user).child("notifications").orderByChild("_work_ID").equalTo(work_ID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override public void onDataChange(DataSnapshot dataSnapshot)
             {
-                System.out.println("------->" + dataSnapshot.getValue());
-                System.out.println("------->" + message);
-                System.out.println("------->" + find_user);
 
                 if ( dataSnapshot.getValue() == null)
                 {
@@ -222,7 +215,6 @@ public class SetNotification
                         db.child("user").child("users").child(find_user).child("notifications").child(childKey).updateChildren(newStatus);
                     }
                 }
-                System.out.println("------->" + "nakonci");
             }
             @Override public void onCancelled(DatabaseError databaseError) {}});
     }
