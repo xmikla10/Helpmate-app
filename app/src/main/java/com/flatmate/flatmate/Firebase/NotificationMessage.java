@@ -9,6 +9,8 @@ public class NotificationMessage
     //name and address string
     private String group_name;
     private String message;
+    private String date;
+    private String work_ID;
 
     public NotificationMessage()
     {
@@ -29,6 +31,26 @@ public class NotificationMessage
     public void set_message(String message)
     {
         this.message = message;
+    }
+
+    public String get_date()
+    {
+        return date;
+    }
+
+    public void set_date(String date)
+    {
+        this.date = date;
+    }
+
+    public String get_work_ID()
+    {
+        return work_ID;
+    }
+
+    public void set_work_ID(String work_ID)
+    {
+        this.work_ID = work_ID;
     }
 
 

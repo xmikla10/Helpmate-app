@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -44,6 +45,7 @@ import com.flatmate.flatmate.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -72,7 +74,6 @@ import java.util.concurrent.TimeUnit;
 
 import com.flatmate.flatmate.Firebase.FirebaseHelperWork;
 import com.google.firebase.database.ValueEventListener;
-
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,TabLayout.OnTabSelectedListener{
     TextView testView;
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public String evaluationDate;
     public String childKey;
     public Integer finall;
+    public Integer notifCounter;
 
     public DatabaseReference db;
     public FirebaseHelperWork helper;
@@ -121,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         //FontsOverride.setDefaultFont(this, "DEFAULT", "customfont.ttf");
 
         firebaseAuth = FirebaseAuth.getInstance();
+        notifCounter = 1;
         if(firebaseAuth.getCurrentUser() == null){
             //closing this activity
             finish();
@@ -423,29 +426,42 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s)
             {
+
                 Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
                 String notif_group_name = value.get("_group_name").toString();
                 String notif_message = value.get("_message").toString();
+                String work_date = value.get("_date").toString();
                 String childKey = dataSnapshot.getKey();
 
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, (int) System.currentTimeMillis(), intent, 0);
+                Boolean showNotification = getActualDate(work_date);
 
-                Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                long[] vibrate = { 0, 200 };
+                if ( !showNotification)
+                {
+                    db.child("user").child("users").child(userID).child("notifications").child(childKey).setValue(null);
+                }
+                else
+                {
 
-                Notification notif = new Notification.Builder(MainActivity.this)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setSound(alarmSound)
-                        .setContentTitle(notif_message)
-                        .setContentText(notif_group_name)
-                        .setContentIntent(pIntent).build();
-                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, (int) System.currentTimeMillis(), intent, 0);
 
-                notif.flags |= Notification.FLAG_AUTO_CANCEL;
+                    Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    long[] vibrate = { 0, 200 };
 
-                notificationManager.notify(0, notif);
-                db.child("user").child("users").child(userID).child("notifications").child(childKey).setValue(null);
+                    Notification notif = new Notification.Builder(MainActivity.this)
+                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setSound(alarmSound)
+                            .setContentTitle(notif_message)
+                            .setContentText(notif_group_name)
+                            .setContentIntent(pIntent).build();
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+                    notif.flags |= Notification.FLAG_AUTO_CANCEL;
+
+                    notificationManager.notify(notifCounter, notif);
+                    notifCounter++;
+                    db.child("user").child("users").child(userID).child("notifications").child(childKey).setValue(null);
+                }
 
 
             }
@@ -501,7 +517,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                             Integer monthInInt = actCal.get(Calendar.MONTH) + 1;
                                             actualMonth = getMonth(monthInInt);
                                             SetNotification set = new SetNotification();
-                                            set.Set(addGroupID, 2, userName);
+                                            set.Set(addGroupID, 2, userName, "1");
 
                                             db.child("groups").child(addGroupID).child("graph").child("months").child("members").addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override public void onDataChange(DataSnapshot dataSnapshot)
@@ -764,6 +780,46 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 return true;
             }
         });
+    }
+
+    public Boolean getActualDate(String work_date)
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+        final long ONE_MINUTE_IN_MILLIS = 60000;
+
+        Date now = new Date();
+        Date myDateTime = null;
+
+        String strDate = simpleDateFormat.format(now);
+        String myString = work_date;
+        try
+        {
+            myDateTime = simpleDateFormat.parse(myString);
+            now = simpleDateFormat.parse(strDate);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+        long curTimeInMs = myDateTime.getTime();
+
+        Date afterAddingMins = new Date(curTimeInMs + ( 1440 * ONE_MINUTE_IN_MILLIS));
+
+        System.out.println("----work----->" + afterAddingMins);
+        System.out.println("----actual----->" + now);
+
+
+        if ( now.compareTo(afterAddingMins) > 0 )
+        {
+            System.out.println("--------->" + "vymazat");
+            return false;
+        }
+        else
+        {
+            System.out.println("--------->" + "nehať");
+            return true;
+        }
     }
 
     @Override

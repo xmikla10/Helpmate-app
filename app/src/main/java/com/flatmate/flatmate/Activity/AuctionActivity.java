@@ -474,7 +474,7 @@ public class AuctionActivity extends AppCompatActivity
                                 db.child("groups").child(groupID).child("completed").child("works").push().setValue(completedWork);
 
                                 SetNotification set = new SetNotification();
-                                set.Set(groupID, 5, completedWorkName);
+                                set.Set(groupID, 5, completedWorkName, bidsID);
 
                                 Map newCompletedData = new HashMap();
 
@@ -924,15 +924,15 @@ public class AuctionActivity extends AppCompatActivity
                                                 newEvaluationData2.put("_status", getString(R.string.status_unauctioned));
                                                 db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newEvaluationData2);
                                                 SetNotification set = new SetNotification();
-                                                set.Set(groupID, 8, work_name );
+                                                set.Set(groupID, 8, work_name, bidsID);
                                             }
                                             else
                                             {
                                                 newEvaluationData.put("_status", getString(R.string.status_progress));
                                                 db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newEvaluationData);
                                                 SetNotification set = new SetNotification();
-                                                set.Set(groupID, 6, work_name );
-                                                set.Set(groupID, 4, work_name );
+                                                set.Set(groupID, 6, work_name, bidsID);
+                                                set.Set(groupID, 4, work_name, bidsID);
                                             }
 
                                             Intent intent = new Intent(AuctionActivity.this, MainActivity.class);

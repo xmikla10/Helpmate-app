@@ -347,6 +347,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                         if (!task.isSuccessful())
                         {
                             Toast.makeText(SignInActivity.this, R.string.authentication_failed, Toast.LENGTH_SHORT).show();
+                            progressDialog.cancel();
                         }
                         else
                         {
@@ -408,6 +409,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                             }
                             catch (Exception e) {}
                             Toast.makeText(SignInActivity.this, R.string.fb_try_login, Toast.LENGTH_SHORT).show();
+                            progressDialog.cancel();
                         }
                         else
                         {
@@ -445,10 +447,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                                 }
                                 @Override public void onCancelled(DatabaseError databaseError) {}});
                         }
-
-                        // [START_EXCLUDE]
-                        progressDialog.cancel();
-                        // [END_EXCLUDE]
                     }
                 });
     }
