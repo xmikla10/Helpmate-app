@@ -53,8 +53,39 @@ public class CustomAdapterCompleted extends BaseAdapter{
 
         final NewWork s= (NewWork) this.getItem(position);
 
-        completedNameOfTask.setText(s.get_work_name());
-        completedUserName.setText(s.get_bidsLastUserName());
+        String pom;
+        String pom1;
+        String name = "";
+        String work_name = "";
+
+        if(s.get_bidsLastUserName().length() > 17)
+        {
+            pom = s.get_bidsLastUserName();
+            char[] charArray = pom.toCharArray();
+            for( int i = 0; i < 17; i++)
+            {
+                work_name = work_name + String.valueOf(charArray[i]);
+            }
+            name = name + "...";
+        }
+        else
+            name = s.get_bidsLastUserName();
+
+        if(s.get_work_name().length() > 23)
+        {
+            pom1 = s.get_work_name();
+            char[] charArray = pom1.toCharArray();
+            for( int i = 0; i < 23; i++)
+            {
+                work_name = work_name + String.valueOf(charArray[i]);
+            }
+            work_name = work_name + "...";
+        }
+        else
+            work_name = s.get_work_name();
+
+        completedNameOfTask.setText(work_name);
+        completedUserName.setText(name);
         completedDate.setText(s.get_date());
         completedCredits.setText(s.get_credits());
 

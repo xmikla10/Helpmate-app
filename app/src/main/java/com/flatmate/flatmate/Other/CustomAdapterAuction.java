@@ -54,7 +54,20 @@ public class CustomAdapterAuction extends BaseAdapter{
         String pom;
         String work_name = "";
 
-        textViewName.setText(s.get_userName());
+        if(s.get_userName().length() > 20)
+        {
+            pom = s.get_userName();
+            char[] charArray = pom.toCharArray();
+            for( int i = 0; i < 20; i++)
+            {
+                work_name = work_name + String.valueOf(charArray[i]);
+            }
+            work_name = work_name + "...";
+        }
+        else
+            work_name = s.get_userName();
+
+        textViewName.setText(work_name);
         textViewCredits.setText(s.get_credits());
 
         return convertView;

@@ -56,9 +56,24 @@ public class CustomAdapterMyWorks extends BaseAdapter{
         TextView textViewtime = (TextView) convertView.findViewById(R.id.myWorkDate);
         TextView textViewtime2 = (TextView) convertView.findViewById(R.id.myWorkTaskDuration);
 
+        String pom;
+        String work_name = "";
+
+        if(s.get_work_name().length() > 20)
+        {
+            pom = s.get_work_name();
+            char[] charArray = pom.toCharArray();
+            for( int i = 0; i < 20; i++)
+            {
+                work_name = work_name + String.valueOf(charArray[i]);
+            }
+            work_name = work_name + "...";
+        }
+        else
+            work_name = s.get_work_name();
 
         textViewtime2.setText("Deadline :");
-        textViewTaskName.setText(s.get_work_name());
+        textViewTaskName.setText(work_name);
         textViewStatus.setText(s.get_status());
         textViewtime.setText(s.get_time() +"  "+s.get_date());
 

@@ -87,7 +87,23 @@ public class CustomAdapterInfoGroup extends BaseAdapter{
             infoUserName = (TextView) convertView.findViewById(R.id.infoUserName);
         }
 
-        infoUserName.setText(s.get_user_name());
+        String pom;
+        String name = "";
+
+        if(s.get_user_name().length() > 23)
+        {
+            pom = s.get_user_name();
+            char[] charArray = pom.toCharArray();
+            for( int i = 0; i < 23; i++)
+            {
+                name = name + String.valueOf(charArray[i]);
+            }
+            name = name + "...";
+        }
+        else
+            name = s.get_user_name();
+
+        infoUserName.setText(name);
 
         return convertView;
     }

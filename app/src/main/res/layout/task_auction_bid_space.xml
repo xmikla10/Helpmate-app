@@ -31,7 +31,7 @@
         android:gravity="left|center"
         android:id="@+id/auctionName"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="30sp"/>
+        android:textSize="23sp"/>
 
     <TextView
         android:text="0 credits"

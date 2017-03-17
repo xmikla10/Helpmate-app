@@ -75,6 +75,22 @@ public class CustomAdapterMyGroups extends BaseAdapter{
 
         textGroupName = (TextView) convertView.findViewById(R.id.textGroupName);
 
+        String pom;
+        String group_name = "";
+
+        if(s.get_group_name().length() > 20)
+        {
+            pom = s.get_group_name();
+            char[] charArray = pom.toCharArray();
+            for( int i = 0; i < 20; i++)
+            {
+                group_name = group_name + String.valueOf(charArray[i]);
+            }
+            group_name = group_name + "...";
+        }
+        else
+            group_name = s.get_group_name();
+
         textGroupName.setText(s.get_group_name());
 
         groupS = s.get_group_ID();
