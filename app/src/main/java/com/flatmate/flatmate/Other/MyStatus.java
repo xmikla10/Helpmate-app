@@ -18,8 +18,6 @@ public class MyStatus
     {
         String returnStatus;
 
-        System.out.println("--------->" + statusNumber);
-
         if(statusNumber.equals("1"))
         {
             returnStatus = c.getString(R.string.status_auctioning);

@@ -83,7 +83,7 @@ public class CustomAdapterToDo extends BaseAdapter{
 
         if(statusInString.equals(c.getString(R.string.status_auctioning)))
         {
-            textViewtime.setText("Duration of auction :");
+            textViewtime.setText(R.string.duration_of_auction);
             textViewStatus.setTextColor(Color.BLACK);
             textViewTaskName.setTextColor(Color.BLACK);
             textViewtime2.setText(s.get_deadline());
@@ -92,7 +92,7 @@ public class CustomAdapterToDo extends BaseAdapter{
         {
             textViewtime2.setText(s.get_bidsLastUserName());
             textViewTaskName.setTextColor(Color.BLACK);
-            textViewtime.setText("Who won?");
+            textViewtime.setText(R.string.who_won_1);
             textViewStatus.setTextColor(Color.BLACK);
             textViewtime.setTextSize(17);
         }
@@ -100,21 +100,21 @@ public class CustomAdapterToDo extends BaseAdapter{
         {
             textViewtime2.setText(s.get_bidsLastUserName());
             textViewTaskName.setTextColor(Color.BLACK);
-            textViewtime.setText("Work completed by :");
+            textViewtime.setText(R.string.work_completed_by_1);
             textViewtime.setTextSize(14);
             textViewStatus.setTextColor(Color.parseColor("#ff669900"));
         }
         else if(statusInString.equals(c.getString(R.string.status_unauctioned)))
         {
             textViewtime2.setText("");
-            textViewtime.setText("Delete ?");
+            textViewtime.setText(R.string.delete_ask);
             textViewStatus.setTextColor(Color.RED);
             textViewTaskName.setTextColor(Color.RED);
         }
         else if(statusInString.equals(c.getString(R.string.status_uncompleted)))
         {
             textViewtime2.setText(s.get_bidsLastUserName());
-            textViewtime.setText("Work uncompleted by :");
+            textViewtime.setText(R.string.wrk_uncompleted_by);
             textViewStatus.setTextColor(Color.RED);
             textViewTaskName.setTextColor(Color.RED);
         }

@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.flatmate.flatmate.R;
+
 /**
  * Created by Belal on 2/3/2016.
  */
@@ -13,10 +15,12 @@ public class Pager extends FragmentPagerAdapter {
 
     //integer to count number of tabs
     private String fragments [] = {"My Works","To Do","Completed"};
+    private Context context;
 
 
     public Pager(FragmentManager supportFragmentManager, Context applicationContext) {
         super(supportFragmentManager);
+        context = applicationContext;
     }
 
     //Overriding method getItem
@@ -42,6 +46,12 @@ public class Pager extends FragmentPagerAdapter {
     }
 
     public CharSequence getPageTitle(int position) {
+        String fragments [] = {
+                context.getString(R.string.my_works),
+                context.getString(R.string.to_do),
+                context.getString(R.string.completed)
+        };
+
         return fragments[position];
     }
 }

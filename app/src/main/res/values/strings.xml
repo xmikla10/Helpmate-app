@@ -103,4 +103,13 @@
     <string name="time_and">"Time    -    "</string>
     <string name="date_and">"Date    -    "</string>
     <string name="want_you_delete_user">"Want you delete user "</string>
+    <string name="deadline">Deadline :</string>
+    <string name="duration_of_auction">Duration of auction :</string>
+    <string name="who_won_1">Who won?</string>
+    <string name="work_completed_by_1">Work completed by :</string>
+    <string name="delete_ask">Delete ?</string>
+    <string name="wrk_uncompleted_by">Work uncompleted by :</string>
+    <string name="want_repeat_work">Want you repeat this work ?</string>
+    <string name="repeat">Repeat</string>
+    <string name="delete_repeat">Delete</string>
 </resources>
