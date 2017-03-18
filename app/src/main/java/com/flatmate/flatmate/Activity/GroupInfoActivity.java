@@ -193,7 +193,7 @@ public class GroupInfoActivity extends AppCompatActivity
                 if ( userID.equals(s.get_user_ID()) || admin.equals("true"))
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(GroupInfoActivity.this);
-                    builder.setMessage("Want you delete user " + s.get_user_name() +" ?")
+                    builder.setMessage(getString(R.string.want_you_delete_user) + s.get_user_name() +" ?")
                             .setNegativeButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id)
                                 {
@@ -282,7 +282,7 @@ public class GroupInfoActivity extends AppCompatActivity
                                         Toast.makeText(GroupInfoActivity.this, R.string.toast_delete, Toast.LENGTH_SHORT).show();
 
                                 }
-                            }).setPositiveButton("No", new DialogInterface.OnClickListener() {
+                            }).setPositiveButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id)
                                 {
                                     //nothing

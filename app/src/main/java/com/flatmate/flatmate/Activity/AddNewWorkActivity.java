@@ -63,13 +63,13 @@ public class AddNewWorkActivity extends AppCompatActivity {
         final Spinner dropdown1 = (Spinner) findViewById(R.id.deadline_spinner);
         String[] items = new String[]
                 {
-                        "1 hour",
-                        "3 hours",
-                        "6 hours",
-                        "12 hours",
-                        "24 hours",
-                        "48 hours",
-                        "weeek"
+                        getString(R.string.one_hour),
+                        getString(R.string.three_hours),
+                        getString(R.string.six_hours),
+                        getString(R.string.twelve_hours),
+                        getString(R.string.twentyfour_hours),
+                        getString(R.string.fourtyeight_hours),
+                        getString(R.string.week)
                 };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown1.setAdapter(adapter);
@@ -154,7 +154,7 @@ public class AddNewWorkActivity extends AppCompatActivity {
                 else
                 {
                     Switch switch1 = (Switch) findViewById(R.id.switchTime);
-                    switch1.setText("Time");
+                    switch1.setText(R.string.time);
                 }
             }
         });
@@ -170,7 +170,7 @@ public class AddNewWorkActivity extends AppCompatActivity {
                 else
                 {
                     Switch switch2 = (Switch) findViewById(R.id.switchDate);
-                    switch2.setText("Date");
+                    switch2.setText(R.string.date);
                 }
             }
         });
@@ -212,24 +212,24 @@ public class AddNewWorkActivity extends AppCompatActivity {
         }
         if ( work_name_text.getText().toString().trim().length() == 0)
         {
-            Toast.makeText( getBaseContext(), "Please, enter a name of work" ,Toast.LENGTH_SHORT).show();
+            Toast.makeText( getBaseContext(), R.string.please_work_name ,Toast.LENGTH_SHORT).show();
         }
         else if ( Integer.parseInt(duration) <= 0)
         {
-            Toast.makeText( getBaseContext(), "Please, enter a duration of work" ,Toast.LENGTH_SHORT).show();
+            Toast.makeText( getBaseContext(), R.string.please_duration_work ,Toast.LENGTH_SHORT).show();
         }
         else if (switch1.isChecked() == false)
         {
-            Toast.makeText( getBaseContext(), "Please, enter a time" ,Toast.LENGTH_SHORT).show();
+            Toast.makeText( getBaseContext(), R.string.please_time ,Toast.LENGTH_SHORT).show();
         }
         else if (switch2.isChecked() == false)
         {
-            Toast.makeText( getBaseContext(), "Please, enter a date" ,Toast.LENGTH_SHORT).show();
+            Toast.makeText( getBaseContext(), R.string.please_date ,Toast.LENGTH_SHORT).show();
         }
         else if(now != null && myDateTime != null)
         {
             if (now.compareTo(myDateTime) > 0 && switch2.isChecked() == true && switch1.isChecked() == true)
-                Toast.makeText(getBaseContext(), "Wrong time or date", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), R.string.wrond_time_date, Toast.LENGTH_SHORT).show();
             else
             {
                 if (checkbox.isChecked() == false)
@@ -237,7 +237,7 @@ public class AddNewWorkActivity extends AppCompatActivity {
                     deadline_spinner = "null";
                 }
 
-                Toast.makeText( getBaseContext(), "New work has been added" ,Toast.LENGTH_SHORT).show();
+                Toast.makeText( getBaseContext(), R.string.new_work_been_added ,Toast.LENGTH_SHORT).show();
                 String selectedDate = (work_name + "#"
                         + duration + "#"
                         + deadline_spinner + "#"
@@ -257,7 +257,7 @@ public class AddNewWorkActivity extends AppCompatActivity {
                 deadline_spinner = "null";
             }
 
-            Toast.makeText( getBaseContext(), "New work has been added" ,Toast.LENGTH_SHORT).show();
+            Toast.makeText( getBaseContext(), R.string.new_work_been_added ,Toast.LENGTH_SHORT).show();
             String selectedDate = (work_name + "#"
                     + duration + "#"
                     + deadline_spinner + "#"
@@ -291,7 +291,7 @@ public class AddNewWorkActivity extends AppCompatActivity {
                 {
                     str1 = "0" + str1;
                 }
-                switch1.setText("Time    -    " +  str1);
+                switch1.setText(getString(R.string.time_and) +  str1);
                 Toast.makeText(this, str1 , Toast.LENGTH_SHORT).show();
                 break;
 
@@ -300,7 +300,7 @@ public class AddNewWorkActivity extends AppCompatActivity {
                 Switch switch2 = (Switch) findViewById(R.id.switchDate);
                 String[] split2 = data.getStringExtra(DatePopUp.SELECTED_DATE_KEY).split("-");
                 str2 = Arrays.toString(split2).replace("[", "").replace("]", "");
-                switch2.setText("Date    -    " + str2);
+                switch2.setText(getString(R.string.date_and) + str2);
                 Toast.makeText(this, str2 , Toast.LENGTH_SHORT).show();
                 break;
 

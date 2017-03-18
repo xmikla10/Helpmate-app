@@ -41,6 +41,7 @@ import com.flatmate.flatmate.Firebase.NewWork;
 import com.flatmate.flatmate.Other.FontsOverride;
 import com.flatmate.flatmate.Other.Pager;
 import com.flatmate.flatmate.Other.SetNotification;
+import com.flatmate.flatmate.Other.StringForNotifications;
 import com.flatmate.flatmate.Other.WorkDoneReceiver;
 import com.flatmate.flatmate.R;
 import com.google.android.gms.auth.api.Auth;
@@ -449,7 +450,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
                 Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
                 String notif_group_name = value.get("_group_name").toString();
+
                 String notif_message = value.get("_message").toString();
+                String notif_message2 = value.get("_message2").toString();
+
                 String work_date = value.get("_date").toString();
                 String tmp = value.get("_random").toString();
                 Double tmp2 = Double.valueOf(tmp);
@@ -458,15 +462,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 String childKey = dataSnapshot.getKey();
                 Boolean showNotification = getActualDate(work_date);
 
-                System.out.println("-------->" + dataSnapshot);
-                System.out.println("-------->" + notif_message);
-
                 if ( !showNotification)
                 {
                     db.child("user").child("users").child(userID).child("notifications").child(childKey).setValue(null);
                 }
                 else
                 {
+                    StringForNotifications sfn = new StringForNotifications();
+                    String notificaton_message = sfn.setNotificationString(notif_message, notif_message2, MainActivity.this);
 
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
                     PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, (int) System.currentTimeMillis(), intent, 0);
@@ -477,7 +480,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     Notification notif = new Notification.Builder(MainActivity.this)
                             .setSmallIcon(R.mipmap.ic_launcher)
                             .setSound(alarmSound)
-                            .setContentTitle(notif_message)
+                            .setContentTitle(notificaton_message)
                             .setContentText(notif_group_name)
                             .setContentIntent(pIntent).build();
                     NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

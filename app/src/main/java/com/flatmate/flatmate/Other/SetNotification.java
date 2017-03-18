@@ -39,7 +39,6 @@ public class SetNotification
      *           - 4 = Work win
      *           - 5 = Work done
      *           - 6 = Work change status
-     *           - 7 = Work win user
      *           - 8 = Work change status for every members
      */
 
@@ -86,8 +85,11 @@ public class SetNotification
                                                 if( !find_user.equals(userID))
                                                 {
                                                     NotificationMessage notif_2 = new NotificationMessage();
-                                                    String message_2 = "New user added - " + string;
+                                                    String message_2 = "2";
+                                                    String message_plus = string;
+
                                                     notif_2.set_message(message_2);
+                                                    notif_2.set_message2(message_plus);
                                                     notif_2.set_group_name(group_name);
                                                     notif_2.set_work_ID(work_ID);
                                                     notif_2.set_date(getActualDate());
@@ -127,16 +129,20 @@ public class SetNotification
                                         if (control == 1) {
                                             if (!find_user.equals(userID))
                                             {
-                                                String message_1 = "New work added - " + string;
-                                                sendNotification(message_1, group_name, find_user);
+                                                String message_1 = "1";
+                                                String message_plus = string;
+                                                sendNotification(message_1, group_name, find_user, message_plus);
                                             }
                                         }
 
                                         if (control == 3) {
                                             if (!find_user.equals(userID)) {
                                                 NotificationMessage notif_3 = new NotificationMessage();
-                                                String message_3 = "User " + string + " removed from group";
+                                                String message_3 = "3";
+                                                String message_plus = string;
+
                                                 notif_3.set_message(message_3);
+                                                notif_3.set_message2(message_plus);
                                                 notif_3.set_group_name(group_name);
                                                 notif_3.set_work_ID(work_ID);
                                                 notif_3.set_date(getActualDate());
@@ -147,28 +153,32 @@ public class SetNotification
 
                                         if (control == 4) {
                                             if (find_email.equals(evaluationEmail)) {
-                                                String message_4 = "You win auction for: " + string;
-                                                sendNotification(message_4, group_name, find_user);
+                                                String message_4 = "4";
+                                                String message_plus = string;
+                                                sendNotification(message_4, group_name, find_user, message_plus);
                                             }
                                         }
 
                                         if (control == 5) {
                                             if (!find_user.equals(userID)) {
-                                                String message_3 = "Work " + string + " done";
-                                                sendNotification(message_3, group_name, find_user);
+                                                String message_5 = "5";
+                                                String message_plus = string;
+                                                sendNotification(message_5, group_name, find_user, message_plus);
                                             }
                                         }
 
                                         if (control == 6) {
                                             if (!find_email.equals(evaluationEmail)) {
-                                                String message_6 = "Work " + string + " change status";
-                                                sendNotification(message_6, group_name, find_user);
+                                                String message_6 = "6";
+                                                String message_plus = string;
+                                                sendNotification(message_6, group_name, find_user, message_plus);
                                             }
                                         }
 
                                         if (control == 8) {
-                                            String message_8 = "Work " + string + " change status";
-                                            sendNotification(message_8, group_name, find_user);
+                                            String message_8 = "8";
+                                            String message_plus = string;
+                                            sendNotification(message_8, group_name, find_user, message_plus);
                                         }
                                     }
                                 }
@@ -187,12 +197,8 @@ public class SetNotification
             });
         }
     }
-    public void sendNotification(final String message, final String groupName, final String find_user)
+    public void sendNotification(final String message, final String groupName, final String find_user, final String message2)
     {
-
-        System.out.println("----1---->" + message);
-        System.out.println("----1---->" + find_user);
-
 
         db.child("user").child("users").child(find_user).child("notifications").orderByChild("_work_ID").equalTo(work_ID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override public void onDataChange(DataSnapshot dataSnapshot)
@@ -202,6 +208,7 @@ public class SetNotification
                 {
                     NotificationMessage notif = new NotificationMessage();
                     notif.set_message(message);
+                    notif.set_message2(message2);
                     notif.set_group_name(groupName);
                     notif.set_work_ID(work_ID);
                     notif.set_date(getActualDate());
@@ -217,6 +224,7 @@ public class SetNotification
 
                         Map newStatus = new HashMap();
                         newStatus.put("_message", message);
+                        newStatus.put("_message2", message2);
                         newStatus.put("_group_name", groupName);
                         newStatus.put("_date", getActualDate());
                         db.child("user").child("users").child(find_user).child("notifications").child(childKey).updateChildren(newStatus);

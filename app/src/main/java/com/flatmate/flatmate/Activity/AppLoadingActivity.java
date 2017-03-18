@@ -27,7 +27,7 @@ public class AppLoadingActivity extends Activity {
             public void run() {
                 try {
                     super.run();
-                    sleep(LOADING_TIME_IN_SECONDS * 500);  //Delay of 10 seconds
+                    sleep(LOADING_TIME_IN_SECONDS * 500);
                 } catch (Exception e) {
 
                 } finally {
