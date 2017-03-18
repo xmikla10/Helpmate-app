@@ -84,4 +84,6 @@
     <string name="rename_group_title">Rename group</string>
     <string name="group_name_empty_toast">Groupname can\'t be empty</string>
     <string name="gropu_rename_toast">The group was renamed</string>
+    <string name="credit"> credit</string>
+    <string name="vymazat_toto">pomoc</string>
 </resources>

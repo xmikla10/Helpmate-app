@@ -11,6 +11,7 @@ public class NotificationMessage
     private String message;
     private String date;
     private String work_ID;
+    private String random;
 
     public NotificationMessage()
     {
@@ -51,6 +52,16 @@ public class NotificationMessage
     public void set_work_ID(String work_ID)
     {
         this.work_ID = work_ID;
+    }
+
+    public String get_random()
+    {
+        return random;
+    }
+
+    public void set_random(String random)
+    {
+        this.random = random;
     }
 
 

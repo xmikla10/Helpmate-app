@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
+import com.flatmate.flatmate.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -60,10 +61,15 @@ public class AlarmProgressReceiver extends WakefulBroadcastReceiver
                     bidsLastUser = value.get("_bidsLastUser").toString();
                     bidsLastUserName = value.get("_bidsLastUserName").toString();
                     status = value.get("_status").toString();
+
+                    MyStatus statusC = new MyStatus();
+                    String statusInString = statusC.setStatus( status, context);
+                    status = statusInString;
+
                     work_name = value.get("_work_name").toString();
                 }
 
-                if ( status.equals("Status : in progress"))
+                if ( status.equals(context.getString(R.string.status_progress)))
                 {
 
                     final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
@@ -84,7 +90,7 @@ public class AlarmProgressReceiver extends WakefulBroadcastReceiver
                     cal.add(Calendar.HOUR, 24);
 
                     Map newEvaluationData = new HashMap();
-                    newEvaluationData.put("_status", "Status : uncompleted");
+                    newEvaluationData.put("_status", "5");
                     newEvaluationData.put("_deadline", dateFormat.format(cal.getTime()));
                     db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newEvaluationData);
                     SetNotification set = new SetNotification();

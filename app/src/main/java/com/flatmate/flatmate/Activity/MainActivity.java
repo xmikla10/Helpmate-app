@@ -35,6 +35,7 @@ import com.flatmate.flatmate.Firebase.NewGroup;
 import com.flatmate.flatmate.Other.AlarmProgressReceiver;
 import com.flatmate.flatmate.Other.AlarmReceiver;
 import com.flatmate.flatmate.Other.AppPreferences;
+import com.flatmate.flatmate.Other.MyStatus;
 import com.flatmate.flatmate.Other.CustomAdapterToDo;
 import com.flatmate.flatmate.Firebase.NewWork;
 import com.flatmate.flatmate.Other.FontsOverride;
@@ -105,6 +106,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public String childKey;
     public Integer finall;
     public Integer notifCounter;
+
+    String control_message;
+    String control_date;
+    String control_group_name;
+    String control_childkey;
+    Boolean canShowNotif;
+    String control_datasnapshot;
 
     public DatabaseReference db;
     public FirebaseHelperWork helper;
@@ -189,6 +197,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                     evaluationBidsID = value.get("_bidsID").toString();
                                     evaluationDeadline = value.get("_deadline").toString();
                                     evaluationStatus = value.get("_status").toString();
+
+                                    MyStatus statusC = new MyStatus();
+
+                                    String statusInString = statusC.setStatus( evaluationStatus, MainActivity.this);
+                                    evaluationStatus = statusInString;
+
                                     evaluationDate = value.get("_date").toString();
                                     evaluationTime = value.get("_time").toString();
 
@@ -330,6 +344,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                             evaluationBidsID = value.get("_bidsID").toString();
                             evaluationDeadline = value.get("_deadline").toString();
                             evaluationStatus = value.get("_status").toString();
+
+                            MyStatus statusC = new MyStatus();
+
+                            String statusInString = statusC.setStatus( evaluationStatus, MainActivity.this);
+                            evaluationStatus = statusInString;
+
                             evaluationDate = value.get("_date").toString();
                             evaluationTime = value.get("_time").toString();
 
@@ -431,9 +451,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 String notif_group_name = value.get("_group_name").toString();
                 String notif_message = value.get("_message").toString();
                 String work_date = value.get("_date").toString();
-                String childKey = dataSnapshot.getKey();
+                String tmp = value.get("_random").toString();
+                Double tmp2 = Double.valueOf(tmp);
+                Integer notif_counter = tmp2.intValue();
 
+                String childKey = dataSnapshot.getKey();
                 Boolean showNotification = getActualDate(work_date);
+
+                System.out.println("-------->" + dataSnapshot);
+                System.out.println("-------->" + notif_message);
 
                 if ( !showNotification)
                 {
@@ -458,12 +484,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
                     notif.flags |= Notification.FLAG_AUTO_CANCEL;
 
-                    notificationManager.notify(notifCounter, notif);
-                    notifCounter++;
+                    notificationManager.notify(notif_counter, notif);
+
                     db.child("user").child("users").child(userID).child("notifications").child(childKey).setValue(null);
+                    System.out.println("-------->" + "som na konci");
+
                 }
-
-
             }
             @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
             @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
@@ -970,7 +996,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 newWork.set_deadline(deadlineR);
                 newWork.set_date(dateR);
                 newWork.set_time(timeR);
-                newWork.set_status(getString(R.string.status_auctioning));
+                newWork.set_status("1");
                 newWork.set_bidsID(uniqueID);
                 newWork.set_bidsID(uniqueID);
                 newWork.set_userEmail("null");

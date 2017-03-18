@@ -87,7 +87,14 @@ public class CustomAdapterCompleted extends BaseAdapter{
         completedNameOfTask.setText(work_name);
         completedUserName.setText(name);
         completedDate.setText(s.get_date());
-        completedCredits.setText(s.get_credits());
+
+        if( s.get_credits().equals("1"))
+        {
+            completedCredits.setText(s.get_credits() + " " + c.getString(R.string.credit));
+        }
+        else
+            completedCredits.setText(s.get_credits() + " " + c.getString(R.string.credits));
+
 
         return convertView;
     }

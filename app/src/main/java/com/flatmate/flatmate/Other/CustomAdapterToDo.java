@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flatmate.flatmate.Activity.MainActivity;
 import com.flatmate.flatmate.Firebase.NewWork;
 import com.flatmate.flatmate.R;
 
@@ -74,14 +75,20 @@ public class CustomAdapterToDo extends BaseAdapter{
         else
             work_name = s.get_work_name();
 
-        if(s.get_status().equals("Status : auctioning"))
+        MyStatus statusC = new MyStatus();
+
+        String statusInString = statusC.setStatus( s.get_status(), c);
+        System.out.println("--------->" + statusInString);
+
+
+        if(statusInString.equals(c.getString(R.string.status_auctioning)))
         {
             textViewtime.setText("Duration of auction :");
             textViewStatus.setTextColor(Color.BLACK);
             textViewTaskName.setTextColor(Color.BLACK);
             textViewtime2.setText(s.get_deadline());
         }
-        else if(s.get_status().equals("Status : in progress"))
+        else if(statusInString.equals(c.getString(R.string.status_progress)))
         {
             textViewtime2.setText(s.get_bidsLastUserName());
             textViewTaskName.setTextColor(Color.BLACK);
@@ -89,7 +96,7 @@ public class CustomAdapterToDo extends BaseAdapter{
             textViewStatus.setTextColor(Color.BLACK);
             textViewtime.setTextSize(17);
         }
-        else if(s.get_status().equals("Status : done"))
+        else if(statusInString.equals(c.getString(R.string.status_done)))
         {
             textViewtime2.setText(s.get_bidsLastUserName());
             textViewTaskName.setTextColor(Color.BLACK);
@@ -97,14 +104,14 @@ public class CustomAdapterToDo extends BaseAdapter{
             textViewtime.setTextSize(14);
             textViewStatus.setTextColor(Color.parseColor("#ff669900"));
         }
-        else if (s.get_status().equals("Status : unauctioned"))
+        else if(statusInString.equals(c.getString(R.string.status_unauctioned)))
         {
             textViewtime2.setText("");
             textViewtime.setText("Delete ?");
             textViewStatus.setTextColor(Color.RED);
             textViewTaskName.setTextColor(Color.RED);
         }
-        else if (s.get_status().equals("Status : uncompleted"))
+        else if(statusInString.equals(c.getString(R.string.status_uncompleted)))
         {
             textViewtime2.setText(s.get_bidsLastUserName());
             textViewtime.setText("Work uncompleted by :");
@@ -115,7 +122,7 @@ public class CustomAdapterToDo extends BaseAdapter{
             textViewtime2.setText(s.get_deadline());
 
         textViewTaskName.setText(work_name);
-        textViewStatus.setText(s.get_status());
+        textViewStatus.setText(statusInString);
 
         return convertView;
     }

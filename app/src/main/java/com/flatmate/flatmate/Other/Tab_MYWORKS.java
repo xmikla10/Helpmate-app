@@ -148,7 +148,11 @@ public class Tab_MYWORKS extends Fragment {
                 final NewWork s= (NewWork) adapter.getItem(position);
                 Intent intent = new Intent(getActivity(), AuctionActivity.class);
                 intent.putExtra("work_name", s.get_work_name());
-                intent.putExtra("status", s.get_status());
+
+                MyStatus status = new MyStatus();
+                String statusInString = status.setStatus(s.get_status(), getContext());
+
+                intent.putExtra("status", statusInString);
                 intent.putExtra("duration", s.get_duration());
                 intent.putExtra("deadline", s.get_deadline());
                 intent.putExtra("time", ( s.get_time() +"  "+s.get_date()));
@@ -156,7 +160,7 @@ public class Tab_MYWORKS extends Fragment {
                 intent.putExtra("myWork", "1");
                 intent.putExtra("workProgress", s.get_workProgress());
 
-                if ( !s.get_status().equals("Status : uncompleted"))
+                if ( !statusInString.equals(R.string.status_uncompleted))
                     startActivity(intent);
             }
 

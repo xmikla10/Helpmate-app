@@ -64,6 +64,7 @@ public class Tab_TODO extends Fragment
     public String deadlineR;
     public String uniqueID;
     public String durationR;
+    String statusInString;
 
     String userID;
     DatabaseReference db;
@@ -195,6 +196,10 @@ public class Tab_TODO extends Fragment
 
                 intent.putExtra("work_name", s.get_work_name());
                 intent.putExtra("status", s.get_status());
+
+                MyStatus statusC = new MyStatus();
+                statusInString = statusC.setStatus( s.get_status(), getContext());
+
                 intent.putExtra("duration", s.get_duration());
                 intent.putExtra("deadline", s.get_deadline());
                 intent.putExtra("time", ( s.get_time() +"  "+s.get_date()));
@@ -207,7 +212,7 @@ public class Tab_TODO extends Fragment
 
                 intent.putExtra("myWork", "0");
 
-                if(s.get_status().equals("Status : unauctioned") || s.get_status().equals("Status : uncompleted"))
+                if(statusInString.equals(getContext().getString(R.string.status_unauctioned)) || statusInString.equals(getContext().getString(R.string.status_uncompleted)))
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setMessage("Want you repeat this work ?")
@@ -225,7 +230,7 @@ public class Tab_TODO extends Fragment
                                             {
                                                 Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
                                                 String childKey = childSnapshot.getKey();
-                                                if ( s.get_status().equals("Status : unauctioned") || s.get_status().equals("Status : uncompleted") )
+                                                if ( statusInString.equals(getContext().getString(R.string.status_unauctioned)) || statusInString.equals(getContext().getString(R.string.status_uncompleted)) )
                                                     db.child("groups").child(groupID).child("works").child("todo").child(childKey).setValue(null);
                                             }
                                         }
@@ -244,7 +249,7 @@ public class Tab_TODO extends Fragment
                                             {
                                                 Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
                                                 String childKey = childSnapshot.getKey();
-                                                if ( s.get_status().equals("Status : unauctioned") || s.get_status().equals("Status : uncompleted") )
+                                                if ( statusInString.equals(getContext().getString(R.string.status_unauctioned)) || statusInString.equals(getContext().getString(R.string.status_uncompleted)) )
                                                     db.child("groups").child(groupID).child("works").child("todo").child(childKey).setValue(null);
                                             }
                                             dialog.cancel();
@@ -268,7 +273,7 @@ public class Tab_TODO extends Fragment
                 }
                 else
                 {
-                    if(!s.get_status().equals("Status : done"))
+                    if(!statusInString.equals(getContext().getString(R.string.status_done)))
                     {
                         startActivity(intent);
                     }
@@ -314,7 +319,7 @@ public class Tab_TODO extends Fragment
                 newWork.set_deadline(deadlineR);
                 newWork.set_date(dateR);
                 newWork.set_time(timeR);
-                newWork.set_status(getString(R.string.status_auctioning));
+                newWork.set_status("1");
                 newWork.set_bidsID(uniqueID);
                 newWork.set_bidsID(uniqueID);
                 newWork.set_userEmail("null");

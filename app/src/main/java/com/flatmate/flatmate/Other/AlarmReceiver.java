@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.flatmate.flatmate.Activity.MainActivity;
 import com.flatmate.flatmate.Firebase.NewBid;
+import com.flatmate.flatmate.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -77,17 +78,22 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
                     bidsLastUserName = value.get("_bidsLastUserName").toString();
                     work_name = value.get("_work_name").toString();
                     status = value.get("_status").toString();
+
+                    MyStatus statusC = new MyStatus();
+                    String statusInString = statusC.setStatus( status, context);
+                    status = statusInString;
+
                     date = value.get("_date").toString();
                     time = value.get("_time").toString();
                 }
 
-                if ( status.equals("Status : auctioning"))
+                if ( status.equals(context.getString(R.string.status_auctioning)))
                 {
                     Map newEvaluationData = new HashMap();
 
                     if ( bidsLastUser.equals("null"))
                     {
-                        newEvaluationData.put("_status", "Status : unauctioned");
+                        newEvaluationData.put("_status", "4");
 
                         db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newEvaluationData);
                         SetNotification set = new SetNotification();
@@ -96,7 +102,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver
                     else
                     {
                         newEvaluationData.put("_userEmail", bidsLastUser);
-                        newEvaluationData.put("_status", "Status : in progress");
+                        newEvaluationData.put("_status", "2");
 
                         db.child("groups").child(groupID).child("works").child("todo").child(childKey).updateChildren(newEvaluationData);
                         SetNotification set = new SetNotification();

@@ -91,6 +91,7 @@ public class SetNotification
                                                     notif_2.set_group_name(group_name);
                                                     notif_2.set_work_ID(work_ID);
                                                     notif_2.set_date(getActualDate());
+                                                    notif_2.set_random(generateRandomNumber().toString());
                                                     db.child("user").child("users").child(find_user).child("notifications").push().setValue(notif_2);
                                                 }
                                             }
@@ -139,6 +140,7 @@ public class SetNotification
                                                 notif_3.set_group_name(group_name);
                                                 notif_3.set_work_ID(work_ID);
                                                 notif_3.set_date(getActualDate());
+                                                notif_3.set_random(generateRandomNumber().toString());
                                                 db.child("user").child("users").child(find_user).child("notifications").push().setValue(notif_3);
                                             }
                                         }
@@ -188,6 +190,10 @@ public class SetNotification
     public void sendNotification(final String message, final String groupName, final String find_user)
     {
 
+        System.out.println("----1---->" + message);
+        System.out.println("----1---->" + find_user);
+
+
         db.child("user").child("users").child(find_user).child("notifications").orderByChild("_work_ID").equalTo(work_ID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override public void onDataChange(DataSnapshot dataSnapshot)
             {
@@ -199,6 +205,7 @@ public class SetNotification
                     notif.set_group_name(groupName);
                     notif.set_work_ID(work_ID);
                     notif.set_date(getActualDate());
+                    notif.set_random(generateRandomNumber().toString());
                     db.child("user").child("users").child(find_user).child("notifications").push().setValue(notif);
                 }
                 else
@@ -240,6 +247,15 @@ public class SetNotification
         String date = dateFormat.format(cal.getTime());
 
         return date;
+    }
+
+    public Double generateRandomNumber()
+    {
+        double random = Math.random() * 543 + 1;
+        double random1 = Math.random() * 223 + 1;
+        double random2 = Math.random() * 967 + 1;
+
+        return random + random1 + random2;
     }
 
 }

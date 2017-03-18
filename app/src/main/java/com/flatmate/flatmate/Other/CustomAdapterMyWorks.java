@@ -74,7 +74,11 @@ public class CustomAdapterMyWorks extends BaseAdapter{
 
         textViewtime2.setText("Deadline :");
         textViewTaskName.setText(work_name);
-        textViewStatus.setText(s.get_status());
+
+        MyStatus statusC = new MyStatus();
+        String statusInString = statusC.setStatus(s.get_status(), c);
+
+        textViewStatus.setText(statusInString);
         textViewtime.setText(s.get_time() +"  "+s.get_date());
 
         return convertView;

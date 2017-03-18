@@ -37,6 +37,7 @@ import com.flatmate.flatmate.Other.BidPopUp;
 import com.flatmate.flatmate.Other.CustomAdapterAuction;
 import com.flatmate.flatmate.Other.CustomAdapterMyWorks;
 import com.flatmate.flatmate.Other.CustomAdapterToDo;
+import com.flatmate.flatmate.Other.MyStatus;
 import com.flatmate.flatmate.Other.SetNotification;
 import com.flatmate.flatmate.Other.WorkDoneReceiver;
 import com.flatmate.flatmate.R;
@@ -131,6 +132,11 @@ public class AuctionActivity extends AppCompatActivity
         {
             String work_name = extras.getString("work_name");
             String status = extras.getString("status");
+
+            MyStatus statusC = new MyStatus();
+
+            String statusInString = statusC.setStatus( status, AuctionActivity.this);
+
             String duration = extras.getString("duration");
             String deadline = extras.getString("deadline");
             String time = extras.getString("time");
@@ -163,7 +169,7 @@ public class AuctionActivity extends AppCompatActivity
                 pom = work_name;
 
             work_name1.setText(pom);
-            status1.setText(status);
+            status1.setText(statusInString);
             duration1.setText(duration);
             deadline1.setText(deadline);
             time1.setText(time);
@@ -304,6 +310,11 @@ public class AuctionActivity extends AppCompatActivity
                             String evaluationEmailUser = value.get("_userEmail").toString();
                             String status= value.get("_status").toString();
 
+                            MyStatus statusC = new MyStatus();
+
+                            String statusInString = statusC.setStatus( status, AuctionActivity.this);
+                            status = statusInString;
+
                             if(status.equals(getString(R.string.status_progress)) || status.equals(getString(R.string.status_done)) || status.equals(getString(R.string.status_unauctioned)) )
                             {
 
@@ -332,6 +343,11 @@ public class AuctionActivity extends AppCompatActivity
                             childKeyFork = childSnapshot.getKey();
                             Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
                             statusToShow = value.get("_status").toString();
+                            MyStatus statusC = new MyStatus();
+
+                            String statusInString = statusC.setStatus( statusToShow, AuctionActivity.this);
+                            statusToShow = statusInString;
+
                             lastUser = value.get("_bidsLastUserName").toString();
                         }
 
@@ -374,6 +390,10 @@ public class AuctionActivity extends AppCompatActivity
                             Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
                             statusToShow = value.get("_status").toString();
                             lastUser = value.get("_bidsLastUserName").toString();
+
+                            MyStatus statusC = new MyStatus();
+                            String statusInString = statusC.setStatus( statusToShow, AuctionActivity.this);
+                            statusToShow = statusInString;
                         }
 
                         if ( !statusToShow.equals(getString(R.string.status_auctioning)))
@@ -466,7 +486,7 @@ public class AuctionActivity extends AppCompatActivity
                                 completedWork.set_work_name(completedWorkName);
                                 completedWork.set_bidsLastUserName(completedName);
                                 completedWork.set_bidsLastUser(completedEmail);
-                                completedWork.set_credits(completedCredits + getString(R.string.credits));
+                                completedWork.set_credits(completedCredits);
                                 completedWork.set_workProgress("6");
                                 String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
                                 completedWork.set_date(date);
@@ -480,7 +500,7 @@ public class AuctionActivity extends AppCompatActivity
 
                                 newCompletedData.put("_userEmail", "null");
                                 newCompletedData.put("_workProgress", "6");
-                                newCompletedData.put("_status", getString(R.string.status_done));
+                                newCompletedData.put("_status", "3");
 
                                 db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newCompletedData);
 
@@ -757,6 +777,11 @@ public class AuctionActivity extends AppCompatActivity
         TextView auctionStatus = (TextView) findViewById(R.id.auctionStatus);
         TextView auctionTime = (TextView) findViewById(R.id.auctionTime);
 
+        MyStatus statusC = new MyStatus();
+
+        String statusInString = statusC.setStatus( status, AuctionActivity.this);
+        status = statusInString;
+
         if ( status.equals(getString(R.string.status_done)))
         {
             textViewTaskStatus.setText(R.string.work_completed_by);
@@ -901,7 +926,7 @@ public class AuctionActivity extends AppCompatActivity
                                             newbid.set_credits(bid);
                                         }
                                         else
-                                            newbid.set_credits(bid + getString(R.string.credits));
+                                            newbid.set_credits(bid);
 
                                         newbid.set_userName(userName);
                                         helper.save(newbid, bidsID, groupID);
@@ -926,19 +951,19 @@ public class AuctionActivity extends AppCompatActivity
 
                                             if ( bidsLastUser.equals("null") && evaluation != true)
                                             {
-                                                newEvaluationData2.put("_status", getString(R.string.status_unauctioned));
+                                                newEvaluationData2.put("_status", "4");
                                                 db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newEvaluationData2);
                                                 SetNotification set = new SetNotification();
                                                 set.Set(groupID, 8, work_name, bidsID, "");
                                             }
                                             else
                                             {
-                                                newEvaluationData.put("_status", getString(R.string.status_progress));
+                                                newEvaluationData.put("_status", "2");
                                                 db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newEvaluationData);
-                                                SetNotification set = new SetNotification();
                                                 SetNotification set1 = new SetNotification();
-                                                set.Set(groupID, 6, work_name, bidsID, notifEmail);
-                                                set.Set(groupID, 4, work_name, bidsID, notifEmail);
+                                                SetNotification set2 = new SetNotification();
+                                                set1.Set(groupID, 6, work_name, bidsID, notifEmail);
+                                                set2.Set(groupID, 4, work_name, bidsID, notifEmail);
                                             }
 
                                             Intent intent = new Intent(AuctionActivity.this, MainActivity.class);

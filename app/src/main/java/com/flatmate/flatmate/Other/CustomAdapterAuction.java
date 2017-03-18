@@ -68,7 +68,13 @@ public class CustomAdapterAuction extends BaseAdapter{
             work_name = s.get_userName();
 
         textViewName.setText(work_name);
-        textViewCredits.setText(s.get_credits());
+
+        if( s.get_credits().equals("1"))
+        {
+            textViewCredits.setText(s.get_credits() + c.getString(R.string.credit));
+        }
+        else
+            textViewCredits.setText(s.get_credits() + c.getString(R.string.credits));
 
         return convertView;
     }
