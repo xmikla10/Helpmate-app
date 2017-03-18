@@ -21,7 +21,7 @@
             android:yearListSelectorColor="@color/colorOrange" />
 
         <Button
-        android:text="Save"
+        android:text="@string/save"
         android:layout_marginTop="0.1in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

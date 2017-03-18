@@ -24,7 +24,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:text="Name of group"
+                android:text="@string/name_of_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -40,7 +40,7 @@
                 android:backgroundTint="@color/colorOrange"
                 android:layout_width="match_parent"
                 android:ems="10"
-                android:hint="Here type name of group"
+                android:hint="@string/here_type_name_of_group"
                 android:textColorHint="#d1d1d1"
                 android:inputType="textCapSentences"
                 android:layout_alignParentTop="true"
@@ -50,7 +50,7 @@
                 android:gravity="left" />
 
         <TextView
-                android:text="Add members :"
+                android:text="@string/add_members"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView7"
@@ -68,7 +68,7 @@
                 android:backgroundTint="@color/colorOrange"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:hint="name@email.com" >
+                android:hint="@string/name_email_com" >
             </AutoCompleteTextView>
 
             <LinearLayout
@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="  Add member  "
+                android:text="@string/add_member"
                 style="@style/Base.Widget.AppCompat.Button" />
         </LinearLayout>
     </ScrollView>

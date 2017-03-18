@@ -215,8 +215,8 @@ public class Tab_TODO extends Fragment
                 if(statusInString.equals(getContext().getString(R.string.status_unauctioned)) || statusInString.equals(getContext().getString(R.string.status_uncompleted)))
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setMessage("Want you repeat this work ?")
-                            .setPositiveButton("Repeat", new DialogInterface.OnClickListener() {
+                    builder.setMessage(R.string.want_repeat_work)
+                            .setPositiveButton(R.string.repeat, new DialogInterface.OnClickListener() {
                                 public void onClick(final DialogInterface dialog, int id)
                                 {
                                     intentRe.putExtra("work_name", s.get_work_name());
@@ -238,7 +238,7 @@ public class Tab_TODO extends Fragment
                                     });
                                 }
                             })
-                            .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                            .setNegativeButton(R.string.delete_repeat, new DialogInterface.OnClickListener() {
                                 public void onClick(final DialogInterface dialog, int id)
                                 {
                                     db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(s.get_bidsID()).addListenerForSingleValueEvent(new ValueEventListener() {

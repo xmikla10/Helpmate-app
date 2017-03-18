@@ -21,7 +21,7 @@
         />
 
     <TextView
-        android:text="Duration of auction :"
+        android:text="@string/duration_of_auction"
         android:id="@+id/myWorkTaskDuration"
         android:layout_width="wrap_content"
         android:paddingRight="0.2in"

@@ -27,7 +27,7 @@
         android:weightSum="1">
 
         <TextView
-            android:text="Name of work"
+            android:text="@string/name_of_work"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -44,7 +44,7 @@
             android:backgroundTint="@color/colorOrange"
             android:layout_width="match_parent"
             android:ems="10"
-            android:hint="Here type name of work"
+            android:hint="@string/here_type_name_of_work"
             android:textColorHint="#d1d1d1"
             android:inputType="textCapSentences"
             android:layout_alignParentTop="true"
@@ -54,7 +54,7 @@
             android:gravity="left" />
 
         <TextView
-            android:text="Duration of work"
+            android:text="@string/duration_of_work"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView7"
@@ -70,7 +70,7 @@
         <include layout="@layout/task_duration"/>
 
         <TextView
-            android:text="Deadline"
+            android:text="@string/deadline1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView11"
@@ -84,7 +84,7 @@
             android:layout_alignBottom="@+id/deadline_spinner" />
 
         <Switch
-            android:text="Time"
+            android:text="@string/time"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_width="match_parent"
@@ -93,7 +93,7 @@
             android:layout_weight="0.1" />
 
         <Switch
-            android:text="Date"
+            android:text="@string/date"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_width="match_parent"
@@ -102,7 +102,7 @@
             android:layout_weight="0.1" />
 
         <CheckBox
-            android:text="Duration of auction"
+            android:text="@string/duration_of_auction"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_below="@+id/textView12"

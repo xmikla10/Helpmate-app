@@ -20,7 +20,7 @@
 
         <CheckBox
             android:layout_marginLeft="0.18in"
-            android:text="I am not interested"
+            android:text="@string/i_am_not_interested"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/checkBoxBid" />

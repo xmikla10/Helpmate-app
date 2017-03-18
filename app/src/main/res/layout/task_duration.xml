@@ -17,7 +17,7 @@
         android:textColor="?attr/actionModeSplitBackground" />
 
     <TextView
-        android:text="minutes"
+        android:text="@string/minutes"
         android:layout_width="wrap_content"
         android:layout_height="27dp"
         android:id="@+id/textView3"

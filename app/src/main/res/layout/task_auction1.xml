@@ -8,7 +8,7 @@
 
 
     <TextView
-        android:text="Duration of work :"
+        android:text="@string/duration_of_work"
         android:id="@+id/textViewTaskName"
         android:layout_width="wrap_content"
         android:layout_height="35dp"

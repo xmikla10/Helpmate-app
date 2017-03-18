@@ -23,7 +23,7 @@
 
 
         <TextView
-            android:text="  Auction :"
+            android:text="@string/auction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textViewAuctionText"
@@ -41,7 +41,7 @@
 
             <TextView
                 android:paddingBottom="0.1in"
-                android:text="  Progress :"
+                android:text="@string/progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left|center"
@@ -77,7 +77,7 @@
                 android:background="@android:color/holo_orange_light"
                 android:elevation="0dp"
                 android:textAppearance="@style/TextAppearance.AppCompat"
-                android:text="Work Done" />
+                android:text="@string/work_done" />
 
             <Button
                 android:id="@+id/buttonAuctionCancel"
@@ -88,7 +88,7 @@
                 android:background="@android:color/holo_orange_light"
                 android:elevation="0dp"
                 android:textAppearance="@style/TextAppearance.AppCompat"
-                android:text="Cancel" />
+                android:text="@string/cancel" />
 
         </LinearLayout>
 

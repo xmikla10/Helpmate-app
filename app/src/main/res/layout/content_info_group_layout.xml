@@ -25,7 +25,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:text="Name of group :"
+                android:text="@string/name_of_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -75,7 +75,7 @@
             </LinearLayout>
 
             <TextView
-                android:text="Members :"
+                android:text="@string/members"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView7"
@@ -99,7 +99,7 @@
                 android:layout_height="10dp" />
 
             <TextView
-                android:text="Add members :"
+                android:text="@string/add_members"
                 android:id="@+id/addMembersTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                 android:backgroundTint="@color/colorOrange"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:hint="name@email.com" >
+                android:hint="@string/name_email_com" >
             </AutoCompleteTextView>
 
             <LinearLayout
@@ -139,7 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="  Add member  "
+                android:text="@string/add_member"
                 style="@style/Base.Widget.AppCompat.Button" />
 
         </LinearLayout>

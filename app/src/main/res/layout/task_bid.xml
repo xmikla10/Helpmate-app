@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:text="  Add bid  :"
+        android:text="@string/add_bid"
         android:paddingLeft="5dp"
         android:layout_width="wrap_content"
         android:layout_weight="1"
