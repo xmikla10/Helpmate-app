@@ -89,7 +89,7 @@
     <string name="new_work_added">Nová práce přidána -\u0020</string>
     <string name="new_user_added">Nový člen pridaný -\u0020</string>
     <string name="removed_from_group">\u0020bol/a vymazán/a ze skupiny</string>
-    <string name="you_win_auction">Vyhrali ste aukci pro: </string>
+    <string name="you_win_auction">Vyhrali ste aukci pro:\u0020</string>
     <string name="work">Práce\u0020</string>
     <string name="done">\u0020dokončena</string>
     <string name="change_status">\u0020zmenila status</string>
@@ -158,4 +158,7 @@
     <string name="languages">Jazyky</string>
     <string name="the_group">Skupina </string>
     <string name="was_renamed"> byla přejmenována</string>
+    <string name="rename">Prejmenovat</string>
+    <string name="user_name">meno</string>
+    <string name="new_name">Nové meno :\u0020</string>
 </resources>
