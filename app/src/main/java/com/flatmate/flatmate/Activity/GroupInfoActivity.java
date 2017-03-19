@@ -507,14 +507,6 @@ public class GroupInfoActivity extends AppCompatActivity
                                                 newGroupName.put("_group_name", actualGroupName);
 
                                                 db.child("user").child("groups").child("user").child(renameGroupUserID).child("user").child(childKey).updateChildren(newGroupName);
-
-                                                SetNotification set = new SetNotification();
-                                                set.Set(groupID, 7, groupName, "2", "");
-
-                                                TextView groupNameText = (TextView) findViewById(R.id.textViewInfoGroupName);
-                                                groupNameText.setText(actualGroupName);
-                                                groupName = actualGroupName;
-
                                             }
                                         }
                                         @Override public void onCancelled(DatabaseError databaseError) {}
@@ -524,6 +516,12 @@ public class GroupInfoActivity extends AppCompatActivity
                             @Override public void onCancelled(DatabaseError databaseError) {}
                         });
                         Toast.makeText(GroupInfoActivity.this, R.string.gropu_rename_toast, Toast.LENGTH_SHORT).show();
+                        SetNotification set = new SetNotification();
+                        set.Set(groupID, 7, groupName, "2", "");
+
+                        TextView groupNameText = (TextView) findViewById(R.id.textViewInfoGroupName);
+                        groupNameText.setText(actualGroupName);
+                        groupName = actualGroupName;
                     }
                 }
             });

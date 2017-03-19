@@ -109,13 +109,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public Integer finall;
     public Integer notifCounter;
 
-    String control_message;
-    String control_date;
-    String control_group_name;
-    String control_childkey;
-    Boolean canShowNotif;
-    String control_datasnapshot;
-
     public DatabaseReference db;
     public FirebaseHelperWork helper;
     private FirebaseAuth firebaseAuth;

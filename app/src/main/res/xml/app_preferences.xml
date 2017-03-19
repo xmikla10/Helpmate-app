@@ -7,6 +7,11 @@
     <PreferenceCategory
         android:title="@string/languages">
 
+        <EditTextPreference
+            android:title="@string/rename"
+            android:key="username"
+            android:summary="username" />
+
         <ListPreference
             android:key="language"
             android:title="@string/language"
@@ -15,6 +20,7 @@
             android:entryValues="@array/updateIntervalValues"
             android:summary="%s"
             />
+
 
     </PreferenceCategory>
 </PreferenceScreen>
