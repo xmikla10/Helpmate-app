@@ -51,6 +51,10 @@ public class StringForNotifications
         {
             returnNotif = a.getString(R.string.work) + addToNotif + a.getString(R.string.change_status);
         }
+        else if(notifNumber.equals("7"))
+        {
+            returnNotif = a.getString(R.string.the_group) + addToNotif + a.getString(R.string.was_renamed);
+        }
         else if(notifNumber.equals("8"))
         {
             returnNotif = a.getString(R.string.work) + addToNotif + a.getString(R.string.change_status);

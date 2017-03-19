@@ -2,16 +2,25 @@ package com.flatmate.flatmate.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.flatmate.flatmate.R;
 import com.flatmate.flatmate.lib.ExceptionHandler;
+
+import java.util.Locale;
 
 /**
  * Activity that simply shows the logo and title, waits for three seconds and starts the MainPage
  */
 public class AppLoadingActivity extends Activity {
     public static final int LOADING_TIME_IN_SECONDS = 4;
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +40,20 @@ public class AppLoadingActivity extends Activity {
                 } catch (Exception e) {
 
                 } finally {
+
+                        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+                        String restoredText = prefs.getString("language", null);
+                        Log.d("Language", restoredText);
+
+                        if (restoredText != null)
+                        {
+                            Locale myLocale = new Locale(restoredText);
+                            Resources res = getResources();
+                            DisplayMetrics dm = res.getDisplayMetrics();
+                            Configuration conf = res.getConfiguration();
+                            conf.locale = myLocale;
+                            res.updateConfiguration(conf, dm);
+                        }
 
                     Intent i = new Intent(AppLoadingActivity.this,
                             SignInActivity.class);

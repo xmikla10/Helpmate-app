@@ -505,7 +505,15 @@ public class GroupInfoActivity extends AppCompatActivity
                                                 String childKey = childSnapshot.getKey();
                                                 Map newGroupName = new HashMap();
                                                 newGroupName.put("_group_name", actualGroupName);
+
                                                 db.child("user").child("groups").child("user").child(renameGroupUserID).child("user").child(childKey).updateChildren(newGroupName);
+
+                                                SetNotification set = new SetNotification();
+                                                set.Set(groupID, 7, groupName, "2", "");
+
+                                                TextView groupNameText = (TextView) findViewById(R.id.textViewInfoGroupName);
+                                                groupNameText.setText(actualGroupName);
+                                                groupName = actualGroupName;
 
                                             }
                                         }
@@ -515,9 +523,6 @@ public class GroupInfoActivity extends AppCompatActivity
                             }
                             @Override public void onCancelled(DatabaseError databaseError) {}
                         });
-                        TextView groupNameText = (TextView) findViewById(R.id.textViewInfoGroupName);
-                        groupNameText.setText(actualGroupName);
-                        groupName = actualGroupName;
                         Toast.makeText(GroupInfoActivity.this, R.string.gropu_rename_toast, Toast.LENGTH_SHORT).show();
                     }
                 }

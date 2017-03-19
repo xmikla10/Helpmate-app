@@ -858,7 +858,7 @@ public class AuctionActivity extends AppCompatActivity
                                 work_name = value.get("_work_name").toString();
                             }
 
-                            if(!bidsLastValue.equals("null") && !bid.equals(getString(R.string.not_interested)))
+                            if(!bidsLastValue.equals("null") && !bid.equals("not interested"))
                             {
                                 bidsLast = Integer.valueOf(bidsLastValue);
                                 bidsActual = Integer.valueOf(bid);
@@ -907,7 +907,7 @@ public class AuctionActivity extends AppCompatActivity
                                             }
                                         }
 
-                                        if(!bid.equals(getString(R.string.not_interested)))
+                                        if(!bid.equals("not interested"))
                                         {
                                             bidsLastValue = bid;
                                             newWorkData.put("_bidsLastValue", bidsLastValue);

@@ -175,6 +175,14 @@ public class SetNotification
                                             }
                                         }
 
+                                        if (control == 7) {
+                                            if (!find_user.equals(userID)) {
+                                                String message_7 = "7";
+                                                String message_plus = string;
+                                                sendNotification(message_7, group_name, find_user, message_plus);
+                                            }
+                                        }
+
                                         if (control == 8) {
                                             String message_8 = "8";
                                             String message_plus = string;

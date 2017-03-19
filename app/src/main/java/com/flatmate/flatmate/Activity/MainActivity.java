@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -130,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity);
         //FontsOverride.setDefaultFont(this, "DEFAULT", "customfont.ttf");
-
+        
         firebaseAuth = FirebaseAuth.getInstance();
         notifCounter = 1;
         if(firebaseAuth.getCurrentUser() == null){

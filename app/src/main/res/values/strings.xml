@@ -52,7 +52,7 @@
     <string name="registering">Registering Please Wait...</string>
     <string name="successfully_registered">Successfully registered</string>
     <string name="reg_error">Registration Error</string>
-    <string name="activate_group">Activate group or group info ?</string>
+    <string name="activate_group">Want you activate group or  show group info ?</string>
     <string name="activate">Activate</string>
     <string name="info">Info</string>
     <string name="status_uncompleted">Status : uncompleted</string>
@@ -146,4 +146,15 @@
     <string name="save">Save</string>
     <string name="add_bid">Add bid :</string>
     <string name="minutes">minutes</string>
+    <string name="add_new_work">Add new work</string>
+    <string name="my_groups_label">My Groups</string>
+    <string name="group_info">Group Info</string>
+    <string name="add_group">Add Group</string>
+    <string name="activity_graph_label">Activity Graph</string>
+    <string name="work_details">Work details</string>
+    <string name="settings_label">Settingss</string>
+    <string name="languages">Languages</string>
+    <string name="language">Language</string>
+    <string name="the_group">"The group "</string>
+    <string name="was_renamed">" was renamed"</string>
 </resources>
