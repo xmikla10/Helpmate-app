@@ -78,7 +78,6 @@ public class CustomAdapterToDo extends BaseAdapter{
         MyStatus statusC = new MyStatus();
 
         String statusInString = statusC.setStatus( s.get_status(), c);
-        System.out.println("--------->" + statusInString);
 
 
         if(statusInString.equals(c.getString(R.string.status_auctioning)))

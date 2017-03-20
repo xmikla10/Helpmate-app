@@ -210,26 +210,88 @@ public class AddNewWorkActivity extends AppCompatActivity {
         {
             e.printStackTrace();
         }
-        if ( work_name_text.getText().toString().trim().length() == 0)
+
+        Calendar calNow = new GregorianCalendar();
+        calNow.setTime(now);
+        Calendar calMy = new GregorianCalendar();
+        calMy.setTime(myDateTime);
+
+        if ( deadline_spinner.equals(getString(R.string.one_hour)))
         {
-            Toast.makeText( getBaseContext(), R.string.please_work_name ,Toast.LENGTH_SHORT).show();
+            calNow.add(Calendar.HOUR_OF_DAY, 2);
         }
-        else if ( Integer.parseInt(duration) <= 0)
+        else if ( deadline_spinner.equals(getString(R.string.three_hours)))
         {
-            Toast.makeText( getBaseContext(), R.string.please_duration_work ,Toast.LENGTH_SHORT).show();
+            calNow.add(Calendar.HOUR_OF_DAY, 3);
         }
-        else if (switch1.isChecked() == false)
+        else if ( deadline_spinner.equals(getString(R.string.six_hours)))
         {
-            Toast.makeText( getBaseContext(), R.string.please_time ,Toast.LENGTH_SHORT).show();
+            calNow.add(Calendar.HOUR_OF_DAY, 7);
         }
-        else if (switch2.isChecked() == false)
+        else if ( deadline_spinner.equals(getString(R.string.twelve_hours)))
         {
-            Toast.makeText( getBaseContext(), R.string.please_date ,Toast.LENGTH_SHORT).show();
+            calNow.add(Calendar.HOUR_OF_DAY, 13);
         }
-        else if(now != null && myDateTime != null)
+        else if ( deadline_spinner.equals(getString(R.string.twentyfour_hours)))
         {
-            if (now.compareTo(myDateTime) > 0 && switch2.isChecked() == true && switch1.isChecked() == true)
-                Toast.makeText(getBaseContext(), R.string.wrond_time_date, Toast.LENGTH_SHORT).show();
+            calNow.add(Calendar.HOUR_OF_DAY, 25);
+        }
+        else if ( deadline_spinner.equals(getString(R.string.fourtyeight_hours)))
+        {
+            calNow.add(Calendar.HOUR_OF_DAY, 49);
+        }
+        else if ( deadline_spinner.equals(getString(R.string.week)))
+        {
+            calNow.add(Calendar.HOUR_OF_DAY, 169);
+        }
+
+        if (calNow.compareTo(calMy) > 0 && checkbox.isChecked() == true)
+        {
+            Toast.makeText( getBaseContext(), R.string.toast_add_new_work_deadline_wrong ,Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            if ( work_name_text.getText().toString().trim().length() == 0)
+            {
+                Toast.makeText( getBaseContext(), R.string.please_work_name ,Toast.LENGTH_SHORT).show();
+            }
+            else if ( Integer.parseInt(duration) <= 0)
+            {
+                Toast.makeText( getBaseContext(), R.string.please_duration_work ,Toast.LENGTH_SHORT).show();
+            }
+            else if (switch1.isChecked() == false)
+            {
+                Toast.makeText( getBaseContext(), R.string.please_time ,Toast.LENGTH_SHORT).show();
+            }
+            else if (switch2.isChecked() == false)
+            {
+                Toast.makeText( getBaseContext(), R.string.please_date ,Toast.LENGTH_SHORT).show();
+            }
+            else if(now != null && myDateTime != null)
+            {
+                if (now.compareTo(myDateTime) > 0 && switch2.isChecked() == true && switch1.isChecked() == true)
+                    Toast.makeText(getBaseContext(), R.string.wrond_time_date, Toast.LENGTH_SHORT).show();
+                else
+                {
+                    if (checkbox.isChecked() == false)
+                    {
+                        deadline_spinner = "null";
+                    }
+
+                    Toast.makeText( getBaseContext(), R.string.new_work_been_added ,Toast.LENGTH_SHORT).show();
+                    String selectedDate = (work_name + "#"
+                            + duration + "#"
+                            + deadline_spinner + "#"
+                            + date + "#"
+                            + time + "#");
+                    Intent intent = new Intent();
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra(SELECTED_ADD_KEY, selectedDate);
+                    setResult(ADD_FINISHED, intent);
+
+                    finish();
+                }
+            }
             else
             {
                 if (checkbox.isChecked() == false)
@@ -244,30 +306,13 @@ public class AddNewWorkActivity extends AppCompatActivity {
                         + date + "#"
                         + time + "#");
                 Intent intent = new Intent();
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                 intent.putExtra(SELECTED_ADD_KEY, selectedDate);
                 setResult(ADD_FINISHED, intent);
 
                 finish();
             }
-        }
-        else
-        {
-            if (checkbox.isChecked() == false)
-            {
-                deadline_spinner = "null";
-            }
-
-            Toast.makeText( getBaseContext(), R.string.new_work_been_added ,Toast.LENGTH_SHORT).show();
-            String selectedDate = (work_name + "#"
-                    + duration + "#"
-                    + deadline_spinner + "#"
-                    + date + "#"
-                    + time + "#");
-            Intent intent = new Intent();
-            intent.putExtra(SELECTED_ADD_KEY, selectedDate);
-            setResult(ADD_FINISHED, intent);
-
-            finish();
         }
     }
 
@@ -321,6 +366,8 @@ public class AddNewWorkActivity extends AppCompatActivity {
         if (id == R.id.nav_settings)
         {
             Intent intent6 = new Intent(this, AppPreferences.class);
+            intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
             startActivity(intent6);
             overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
         }

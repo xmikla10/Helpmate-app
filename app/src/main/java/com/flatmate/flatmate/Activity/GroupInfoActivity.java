@@ -648,6 +648,8 @@ public class GroupInfoActivity extends AppCompatActivity
         if (id == R.id.nav_settings)
         {
             Intent intent6 = new Intent(this, AppPreferences.class);
+            intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
             startActivity(intent6);
             overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
         }

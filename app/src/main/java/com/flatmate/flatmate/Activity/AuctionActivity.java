@@ -565,11 +565,13 @@ public class AuctionActivity extends AppCompatActivity
                                 int _id = (int) System.currentTimeMillis();
 
                                 Intent intent = new Intent(AuctionActivity.this, WorkDoneReceiver.class);
+
                                 intent.putExtra("alarmId", _id);
                                 intent.putExtra("bidsID", bidsID);
                                 intent.putExtra("groupID", groupID);
                                 intent.putExtra("childKey", childKeyFork);
 
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 PendingIntent pending = PendingIntent.getBroadcast(AuctionActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                                 AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
                                 alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
@@ -855,6 +857,8 @@ public class AuctionActivity extends AppCompatActivity
     {
         Intent intent = new Intent(this, BidPopUp.class);
         intent.putExtra("bidsID", bidsID);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         startActivityForResult( intent, BidPopUp.BID_POPUP_FINISHED);
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
@@ -1003,6 +1007,7 @@ public class AuctionActivity extends AppCompatActivity
                                             }
 
                                             Intent intent = new Intent(AuctionActivity.this, MainActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
                                             overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                                         }
@@ -1047,6 +1052,7 @@ public class AuctionActivity extends AppCompatActivity
         if (id == R.id.nav_settings)
         {
             Intent intent6 = new Intent(this, AppPreferences.class);
+            intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent6);
             overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
         }

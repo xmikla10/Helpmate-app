@@ -151,18 +151,20 @@ public class MyGroupsActivity extends AppCompatActivity {
                                 db.child("user").child("users").child(userID).child("data").orderByChild("_ID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override public void onDataChange(DataSnapshot dataSnapshot)
                                     {
-                                    for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
-                                    {
-                                    childKey = childSnapshot.getKey();
-                                    }
-                                    Map newUserData = new HashMap();
-                                    newUserData.put("_group", s.get_group_ID());
-
-                                    db.child("user").child("users").child(userID).child("data").child(childKey).updateChildren(newUserData);
-
-                                    Intent intent = new Intent(MyGroupsActivity.this, MainActivity.class);
-                                    startActivity(intent);
+                                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                                        {
+                                            childKey = childSnapshot.getKey();
                                         }
+                                        Map newUserData = new HashMap();
+                                        newUserData.put("_group", s.get_group_ID());
+
+                                        db.child("user").child("users").child(userID).child("data").child(childKey).updateChildren(newUserData);
+
+                                        Intent intent = new Intent(MyGroupsActivity.this, MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                                        startActivity(intent);
+                                    }
                                     @Override public void onCancelled(DatabaseError databaseError) {}
                             });
                             }
@@ -195,6 +197,7 @@ public class MyGroupsActivity extends AppCompatActivity {
                                                 intent.putExtra("group_ID", s.get_group_ID());
                                                 intent.putExtra("group_name", s.get_group_name());
                                                 intent.putExtra("admin", admin);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                 startActivity(intent);
 
                                             }
@@ -224,6 +227,7 @@ public class MyGroupsActivity extends AppCompatActivity {
         if (id == R.id.nav_settings)
         {
             Intent intent6 = new Intent(this, AppPreferences.class);
+            intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent6);
             overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
         }

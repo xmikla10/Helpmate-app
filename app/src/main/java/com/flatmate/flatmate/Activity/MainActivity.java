@@ -131,7 +131,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             //closing this activity
             finish();
             //starting login activity
-            startActivity(new Intent(this, LogInActivity.class));
+            Intent intent = new Intent(this, LogInActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
 
         init();
@@ -226,6 +228,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         intent.putExtra("alarmId", _id);
                                         intent.putExtra("bidsID", evaluationBidsID);
                                         intent.putExtra("groupID", groupID);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
 
                                         PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                                         AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -254,11 +258,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         int _id = (int) System.currentTimeMillis();
 
                                         Intent intent = new Intent(MainActivity.this, WorkDoneReceiver.class);
+
                                         intent.putExtra("alarmId", _id);
                                         intent.putExtra("bidsID", evaluationBidsID);
                                         intent.putExtra("groupID", groupID);
                                         intent.putExtra("groupID", groupID);
                                         intent.putExtra("childKey", key);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
 
                                         PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                                         AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -288,9 +295,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         int _id = (int) System.currentTimeMillis();
 
                                         Intent intent = new Intent(MainActivity.this, AlarmProgressReceiver.class);
+
                                         intent.putExtra("alarmId", _id);
                                         intent.putExtra("bidsID", evaluationBidsID);
                                         intent.putExtra("groupID", groupID);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
 
                                         PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                                         AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -318,11 +328,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         int _id = (int) System.currentTimeMillis();
 
                                         Intent intent = new Intent(MainActivity.this, WorkDoneReceiver.class);
+
                                         intent.putExtra("alarmId", _id);
                                         intent.putExtra("bidsID", evaluationBidsID);
                                         intent.putExtra("groupID", groupID);
                                         intent.putExtra("groupID", groupID);
                                         intent.putExtra("childKey", key);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
 
                                         PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                                         AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -372,9 +385,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                 int _id = (int) System.currentTimeMillis();
 
                                 Intent intent = new Intent(MainActivity.this, AlarmProgressReceiver.class);
+
                                 intent.putExtra("alarmId", _id);
                                 intent.putExtra("bidsID", evaluationBidsID);
                                 intent.putExtra("groupID", groupID);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
 
                                 PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                                 AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -403,11 +419,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                 int _id = (int) System.currentTimeMillis();
 
                                 Intent intent = new Intent(MainActivity.this, WorkDoneReceiver.class);
+
                                 intent.putExtra("alarmId", _id);
                                 intent.putExtra("bidsID", evaluationBidsID);
                                 intent.putExtra("groupID", groupID);
                                 intent.putExtra("groupID", groupID);
                                 intent.putExtra("childKey", key);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
 
                                 PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                                 AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -466,6 +485,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     String notificaton_message = sfn.setNotificationString(notif_message, notif_message2, MainActivity.this);
 
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                     PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, (int) System.currentTimeMillis(), intent, 0);
 
                     Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -665,6 +686,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     if (!existGroupID.equals(""))
                     {
                         Intent intent = new Intent(MainActivity.this, AddNewWorkActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                         startActivityForResult(new Intent(MainActivity.this, AddNewWorkActivity.class), AddNewWorkActivity.ADD_FINISHED);
                         //startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
@@ -716,6 +739,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public void notifPref(View view)
     {
         Intent intent = new Intent(this, AppPreferences.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
@@ -742,6 +767,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         if (id == R.id.nav_settings)
         {
             Intent intent6 = new Intent(this, AppPreferences.class);
+            intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
             startActivity(intent6);
             overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
         }
@@ -766,20 +793,38 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             public boolean onNavigationItemSelected(MenuItem item) {
                 // Handle navigation view item clicks here.
                 int id = item.getItemId();
-                if (id == R.id.nav_to_do) {
-                    startActivity(new Intent(MainActivity.this, MainActivity.class));
-                } else if (id == R.id.nav_activity_graph) {
-                    startActivity(new Intent(MainActivity.this, GraphActivity.class));
-                } else if (id == R.id.nav_settings) {
-                    startActivity(new Intent(MainActivity.this, AppPreferences.class));
-                } else if (id == R.id.nav_my_group) {
-                    startActivity(new Intent(MainActivity.this, MyGroupsActivity.class));
-                } //else if (id == R.id.nav_join_group) {
-                  //  startActivity(new Intent(MainActivity.this, JoinGroupActivity.class));
-                //}
-                else if (id == R.id.nav_add_group) {
-                    startActivity(new Intent(MainActivity.this, CreateNewGroupActivity.class));
-                } else if (id == R.id.nav_log_out) {
+                if (id == R.id.nav_to_do)
+                {
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+                else if (id == R.id.nav_activity_graph)
+                {
+                    Intent intent = new Intent(MainActivity.this, GraphActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+                else if (id == R.id.nav_settings)
+                {
+                    Intent intent = new Intent(MainActivity.this, AppPreferences.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+                else if (id == R.id.nav_my_group)
+                {
+                    Intent intent = new Intent(MainActivity.this, MyGroupsActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+                else if (id == R.id.nav_add_group)
+                {
+                    Intent intent = new Intent(MainActivity.this, CreateNewGroupActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+                else if (id == R.id.nav_log_out)
+                {
                     try {
                         LoginManager.getInstance().logOut();
                     }
@@ -794,7 +839,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
                     firebaseAuth.signOut();
                     finish();
-                    startActivity(new Intent(MainActivity.this, SignInActivity.class));
+
+                    Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                     overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
                 }
 
@@ -848,15 +896,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     public void setAuctionDeadline()
     {
+        Date now = new Date();
 
         String myString = timeR + " " + dateR;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
         Date myDateTime = null;
 
+        String strDate = simpleDateFormat.format(now);
+
         //Parse your string to SimpleDateFormat
         try
         {
             myDateTime = simpleDateFormat.parse(myString);
+            now = simpleDateFormat.parse(strDate);
         }
         catch (ParseException e)
         {
@@ -866,7 +918,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         //System.out.println("This is the Actual Date:"+myDateTime);
 
         Calendar cal = new GregorianCalendar();
-        cal.setTime(myDateTime);
+        cal.setTime(now);
 
         if ( deadlineR.equals(getString(R.string.one_hour)))
         {
@@ -897,9 +949,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             cal.add(Calendar.HOUR_OF_DAY, 168);
         }
 
-        //System.out.println("This is Hours Added Date:"+cal.getTime());
-
-        deadlineR = cal.getTime().toString();
+        simpleDateFormat.setTimeZone(cal.getTimeZone());
+        deadlineR = simpleDateFormat.format(cal.getTime()).toString();
     }
 
     public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit)

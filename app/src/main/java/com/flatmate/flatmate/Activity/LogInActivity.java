@@ -49,7 +49,9 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             //close this activity
             finish();
             //opening profile activity
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity( intent);
         }
 
         //initializing views
@@ -99,7 +101,9 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                         if(task.isSuccessful()){
                             //start the profile activity
                             finish();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity( intent);
                         }
                     }
                 });
@@ -114,7 +118,10 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
         if(view == buttonRegistration){
             finish();
-            startActivity(new Intent(this, SignInActivity.class));
+
+            Intent intent = new Intent(this, SignInActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity( intent);
             overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
         }
     }

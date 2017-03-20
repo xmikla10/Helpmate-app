@@ -56,6 +56,8 @@ public class AppLoadingActivity extends Activity {
 
                     Intent i = new Intent(AppLoadingActivity.this,
                             SignInActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                     startActivity(i);
                     finish();
                 }

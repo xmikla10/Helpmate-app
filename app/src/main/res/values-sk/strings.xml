@@ -21,7 +21,7 @@
     <string name="status_done">Status : dokončená</string>
     <string name="status_unauctioned">Status : nevydražená</string>
     <string name="status_auctioning">Status : draženie</string>
-    <string name="dialog_finish_work">Ste si istý že chcete dokončiť túto prácu?</string>
+    <string name="dialog_finish_work">Ste si istý, že chcete dokončiť túto prácu ?</string>
     <string name="credits">\u0020kredity</string>
     <string name="congrat">Blahoželáme, vyhrali ste</string>
     <string name="no">Nie</string>
@@ -161,7 +161,9 @@
     <string name="rename">Premenovať</string>
     <string name="user_name">meno</string>
     <string name="new_name">Nové meno:\u0020</string>
-    <string name="the_user">"The user "</string>
-    <string name="invite_new_user">invite you to new group</string>
-    <string name="invited_new_group">You was invited to new group -</string>
+    <string name="the_user">Užívateľ\u0020</string>
+    <string name="invite_new_user">Vás pridal do novej skupiny</string>
+    <string name="invited_new_group">You was invited to new group -\u0020</string>
+    <string name="toast_add_new_work_deadline_wrong">Dĺžka aukcie nesmie presahovať uzávierku. Rozdiel medzi Uzávierkou a Koncom Aukcie musí byť minimálne 1 hodina</string>
+    <string name="dialog_cancel_work">Ste si istý, že chcete zrušiť túto prácu ?</string>
 </resources>

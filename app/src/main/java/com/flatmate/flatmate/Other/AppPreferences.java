@@ -112,7 +112,6 @@ public class AppPreferences extends PreferenceActivity
                 public boolean onPreferenceChange(Preference preference, Object newValue)
                 {
                     preference.setSummary(newValue.toString());
-                    System.out.println("----------> " + newValue.toString());
                     String language = newValue.toString();
 
                     if ( language.equals("Slovenský"))
@@ -139,7 +138,6 @@ public class AppPreferences extends PreferenceActivity
                 public boolean onPreferenceChange(Preference preference, final Object newValue)
                 {
                     preference.setSummary(newValue.toString());
-                    System.out.println("----------> " + newValue.toString());
                     newName = newValue.toString();
 
                     if ( !userName.equals(newValue.toString()))
