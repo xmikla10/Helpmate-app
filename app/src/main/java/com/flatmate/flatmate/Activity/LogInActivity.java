@@ -50,7 +50,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             finish();
             //opening profile activity
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity( intent);
         }
 
@@ -102,7 +102,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                             //start the profile activity
                             finish();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity( intent);
                         }
                     }
@@ -120,7 +120,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             finish();
 
             Intent intent = new Intent(this, SignInActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity( intent);
             overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
         }

@@ -291,7 +291,7 @@ public class AddNewWorkActivity extends AppCompatActivity {
                                 + date + "#"
                                 + time + "#");
                         Intent intent = new Intent();
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent.putExtra(SELECTED_ADD_KEY, selectedDate);
                         setResult(ADD_FINISHED, intent);
 
@@ -312,7 +312,7 @@ public class AddNewWorkActivity extends AppCompatActivity {
                             + date + "#"
                             + time + "#");
                     Intent intent = new Intent();
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                     intent.putExtra(SELECTED_ADD_KEY, selectedDate);
                     setResult(ADD_FINISHED, intent);
@@ -373,7 +373,7 @@ public class AddNewWorkActivity extends AppCompatActivity {
         if (id == R.id.nav_settings)
         {
             Intent intent6 = new Intent(this, AppPreferences.class);
-            intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             startActivity(intent6);
             overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);

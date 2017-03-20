@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             finish();
             //starting login activity
             Intent intent = new Intent(this, LogInActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
 
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         intent.putExtra("alarmId", _id);
                                         intent.putExtra("bidsID", evaluationBidsID);
                                         intent.putExtra("groupID", groupID);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
 
                                         PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         intent.putExtra("groupID", groupID);
                                         intent.putExtra("groupID", groupID);
                                         intent.putExtra("childKey", key);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
 
                                         PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         intent.putExtra("alarmId", _id);
                                         intent.putExtra("bidsID", evaluationBidsID);
                                         intent.putExtra("groupID", groupID);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
 
                                         PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -334,7 +334,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         intent.putExtra("groupID", groupID);
                                         intent.putExtra("groupID", groupID);
                                         intent.putExtra("childKey", key);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
 
                                         PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -389,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                 intent.putExtra("alarmId", _id);
                                 intent.putExtra("bidsID", evaluationBidsID);
                                 intent.putExtra("groupID", groupID);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
 
                                 PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -425,7 +425,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                 intent.putExtra("groupID", groupID);
                                 intent.putExtra("groupID", groupID);
                                 intent.putExtra("childKey", key);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
 
                                 PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -485,7 +485,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     String notificaton_message = sfn.setNotificationString(notif_message, notif_message2, MainActivity.this);
 
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                     PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, (int) System.currentTimeMillis(), intent, 0);
 
@@ -686,7 +686,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     if (!existGroupID.equals(""))
                     {
                         Intent intent = new Intent(MainActivity.this, AddNewWorkActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                         startActivityForResult(new Intent(MainActivity.this, AddNewWorkActivity.class), AddNewWorkActivity.ADD_FINISHED);
                         //startActivity(intent);
@@ -739,7 +739,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public void notifPref(View view)
     {
         Intent intent = new Intent(this, AppPreferences.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
@@ -767,7 +767,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         if (id == R.id.nav_settings)
         {
             Intent intent6 = new Intent(this, AppPreferences.class);
-            intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             startActivity(intent6);
             overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
@@ -796,31 +796,31 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 if (id == R.id.nav_to_do)
                 {
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
                 else if (id == R.id.nav_activity_graph)
                 {
                     Intent intent = new Intent(MainActivity.this, GraphActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
                 else if (id == R.id.nav_settings)
                 {
                     Intent intent = new Intent(MainActivity.this, AppPreferences.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
                 else if (id == R.id.nav_my_group)
                 {
                     Intent intent = new Intent(MainActivity.this, MyGroupsActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
                 else if (id == R.id.nav_add_group)
                 {
                     Intent intent = new Intent(MainActivity.this, CreateNewGroupActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
                 else if (id == R.id.nav_log_out)
@@ -841,7 +841,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     finish();
 
                     Intent intent = new Intent(MainActivity.this, SignInActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
                 }
