@@ -15,7 +15,7 @@
         <ListPreference
             android:key="language"
             android:title="@string/language"
-            android:defaultValue="English"
+            android:defaultValue="Slovak"
             android:entries="@array/updateInterval"
             android:entryValues="@array/updateIntervalValues"
             android:summary="%s"

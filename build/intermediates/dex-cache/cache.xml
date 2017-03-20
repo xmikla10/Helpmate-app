@@ -34,7 +34,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="cb1b4d2a05ce1a5dc392c467b4a7b7b793b2ad67">
+        sha1="5e0ab1a9794ea9e7f5179eed60e8e18a2db63a01">
         <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_07b1f564cf740290377acda49cccbf2bdc04ff74/classes.dex" />
     </item>
     <item
@@ -79,7 +79,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="94a4cb5ac1033976e4d4e221ed89f57b40df94a6">
+        sha1="a3aa37383f668c9f967b76de2d2afcfd70e665cc">
         <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_fca7c28c1a56d71ab6ac6e13f3f2202e8ba6f0e9/classes.dex" />
     </item>
     <item
@@ -120,21 +120,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/10.2.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="1ac56e5801e986583cbe27f2cce57f626cc7ff93">
-        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-basement-10.2.0_e18b7c5bfc49d068c143e58a87424a42c6345376/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.0.1/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="26c6eef571592c91f29e56fda0bac73321de0c92">
         <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-fragment-25.0.1_3c5d713ff9219068fdd85dff35141709f4b1b69a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/10.2.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="1ac56e5801e986583cbe27f2cce57f626cc7ff93">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-basement-10.2.0_e18b7c5bfc49d068c143e58a87424a42c6345376/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -354,21 +354,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="/Users/enterprise/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.0.1/support-annotations-25.0.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="a09194311f8f89c3e6db09d79f50897a889d615e">
-        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.0.1_8869c9eb2cbe2b189451613bbe29543d6fd8a873/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/Users/enterprise/Flatmate/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.0.1/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="51eba4a4dd73044f90a9d58dd7ca34adbebfcf4e">
         <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-compat-25.0.1_3e8b822d73ff9983d5ea6fbfea49a2148bcd11f2/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/enterprise/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.0.1/support-annotations-25.0.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="a09194311f8f89c3e6db09d79f50897a889d615e">
+        <dex dex="/Users/enterprise/Flatmate/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.0.1_8869c9eb2cbe2b189451613bbe29543d6fd8a873/classes.dex" />
     </item>
     <item
         is-multidex="false"

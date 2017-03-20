@@ -453,6 +453,42 @@ public class AuctionActivity extends AppCompatActivity
 
     }
 
+    public void onClickButtonCancelWork(View view)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.dialog_cancel_work)
+                .setCancelable(false)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+                        db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(bidsID).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override public void onDataChange(DataSnapshot dataSnapshot)
+                            {
+                                String cancelChildKey;
+                                for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                                {
+                                    cancelChildKey = childSnapshot.getKey();
+                                    Map newData = new HashMap();
+                                    newData.put("_status", "5");
+                                    db.child("groups").child(groupID).child("works").child("todo").child(cancelChildKey).updateChildren(newData);
+                                }
+
+                            }
+                            @Override public void onCancelled(DatabaseError databaseError) {}
+                        });
+                        AuctionActivity.this.finish();
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     String completedName;
     String completedEmail;
     String completedWorkName;

@@ -43,7 +43,6 @@ public class AppLoadingActivity extends Activity {
 
                         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
                         String restoredText = prefs.getString("language", null);
-                        Log.d("Language", restoredText);
 
                         if (restoredText != null)
                         {

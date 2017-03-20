@@ -38,7 +38,9 @@ import com.flatmate.flatmate.Firebase.Members;
 import com.flatmate.flatmate.Firebase.Months;
 import com.flatmate.flatmate.Firebase.NewBid;
 import com.flatmate.flatmate.Firebase.NewGroup;
+import com.flatmate.flatmate.Firebase.NotificationMessage;
 import com.flatmate.flatmate.Other.AppPreferences;
+import com.flatmate.flatmate.Other.SetNotification;
 import com.flatmate.flatmate.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -48,6 +50,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -235,6 +239,15 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                                             addMembers.set_sender_email(userEmail);
                                             addMembers.set_group_name(group_name);
                                             db.child("user").child("users").child(ID).child("messages").push().setValue(addMembers);
+
+                                            NotificationMessage notif = new NotificationMessage();
+                                            notif.set_message("9");
+                                            notif.set_message2(group_name);
+                                            notif.set_group_name(group_name);
+                                            notif.set_work_ID("9");
+                                            notif.set_date(getActualDate());
+                                            notif.set_random(generateRandomNumber().toString());
+                                            db.child("user").child("users").child(ID).child("notifications").push().setValue(notif);
                                         }
                                     }
                                     if ( memCount == itemCount)
@@ -255,6 +268,38 @@ public class CreateNewGroupActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public String getActualDate()
+    {
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+        Calendar cal = Calendar.getInstance();
+        final String currentDateandTime = dateFormat.format(cal.getTime());
+        Date datePlus = null;
+
+        try
+        {
+            datePlus = dateFormat.parse(currentDateandTime);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+        cal.setTime(datePlus);
+
+        String date = dateFormat.format(cal.getTime());
+
+        return date;
+    }
+
+    public Double generateRandomNumber()
+    {
+        double random = Math.random() * 543 + 1;
+        double random1 = Math.random() * 223 + 1;
+        double random2 = Math.random() * 967 + 1;
+
+        return random + random1 + random2;
     }
 
     public void createGroup()

@@ -160,8 +160,10 @@ public class Tab_MYWORKS extends Fragment {
                 intent.putExtra("myWork", "1");
                 intent.putExtra("workProgress", s.get_workProgress());
 
-                if ( !statusInString.equals(R.string.status_uncompleted))
+                if ( !s.get_status().equals("5"))
+                {
                     startActivity(intent);
+                }
             }
 
         });

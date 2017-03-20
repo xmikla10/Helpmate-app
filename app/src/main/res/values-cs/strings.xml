@@ -10,7 +10,7 @@
     <string name="completed">Dokončené</string>
     <string name="activity_graph">Graf Aktivít</string>
     <string name="account">Účet</string>
-    <string name="settings">Nastaven9</string>
+    <string name="settings">Nastavení</string>
     <string name="about_flatmate">O Helpmate</string>
     <string name="progress_creating_group">Vytváří se nová skupina, prosím čekejte</string>
     <string name="wrong_email"> - nesprávní emailová adresa</string>
@@ -161,4 +161,7 @@
     <string name="rename">Prejmenovat</string>
     <string name="user_name">meno</string>
     <string name="new_name">Nové meno :\u0020</string>
+    <string name="the_user">"The user "</string>
+    <string name="invite_new_user">invite you to new group</string>
+    <string name="invited_new_group">You was invited to new group -</string>
 </resources>

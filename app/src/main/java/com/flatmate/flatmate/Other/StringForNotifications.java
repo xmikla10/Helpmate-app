@@ -59,6 +59,10 @@ public class StringForNotifications
         {
             returnNotif = a.getString(R.string.work) + addToNotif + a.getString(R.string.change_status);
         }
+        else if(notifNumber.equals("9"))
+        {
+            returnNotif = a.getString(R.string.invited_new_group) + addToNotif;
+        }
         else
             returnNotif = "";
 

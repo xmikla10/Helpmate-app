@@ -161,4 +161,7 @@
     <string name="rename">Premenovať</string>
     <string name="user_name">meno</string>
     <string name="new_name">Nové meno:\u0020</string>
+    <string name="the_user">"The user "</string>
+    <string name="invite_new_user">invite you to new group</string>
+    <string name="invited_new_group">You was invited to new group -</string>
 </resources>

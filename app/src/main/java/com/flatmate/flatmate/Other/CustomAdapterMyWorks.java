@@ -81,6 +81,14 @@ public class CustomAdapterMyWorks extends BaseAdapter{
         textViewStatus.setText(statusInString);
         textViewtime.setText(s.get_time() +"  "+s.get_date());
 
+        if (s.get_status().equals("5"))
+        {
+            textViewTaskName.setTextColor(Color.RED);
+            textViewStatus.setTextColor(Color.RED);
+            textViewtime2.setText("");
+            textViewtime.setText("");
+        }
+
         return convertView;
     }
 }

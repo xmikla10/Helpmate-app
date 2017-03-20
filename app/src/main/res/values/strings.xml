@@ -21,6 +21,7 @@
     <string name="status_unauctioned">Status : unauctioned</string>
     <string name="status_auctioning">Status : auctioning</string>
     <string name="dialog_finish_work">Are you sure you want to finish this work?</string>
+    <string name="dialog_cancel_work">Are you sure you want to cancel this work?</string>
     <string name="credits">\u0020credits</string>
     <string name="congrat">Congratulation, You win \u0020</string>
     <string name="no">No</string>
@@ -160,4 +161,7 @@
     <string name="user_name">User name</string>
     <string name="rename">Rename</string>
     <string name="new_name">"New name : "</string>
+    <string name="the_user">"The user "</string>
+    <string name="invite_new_user">invite you to new group</string>
+    <string name="invited_new_group">You was invited to new group -</string>
 </resources>
