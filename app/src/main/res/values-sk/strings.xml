@@ -58,11 +58,11 @@
     <string name="info">Info</string>
     <string name="status_uncompleted">Status : nedokončená</string>
     <string name="Request">Žiadosť</string>
-    <string name="user">Užívateľ </string>
-    <string name="add_you"> Vás pridal do skupiny</string>
+    <string name="user">Užívateľ\u0020</string>
+    <string name="add_you">\u0020Vás pridal do skupiny</string>
     <string name="add">Pridať</string>
-    <string name="group">Skupina</string>
-    <string name="group_added"> bol pridaný/á do tvojej skupiny</string>
+    <string name="group">Skupina\u0020</string>
+    <string name="group_added">\u0020bol pridaný/á do tvojej skupiny\u0020</string>
     <string name="cancel">Zrušiť</string>
     <string name="add_new_work_toast">Musíte mať vybratú skupinu na pridanie novej práce. Ak ste neni členom žiadnej skupiny, môžte si vytvoriť novú skupinu v Menu.</string>
     <string name="one_hour">1 hodina</string>
@@ -163,7 +163,8 @@
     <string name="new_name">Nové meno:\u0020</string>
     <string name="the_user">Užívateľ\u0020</string>
     <string name="invite_new_user">Vás pridal do novej skupiny</string>
-    <string name="invited_new_group">You was invited to new group -\u0020</string>
+    <string name="invited_new_group">Boli ste pridaný do skupiny -\u0020</string>
     <string name="toast_add_new_work_deadline_wrong">Dĺžka aukcie nesmie presahovať uzávierku. Rozdiel medzi Uzávierkou a Koncom Aukcie musí byť minimálne 1 hodina</string>
     <string name="dialog_cancel_work">Ste si istý, že chcete zrušiť túto prácu ?</string>
+    <string name="enter_time_date">Prosím, zadajte čas alebo dátum</string>
 </resources>

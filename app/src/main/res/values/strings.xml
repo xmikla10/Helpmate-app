@@ -58,11 +58,11 @@
     <string name="info">Info</string>
     <string name="status_uncompleted">Status : uncompleted</string>
     <string name="Request">Request</string>
-    <string name="user">User \u0020</string>
-    <string name="add_you">\u0020 add you to group \u0020</string>
+    <string name="user">User\u0020</string>
+    <string name="add_you">\u0020add you to group\u0020</string>
     <string name="add">Add</string>
-    <string name="group">Group \u0020</string>
-    <string name="group_added">\u0020 was added to your groups</string>
+    <string name="group">Group\u0020</string>
+    <string name="group_added">\u0020was added to your groups</string>
     <string name="cancel">Cancel</string>
     <string name="add_new_work_toast">You must have selected group for add new work. If you are not a member of any group, you must create a group</string>
     <string name="one_hour">1 hour</string>
@@ -165,4 +165,5 @@
     <string name="invite_new_user">invite you to new group</string>
     <string name="invited_new_group">You was invited to new group -\u0020</string>
     <string name="toast_add_new_work_deadline_wrong">Duration of auction can\'t outreach Deadline. The difference between Deadline and The End of Auction must be minimal 1 hour.</string>
+    <string name="enter_time_date">Please, enter time or date</string>
 </resources>

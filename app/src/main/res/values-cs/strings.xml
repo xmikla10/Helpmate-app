@@ -58,11 +58,11 @@
     <string name="info">Info</string>
     <string name="status_uncompleted">Status : nedokončena</string>
     <string name="Request">Žádost</string>
-    <string name="user">Uživatel </string>
-    <string name="add_you"> Vás přidal do skupiny</string>
+    <string name="user">Uživatel\u0020</string>
+    <string name="add_you">\u0020Vás přidal do skupiny\u0020</string>
     <string name="add">Přidat</string>
-    <string name="group">Skupina</string>
-    <string name="group_added"> byl(a) přidán(a) do tvé skupiny</string>
+    <string name="group">Skupina\u0020</string>
+    <string name="group_added">\u0020byl(a) přidán(a) do tvé skupiny</string>
     <string name="cancel">Zrušit</string>
     <string name="add_new_work_toast">Musíte mít vybranou skupinu na přidání nové práce. Jestli nejste členem žádné skupiny, můžete si vytvorit novou skupinu v Menu.</string>
     <string name="one_hour">1 hodina</string>
@@ -164,6 +164,7 @@
     <string name="user_name">jméno</string>
     <string name="new_name">Nové jméno:\u0020</string>
     <string name="invite_new_user">Vás přidal do nové skupiny</string>
-    <string name="invited_new_group">BYli jste přidáni do nové skupiny -\u0020</string>
+    <string name="invited_new_group">Byli jste přidáni do nové skupiny -\u0020</string>
     <string name="dialog_cancel_work">Jste si jistý, že chcete zrušit tuto práci ?</string>
+    <string name="enter_time_date">Prosím, zadejte čas nebo datum</string>
 </resources>
