@@ -267,8 +267,9 @@ public class GroupInfoActivity extends AppCompatActivity
                                                                                 db.child("user").child("groups").child("members").child(groupID).setValue(null);
                                                                             }
 
-                                                                            Intent intent = new Intent(GroupInfoActivity.this, MainActivity.class);
-                                                                            startActivity(intent);
+                                                                            //Intent intent = new Intent(GroupInfoActivity.this, MainActivity.class);
+                                                                            //startActivity(intent);
+                                                                            finish();
                                                                             overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                                                                         }
                                                                     }
@@ -427,8 +428,9 @@ public class GroupInfoActivity extends AppCompatActivity
                                                 Toast.makeText(GroupInfoActivity.this, getString(R.string.changes_saved), Toast.LENGTH_SHORT).show();
                                         }
 
-                                        Intent intent = new Intent(GroupInfoActivity.this, MainActivity.class);
-                                        startActivity(intent);
+                                        //Intent intent = new Intent(GroupInfoActivity.this, MainActivity.class);
+                                        //startActivity(intent);
+                                        finish();
                                         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
                                     }
                                 }

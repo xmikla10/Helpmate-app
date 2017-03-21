@@ -412,10 +412,11 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                         }
 
                         progressDialogCreating.dismiss();
-                        Intent intent = new Intent(CreateNewGroupActivity.this, MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        //Intent intent = new Intent(CreateNewGroupActivity.this, MainActivity.class);
+                        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-                        startActivity(intent);
+                        //startActivity(intent);
+                        finish();
                         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
                     }
                     @Override public void onCancelled(DatabaseError databaseError) {}

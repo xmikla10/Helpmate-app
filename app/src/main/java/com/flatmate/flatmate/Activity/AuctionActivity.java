@@ -1006,9 +1006,10 @@ public class AuctionActivity extends AppCompatActivity
                                                 set2.Set(groupID, 4, work_name, bidsID, notifEmail);
                                             }
 
-                                            Intent intent = new Intent(AuctionActivity.this, MainActivity.class);
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            startActivity(intent);
+                                            //Intent intent = new Intent(AuctionActivity.this, MainActivity.class);
+                                            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            //startActivity(intent);
+                                            finish();
                                             overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                                         }
                                         else

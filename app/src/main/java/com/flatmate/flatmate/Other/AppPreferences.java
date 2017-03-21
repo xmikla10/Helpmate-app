@@ -185,8 +185,9 @@ public class AppPreferences extends PreferenceActivity
                             @Override public void onCancelled(DatabaseError databaseError) {}});
                     }
 
-                    Intent refresh = new Intent(getContext(), MainActivity.class);
-                    startActivity(refresh);
+                    //Intent refresh = new Intent(getContext(), MainActivity.class);
+                    //startActivity(refresh);
+                    getActivity().finish();
                     Toast.makeText(getActivity(), newName , Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -205,8 +206,9 @@ public class AppPreferences extends PreferenceActivity
             Configuration conf = res.getConfiguration();
             conf.locale = myLocale;
             res.updateConfiguration(conf, dm);
-            Intent refresh = new Intent(getContext(), MainActivity.class);
-            startActivity(refresh);
+            //Intent refresh = new Intent(getContext(), MainActivity.class);
+            //startActivity(refresh);
+            getActivity().finish();
         }
     }
 

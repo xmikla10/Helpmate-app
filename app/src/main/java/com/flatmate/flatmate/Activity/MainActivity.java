@@ -117,10 +117,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public PendingIntent pendingIntent;
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private boolean isActivityActual;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        isActivityActual = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity);
         //FontsOverride.setDefaultFont(this, "DEFAULT", "customfont.ttf");
@@ -133,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             //starting login activity
             Intent intent = new Intent(this, LogInActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            isActivityActual = false;
+
             startActivity(intent);
         }
 
@@ -175,104 +179,195 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         db.child("user").child("users").child(userID).child("data").addChildEventListener(new ChildEventListener() {
             @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
             {
-                Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                groupID = value.get("_group").toString();
-                if(groupID.length() != 0)
+                if ( isActivityActual == true)
                 {
-                    db.child("groups").child(groupID).child("works").child("todo").addChildEventListener(new ChildEventListener() {
-                        @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
-                        {
-                                Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                                String key = dataSnapshot.getKey().toString();
+                    Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                    groupID = value.get("_group").toString();
+                    if (groupID.length() != 0) {
+                        db.child("groups").child(groupID).child("works").child("todo").addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s)
+                            {
+                                if ( isActivityActual == true) {
+                                    Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                                    String key = dataSnapshot.getKey().toString();
 
-                                if( value.get("_bidsID") == null)
-                                {
-                                    db.child("groups").child(groupID).child("works").child("todo").child(key).setValue(null);
+                                    if (value.get("_bidsID") == null) {
+                                        db.child("groups").child(groupID).child("works").child("todo").child(key).setValue(null);
+                                    } else {
+                                        evaluationBidsID = value.get("_bidsID").toString();
+                                        evaluationDeadline = value.get("_deadline").toString();
+                                        evaluationStatus = value.get("_status").toString();
+
+                                        MyStatus statusC = new MyStatus();
+
+                                        String statusInString = statusC.setStatus(evaluationStatus, MainActivity.this);
+                                        evaluationStatus = statusInString;
+
+                                        evaluationDate = value.get("_date").toString();
+                                        evaluationTime = value.get("_time").toString();
+
+                                        Integer Year, Month, Day, Hour, Minute;
+
+                                        if (evaluationStatus.equals(getString(R.string.status_auctioning))) {
+                                            Hour = Integer.valueOf(evaluationDeadline.substring(0, 2));
+                                            Minute = Integer.valueOf(evaluationDeadline.substring(3, 5));
+                                            Day = Integer.valueOf(evaluationDeadline.substring(6, 8));
+                                            Month = Integer.valueOf(evaluationDeadline.substring(9, 11));
+                                            Year = Integer.valueOf(evaluationDeadline.substring(12, 16));
+
+                                            Calendar cal = Calendar.getInstance();
+
+                                            cal.set(Calendar.YEAR, Year);
+                                            cal.set(Calendar.MONTH, Month - 1);
+                                            cal.set(Calendar.DAY_OF_MONTH, Day);
+                                            cal.set(Calendar.HOUR_OF_DAY, Hour);
+                                            cal.set(Calendar.MINUTE, Minute);
+                                            cal.set(Calendar.SECOND, 0);
+                                            cal.set(Calendar.MILLISECOND, 0);
+
+                                            int _id = (int) System.currentTimeMillis();
+
+                                            Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+                                            intent.putExtra("alarmId", _id);
+                                            intent.putExtra("bidsID", evaluationBidsID);
+                                            intent.putExtra("groupID", groupID);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+
+                                            PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                            AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                            alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+
+                                            cal = null;
+                                        }
+
+                                        if (evaluationStatus.equals(getString(R.string.status_done))) {
+                                            Hour = Integer.valueOf(evaluationDeadline.substring(0, 2));
+                                            Minute = Integer.valueOf(evaluationDeadline.substring(3, 5));
+                                            Day = Integer.valueOf(evaluationDeadline.substring(6, 8));
+                                            Month = Integer.valueOf(evaluationDeadline.substring(9, 11));
+                                            Year = Integer.valueOf(evaluationDeadline.substring(12, 16));
+
+                                            Calendar cal = Calendar.getInstance();
+
+                                            cal.set(Calendar.YEAR, Year);
+                                            cal.set(Calendar.MONTH, Month - 1);
+                                            cal.set(Calendar.DAY_OF_MONTH, Day);
+                                            cal.set(Calendar.HOUR_OF_DAY, Hour);
+                                            cal.set(Calendar.MINUTE, Minute);
+                                            cal.set(Calendar.SECOND, 0);
+                                            cal.set(Calendar.MILLISECOND, 0);
+
+                                            int _id = (int) System.currentTimeMillis();
+
+                                            Intent intent = new Intent(MainActivity.this, WorkDoneReceiver.class);
+
+                                            intent.putExtra("alarmId", _id);
+                                            intent.putExtra("bidsID", evaluationBidsID);
+                                            intent.putExtra("groupID", groupID);
+                                            intent.putExtra("groupID", groupID);
+                                            intent.putExtra("childKey", key);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+
+                                            PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                            AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                            alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+
+                                            cal = null;
+                                        }
+
+                                        if (evaluationStatus.equals(getString(R.string.status_progress))) {
+                                            evaluationDeadline = evaluationTime + " " + evaluationDate;
+                                            Hour = Integer.valueOf(evaluationDeadline.substring(0, 2));
+                                            Minute = Integer.valueOf(evaluationDeadline.substring(3, 5));
+                                            Day = Integer.valueOf(evaluationDeadline.substring(6, 8));
+                                            Month = Integer.valueOf(evaluationDeadline.substring(9, 11));
+                                            Year = Integer.valueOf(evaluationDeadline.substring(12, 16));
+
+                                            Calendar cal = Calendar.getInstance();
+
+                                            cal.set(Calendar.YEAR, Year);
+                                            cal.set(Calendar.MONTH, Month - 1);
+                                            cal.set(Calendar.DAY_OF_MONTH, Day);
+                                            cal.set(Calendar.HOUR_OF_DAY, Hour);
+                                            cal.set(Calendar.MINUTE, Minute);
+                                            cal.set(Calendar.SECOND, 0);
+                                            cal.set(Calendar.MILLISECOND, 0);
+
+                                            int _id = (int) System.currentTimeMillis();
+
+                                            Intent intent = new Intent(MainActivity.this, AlarmProgressReceiver.class);
+
+                                            intent.putExtra("alarmId", _id);
+                                            intent.putExtra("bidsID", evaluationBidsID);
+                                            intent.putExtra("groupID", groupID);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+
+                                            PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                            AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                            alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+                                            cal = null;
+                                        }
+
+                                        if (evaluationStatus.equals(getString(R.string.status_uncompleted))) {
+                                            Hour = Integer.valueOf(evaluationDeadline.substring(0, 2));
+                                            Minute = Integer.valueOf(evaluationDeadline.substring(3, 5));
+                                            Day = Integer.valueOf(evaluationDeadline.substring(6, 8));
+                                            Month = Integer.valueOf(evaluationDeadline.substring(9, 11));
+                                            Year = Integer.valueOf(evaluationDeadline.substring(12, 16));
+
+                                            Calendar cal = Calendar.getInstance();
+
+                                            cal.set(Calendar.YEAR, Year);
+                                            cal.set(Calendar.MONTH, Month - 1);
+                                            cal.set(Calendar.DAY_OF_MONTH, Day);
+                                            cal.set(Calendar.HOUR_OF_DAY, Hour);
+                                            cal.set(Calendar.MINUTE, Minute);
+                                            cal.set(Calendar.SECOND, 0);
+                                            cal.set(Calendar.MILLISECOND, 0);
+
+                                            int _id = (int) System.currentTimeMillis();
+
+                                            Intent intent = new Intent(MainActivity.this, WorkDoneReceiver.class);
+
+                                            intent.putExtra("alarmId", _id);
+                                            intent.putExtra("bidsID", evaluationBidsID);
+                                            intent.putExtra("groupID", groupID);
+                                            intent.putExtra("groupID", groupID);
+                                            intent.putExtra("childKey", key);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+
+                                            PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                            AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                            alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
+
+                                            cal = null;
+                                        }
+                                    }
                                 }
-                                else
-                                {
+                            }
+                            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s)
+                            {
+                                if ( isActivityActual == true) {
+                                    Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                                    String key = dataSnapshot.getKey().toString();
                                     evaluationBidsID = value.get("_bidsID").toString();
                                     evaluationDeadline = value.get("_deadline").toString();
                                     evaluationStatus = value.get("_status").toString();
 
                                     MyStatus statusC = new MyStatus();
 
-                                    String statusInString = statusC.setStatus( evaluationStatus, MainActivity.this);
+                                    String statusInString = statusC.setStatus(evaluationStatus, MainActivity.this);
                                     evaluationStatus = statusInString;
 
                                     evaluationDate = value.get("_date").toString();
                                     evaluationTime = value.get("_time").toString();
 
                                     Integer Year, Month, Day, Hour, Minute;
-
-                                    if (evaluationStatus.equals(getString(R.string.status_auctioning))) {
-                                        Hour = Integer.valueOf(evaluationDeadline.substring(0, 2));
-                                        Minute = Integer.valueOf(evaluationDeadline.substring(3, 5));
-                                        Day = Integer.valueOf(evaluationDeadline.substring(6, 8));
-                                        Month = Integer.valueOf(evaluationDeadline.substring(9, 11));
-                                        Year = Integer.valueOf(evaluationDeadline.substring(12, 16));
-
-                                        Calendar cal = Calendar.getInstance();
-
-                                        cal.set(Calendar.YEAR, Year);
-                                        cal.set(Calendar.MONTH, Month - 1);
-                                        cal.set(Calendar.DAY_OF_MONTH, Day);
-                                        cal.set(Calendar.HOUR_OF_DAY, Hour);
-                                        cal.set(Calendar.MINUTE, Minute);
-                                        cal.set(Calendar.SECOND, 0);
-                                        cal.set(Calendar.MILLISECOND, 0);
-
-                                        int _id = (int) System.currentTimeMillis();
-
-                                        Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
-                                        intent.putExtra("alarmId", _id);
-                                        intent.putExtra("bidsID", evaluationBidsID);
-                                        intent.putExtra("groupID", groupID);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-
-                                        PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                        AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
-                                        alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
-
-                                        cal = null;
-                                    }
-
-                                    if (evaluationStatus.equals(getString(R.string.status_done))) {
-                                        Hour = Integer.valueOf(evaluationDeadline.substring(0, 2));
-                                        Minute = Integer.valueOf(evaluationDeadline.substring(3, 5));
-                                        Day = Integer.valueOf(evaluationDeadline.substring(6, 8));
-                                        Month = Integer.valueOf(evaluationDeadline.substring(9, 11));
-                                        Year = Integer.valueOf(evaluationDeadline.substring(12, 16));
-
-                                        Calendar cal = Calendar.getInstance();
-
-                                        cal.set(Calendar.YEAR, Year);
-                                        cal.set(Calendar.MONTH, Month - 1);
-                                        cal.set(Calendar.DAY_OF_MONTH, Day);
-                                        cal.set(Calendar.HOUR_OF_DAY, Hour);
-                                        cal.set(Calendar.MINUTE, Minute);
-                                        cal.set(Calendar.SECOND, 0);
-                                        cal.set(Calendar.MILLISECOND, 0);
-
-                                        int _id = (int) System.currentTimeMillis();
-
-                                        Intent intent = new Intent(MainActivity.this, WorkDoneReceiver.class);
-
-                                        intent.putExtra("alarmId", _id);
-                                        intent.putExtra("bidsID", evaluationBidsID);
-                                        intent.putExtra("groupID", groupID);
-                                        intent.putExtra("groupID", groupID);
-                                        intent.putExtra("childKey", key);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-
-                                        PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                        AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
-                                        alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
-
-                                        cal = null;
-                                    }
 
                                     if (evaluationStatus.equals(getString(R.string.status_progress))) {
                                         evaluationDeadline = evaluationTime + " " + evaluationDate;
@@ -344,102 +439,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         cal = null;
                                     }
                                 }
-                        }
-                        @Override public void onChildChanged(DataSnapshot dataSnapshot, String s)
-                        {
-                            Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                            String key = dataSnapshot.getKey().toString();
-                            evaluationBidsID = value.get("_bidsID").toString();
-                            evaluationDeadline = value.get("_deadline").toString();
-                            evaluationStatus = value.get("_status").toString();
-
-                            MyStatus statusC = new MyStatus();
-
-                            String statusInString = statusC.setStatus( evaluationStatus, MainActivity.this);
-                            evaluationStatus = statusInString;
-
-                            evaluationDate = value.get("_date").toString();
-                            evaluationTime = value.get("_time").toString();
-
-                            Integer Year, Month, Day, Hour, Minute;
-
-                            if ( evaluationStatus.equals(getString(R.string.status_progress)))
-                            {
-                                evaluationDeadline = evaluationTime + " " + evaluationDate;
-                                Hour = Integer.valueOf(evaluationDeadline.substring(0,2));
-                                Minute = Integer.valueOf(evaluationDeadline.substring(3,5));
-                                Day = Integer.valueOf(evaluationDeadline.substring(6,8));
-                                Month = Integer.valueOf(evaluationDeadline.substring(9,11));
-                                Year = Integer.valueOf(evaluationDeadline.substring(12,16));
-
-                                Calendar cal = Calendar.getInstance();
-
-                                cal.set(Calendar.YEAR, Year);
-                                cal.set(Calendar.MONTH, Month-1);
-                                cal.set(Calendar.DAY_OF_MONTH, Day);
-                                cal.set(Calendar.HOUR_OF_DAY, Hour);
-                                cal.set(Calendar.MINUTE, Minute);
-                                cal.set(Calendar.SECOND, 0);
-                                cal.set(Calendar.MILLISECOND, 0);
-
-                                int _id = (int) System.currentTimeMillis();
-
-                                Intent intent = new Intent(MainActivity.this, AlarmProgressReceiver.class);
-
-                                intent.putExtra("alarmId", _id);
-                                intent.putExtra("bidsID", evaluationBidsID);
-                                intent.putExtra("groupID", groupID);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-
-                                PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
-                                alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
-                                cal = null;
                             }
-
-                            if ( evaluationStatus.equals(getString(R.string.status_uncompleted)))
-                            {
-                                Hour = Integer.valueOf(evaluationDeadline.substring(0,2));
-                                Minute = Integer.valueOf(evaluationDeadline.substring(3,5));
-                                Day = Integer.valueOf(evaluationDeadline.substring(6,8));
-                                Month = Integer.valueOf(evaluationDeadline.substring(9,11));
-                                Year = Integer.valueOf(evaluationDeadline.substring(12,16));
-
-                                Calendar cal = Calendar.getInstance();
-
-                                cal.set(Calendar.YEAR, Year);
-                                cal.set(Calendar.MONTH, Month-1);
-                                cal.set(Calendar.DAY_OF_MONTH, Day);
-                                cal.set(Calendar.HOUR_OF_DAY, Hour);
-                                cal.set(Calendar.MINUTE, Minute);
-                                cal.set(Calendar.SECOND, 0);
-                                cal.set(Calendar.MILLISECOND, 0);
-
-                                int _id = (int) System.currentTimeMillis();
-
-                                Intent intent = new Intent(MainActivity.this, WorkDoneReceiver.class);
-
-                                intent.putExtra("alarmId", _id);
-                                intent.putExtra("bidsID", evaluationBidsID);
-                                intent.putExtra("groupID", groupID);
-                                intent.putExtra("groupID", groupID);
-                                intent.putExtra("childKey", key);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-
-                                PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, _id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
-                                alarmManager1.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending);
-
-                                cal = null;
-                            }
-
-                        }
-                        @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                        @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                        @Override public void onCancelled(DatabaseError databaseError) {}
-                    });
+                            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                            @Override public void onCancelled(DatabaseError databaseError) {}
+                        });
+                    }
                 }
             }
             @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
@@ -460,52 +465,54 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s)
             {
-
-                Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                String notif_group_name = value.get("_group_name").toString();
-
-                String notif_message = value.get("_message").toString();
-                String notif_message2 = value.get("_message2").toString();
-
-                String work_date = value.get("_date").toString();
-                String tmp = value.get("_random").toString();
-                Double tmp2 = Double.valueOf(tmp);
-                Integer notif_counter = tmp2.intValue();
-
-                String childKey = dataSnapshot.getKey();
-                Boolean showNotification = getActualDate(work_date);
-
-                if ( !showNotification)
+                if ( isActivityActual == true)
                 {
-                    db.child("user").child("users").child(userID).child("notifications").child(childKey).setValue(null);
-                }
-                else
-                {
-                    StringForNotifications sfn = new StringForNotifications();
-                    String notificaton_message = sfn.setNotificationString(notif_message, notif_message2, MainActivity.this);
+                    Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                    String notif_group_name = value.get("_group_name").toString();
 
-                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    String notif_message = value.get("_message").toString();
+                    String notif_message2 = value.get("_message2").toString();
 
-                    PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, (int) System.currentTimeMillis(), intent, 0);
+                    String work_date = value.get("_date").toString();
+                    String tmp = value.get("_random").toString();
+                    Double tmp2 = Double.valueOf(tmp);
+                    Integer notif_counter = tmp2.intValue();
 
-                    Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                    long[] vibrate = { 0, 200 };
+                    String childKey = dataSnapshot.getKey();
+                    Boolean showNotification = getActualDate(work_date);
 
-                    Notification notif = new Notification.Builder(MainActivity.this)
-                            .setSmallIcon(R.mipmap.ic_launcher)
-                            .setSound(alarmSound)
-                            .setContentTitle(notificaton_message)
-                            .setContentText(notif_group_name)
-                            .setContentIntent(pIntent).build();
-                    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    if ( !showNotification)
+                    {
+                        db.child("user").child("users").child(userID).child("notifications").child(childKey).setValue(null);
+                    }
+                    else
+                    {
+                        StringForNotifications sfn = new StringForNotifications();
+                        String notificaton_message = sfn.setNotificationString(notif_message, notif_message2, MainActivity.this);
 
-                    notif.flags |= Notification.FLAG_AUTO_CANCEL;
+                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-                    notificationManager.notify(notif_counter, notif);
+                        PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, (int) System.currentTimeMillis(), intent, 0);
 
-                    db.child("user").child("users").child(userID).child("notifications").child(childKey).setValue(null);
-                    System.out.println("-------->" + "som na konci");
+                        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                        long[] vibrate = { 0, 200 };
+
+                        Notification notif = new Notification.Builder(MainActivity.this)
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setSound(alarmSound)
+                                .setContentTitle(notificaton_message)
+                                .setContentText(notif_group_name)
+                                .setContentIntent(pIntent).build();
+                        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+                        notif.flags |= Notification.FLAG_ONLY_ALERT_ONCE;
+
+                        notificationManager.notify(notif_counter, notif);
+
+                        db.child("user").child("users").child(userID).child("notifications").child(childKey).setValue(null);
+                        System.out.println("-------->" + "som na konci");
+                    }
 
                 }
             }
@@ -528,143 +535,167 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         db = FirebaseDatabase.getInstance().getReference();
         db.child("user").child("users").child(userID).child("data").addChildEventListener(new ChildEventListener() {
-            @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                userName = value.get("_name").toString();
-                userEmail = value.get("_email").toString();
-                userGroupID = value.get("_group").toString();
-                userGroupIDChildKey = dataSnapshot.getKey();
+            @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
+            {
+                if ( isActivityActual == true) {
+                    Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                    userName = value.get("_name").toString();
+                    userEmail = value.get("_email").toString();
+                    userGroupID = value.get("_group").toString();
+                    userGroupIDChildKey = dataSnapshot.getKey();
 
-                if(userName != null && userEmail != null)
-                {
-                    userNameView.setText(userName);
-                    userEmailView.setText(userEmail);
-                    db.child("user").child("users").child(userID).child("messages").addChildEventListener(new ChildEventListener() {
-                        @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
-                        {
-                            Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                            final String addGroupID = value.get("_group_ID").toString();
-                            final String addGroupName = value.get("_group_name").toString();
-                            String senderEmail= value.get("_sender_email").toString();
-                            final String key = dataSnapshot.getKey().toString();
+                    if (userName != null && userEmail != null) {
+                        userNameView.setText(userName);
+                        userEmailView.setText(userEmail);
+                        db.child("user").child("users").child(userID).child("messages").addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                                final String addGroupID = value.get("_group_ID").toString();
+                                final String addGroupName = value.get("_group_name").toString();
+                                String senderEmail = value.get("_sender_email").toString();
+                                final String key = dataSnapshot.getKey().toString();
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                            builder.setTitle(R.string.Request).setMessage(getString(R.string.user) + senderEmail + getString(R.string.add_you) + addGroupName)
-                                    .setCancelable(false)
-                                    .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
-                                        public void onClick(final DialogInterface dialog, int id)
-                                        {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                builder.setTitle(R.string.Request).setMessage(getString(R.string.user) + senderEmail + getString(R.string.add_you) + addGroupName)
+                                        .setCancelable(false)
+                                        .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+                                            public void onClick(final DialogInterface dialog, int id) {
 
-                                            Date actDate= new Date();
-                                            Calendar actCal = Calendar.getInstance();
-                                            actCal.setTime(actDate);
-                                            Integer monthInInt = actCal.get(Calendar.MONTH) + 1;
-                                            actualMonth = getMonth(monthInInt);
-                                            SetNotification set = new SetNotification();
-                                            set.Set(addGroupID, 2, userName, "1", "");
+                                                Date actDate = new Date();
+                                                Calendar actCal = Calendar.getInstance();
+                                                actCal.setTime(actDate);
+                                                Integer monthInInt = actCal.get(Calendar.MONTH) + 1;
+                                                actualMonth = getMonth(monthInInt);
+                                                SetNotification set = new SetNotification();
+                                                set.Set(addGroupID, 2, userName, "1", "");
 
-                                            db.child("groups").child(addGroupID).child("graph").child("months").child("members").addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override public void onDataChange(DataSnapshot dataSnapshot)
-                                                {
-                                                    for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
-                                                    {
-                                                        Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
-                                                        String childKey = childSnapshot.getKey();
-                                                        String stringMemCount = value.get("_membersCount").toString();
+                                                db.child("groups").child(addGroupID).child("graph").child("months").child("members").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                                            Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                            String childKey = childSnapshot.getKey();
+                                                            String stringMemCount = value.get("_membersCount").toString();
 
-                                                        Integer memCount = Integer.valueOf(stringMemCount);
-                                                        memCount = memCount + 1;
+                                                            Integer memCount = Integer.valueOf(stringMemCount);
+                                                            memCount = memCount + 1;
 
-                                                        Map newUserData = new HashMap();
-                                                        newUserData.put("_membersCount", memCount.toString());
-                                                        db.child("groups").child(addGroupID).child("graph").child("months").child("members").child(childKey).updateChildren(newUserData);
+                                                            Map newUserData = new HashMap();
+                                                            newUserData.put("_membersCount", memCount.toString());
+                                                            db.child("groups").child(addGroupID).child("graph").child("months").child("members").child(childKey).updateChildren(newUserData);
+                                                        }
+
+                                                        db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("control").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                                                    childKey = childSnapshot.getKey();
+                                                                    Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                                    String memC = value.get("_membersCount").toString();
+                                                                    finall = Integer.valueOf(memC);
+
+                                                                    db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("users").orderByChild("_ID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                        @Override
+                                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                            if (dataSnapshot.getValue() == null) {
+                                                                                GraphUser graphUser = new GraphUser();
+                                                                                graphUser.set_ID(userID);
+                                                                                graphUser.set_name(userName);
+                                                                                graphUser.set_email(userEmail);
+                                                                                graphUser.set_credits("0");
+                                                                                db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("users").push().setValue(graphUser);
+
+                                                                                finall++;
+
+                                                                                Map newUserData = new HashMap();
+                                                                                newUserData.put("_membersCount", finall.toString());
+                                                                                db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("control").child(childKey).updateChildren(newUserData);
+
+                                                                            }
+                                                                        }
+
+                                                                        @Override
+                                                                        public void onCancelled(DatabaseError databaseError) {
+                                                                        }
+                                                                    });
+
+                                                                    final NewGroup newGroupUser = new NewGroup();
+                                                                    final NewGroup newGroupMembers = new NewGroup();
+
+                                                                    newGroupUser.set_group_ID(addGroupID);
+                                                                    newGroupUser.set_user_email(userEmail);
+                                                                    newGroupUser.set_group_name(addGroupName);
+                                                                    newGroupUser.set_admin("false");
+                                                                    db.child("user").child("groups").child("user").child(userID).child("user").push().setValue(newGroupUser);
+
+                                                                    newGroupMembers.set_user_email(userEmail);
+                                                                    newGroupMembers.set_user_ID(userID);
+                                                                    newGroupMembers.set_user_name(userName);
+                                                                    db.child("user").child("groups").child("members").child(addGroupID).child("members").push().setValue(newGroupMembers);
+
+                                                                    db.child("user").child("users").child(userID).child("messages").child(key).setValue(null);
+
+                                                                    if (userGroupID.equals("")) {
+                                                                        Map newData = new HashMap();
+                                                                        newData.put("_group", addGroupID);
+                                                                        db.child("user").child("users").child(userID).child("data").child(userGroupIDChildKey).updateChildren(newData);
+                                                                    }
+
+                                                                    dialog.cancel();
+                                                                    Toast.makeText(MainActivity.this, getString(R.string.group) + addGroupName + getString(R.string.group_added), Toast.LENGTH_LONG).show();
+
+                                                                }
+                                                            }
+
+                                                            @Override
+                                                            public void onCancelled(DatabaseError databaseError) {
+                                                            }
+                                                        });
                                                     }
 
-                                                    db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("control").addListenerForSingleValueEvent(new ValueEventListener() {
-                                                        @Override public void onDataChange(DataSnapshot dataSnapshot)
-                                                        {
-                                                            for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
-                                                            {
-                                                                childKey = childSnapshot.getKey();
-                                                                Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
-                                                                String memC = value.get("_membersCount").toString();
-                                                                finall = Integer.valueOf(memC);
+                                                    @Override
+                                                    public void onCancelled(DatabaseError databaseError) {
+                                                    }
+                                                });
+                                            }
+                                        })
+                                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                db.child("user").child("users").child(userID).child("messages").child(key).setValue(null);
+                                                dialog.cancel();
+                                            }
+                                        });
+                                AlertDialog alert = builder.create();
+                                alert.show();
 
-                                                                db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("users").orderByChild("_ID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                    @Override public void onDataChange(DataSnapshot dataSnapshot)
-                                                                    {
-                                                                        if (dataSnapshot.getValue() == null)
-                                                                        {
-                                                                            GraphUser graphUser = new GraphUser();
-                                                                            graphUser.set_ID(userID);
-                                                                            graphUser.set_name(userName);
-                                                                            graphUser.set_email(userEmail);
-                                                                            graphUser.set_credits("0");
-                                                                            db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("users").push().setValue(graphUser);
+                            }
 
-                                                                            finall++;
-
-                                                                            Map newUserData = new HashMap();
-                                                                            newUserData.put("_membersCount", finall.toString());
-                                                                            db.child("groups").child(addGroupID).child("graph").child("months").child(actualMonth).child("control").child(childKey).updateChildren(newUserData);
-
-                                                                        }
-                                                                    }
-                                                                    @Override public void onCancelled(DatabaseError databaseError) {}
-                                                                });
-
-                                                                final NewGroup newGroupUser = new NewGroup();
-                                                                final NewGroup newGroupMembers = new NewGroup();
-
-                                                                newGroupUser.set_group_ID(addGroupID);
-                                                                newGroupUser.set_user_email(userEmail);
-                                                                newGroupUser.set_group_name(addGroupName);
-                                                                newGroupUser.set_admin("false");
-                                                                db.child("user").child("groups").child("user").child(userID).child("user").push().setValue(newGroupUser);
-
-                                                                newGroupMembers.set_user_email(userEmail);
-                                                                newGroupMembers.set_user_ID(userID);
-                                                                newGroupMembers.set_user_name(userName);
-                                                                db.child("user").child("groups").child("members").child(addGroupID).child("members").push().setValue(newGroupMembers);
-
-                                                                db.child("user").child("users").child(userID).child("messages").child(key).setValue(null);
-
-                                                                if(userGroupID.equals(""))
-                                                                {
-                                                                    Map newData = new HashMap();
-                                                                    newData.put("_group", addGroupID);
-                                                                    db.child("user").child("users").child(userID).child("data").child(userGroupIDChildKey).updateChildren(newData);
-                                                                }
-
-                                                                dialog.cancel();
-                                                                Toast.makeText(MainActivity.this,getString(R.string.group)+ addGroupName + getString(R.string.group_added),Toast.LENGTH_LONG).show();
-
-                                                            }
-                                                        }@Override public void onCancelled(DatabaseError databaseError) {}
-                                                    });
-                                                }@Override public void onCancelled(DatabaseError databaseError) {}
-                                            });
-                                        }
-                                    })
-                                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id)
-                                        {
-                                            db.child("user").child("users").child(userID).child("messages").child(key).setValue(null);
-                                            dialog.cancel();
-                                        }
-                                    });
-                            AlertDialog alert = builder.create();
-                            alert.show();
-
-                        }
-                        @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                        @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                        @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                        @Override public void onCancelled(DatabaseError databaseError) {}
-                    });
+                            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                            @Override public void onCancelled(DatabaseError databaseError) {}
+                        });
+                    }
                 }
             }
-            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s)
+            {
+                if ( isActivityActual == true)
+                {
+                    Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                    userName = value.get("_name").toString();
+                    userEmail = value.get("_email").toString();
+                    userGroupID = value.get("_group").toString();
+                    userGroupIDChildKey = dataSnapshot.getKey();
+
+                    if (userName != null && userEmail != null){
+                        userNameView.setText(userName);
+                        userEmailView.setText(userEmail);
+                    }
+                }
+
+            }
             @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
             @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override public void onCancelled(DatabaseError databaseError) {}
@@ -685,11 +716,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
                     if (!existGroupID.equals(""))
                     {
-                        Intent intent = new Intent(MainActivity.this, AddNewWorkActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
                         startActivityForResult(new Intent(MainActivity.this, AddNewWorkActivity.class), AddNewWorkActivity.ADD_FINISHED);
-                        //startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                     }
                     else
@@ -742,6 +769,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         startActivity(intent);
+        isActivityActual = false;
+
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
 
@@ -770,7 +799,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             startActivity(intent6);
-            overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+            isActivityActual = false;
         }
 
         return super.onOptionsItemSelected(item);
@@ -796,31 +825,31 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 if (id == R.id.nav_to_do)
                 {
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    isActivityActual = false;
+                    finish();
                     startActivity(intent);
+                    overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
                 }
                 else if (id == R.id.nav_activity_graph)
                 {
                     Intent intent = new Intent(MainActivity.this, GraphActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
                 else if (id == R.id.nav_settings)
                 {
                     Intent intent = new Intent(MainActivity.this, AppPreferences.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
                 else if (id == R.id.nav_my_group)
                 {
-                    Intent intent = new Intent(MainActivity.this, MyGroupsActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
+                    //Intent intent = new Intent(MainActivity.this, MyGroupsActivity.class);
+                    //startActivity(intent);
+                    startActivityForResult(new Intent(MainActivity.this, MyGroupsActivity.class), MyGroupsActivity.GROUP_FINISHED);
                 }
                 else if (id == R.id.nav_add_group)
                 {
                     Intent intent = new Intent(MainActivity.this, CreateNewGroupActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
                 else if (id == R.id.nav_log_out)
@@ -841,7 +870,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     finish();
 
                     Intent intent = new Intent(MainActivity.this, SignInActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    isActivityActual = false;
                     startActivity(intent);
                     overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
                 }
@@ -963,8 +993,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     {
         Date date1;
         Date date2;
-        long difference;
-        long tmp;
+        double difference;
+        double tmp;
         Date myDateTime = null;
 
         Calendar cal1 = Calendar.getInstance();
@@ -990,18 +1020,29 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         difference = getDateDiff(date1,date2,TimeUnit.MINUTES);
 
+        System.out.println("---------> " + date1);
+        System.out.println("---------> " + date2);
+        System.out.println("---------> " + difference);
+
+
         if ( difference < 2880)
         {
-            tmp = (difference / 100)* 20;
+            tmp = (difference / 100) * 20;
+            System.out.println("---------> " + tmp);
+
         }
         else
         {
-            tmp = (difference / 100)* 50;
+            tmp = (difference / 100) * 50;
+            System.out.println("---------> " + tmp);
+
         }
 
-        difference = (difference - tmp)/60;
+        System.out.println("---------> " + difference);
 
-        cal2.add(Calendar.HOUR_OF_DAY, (int) difference);
+        cal2.add(Calendar.MINUTE, (int) tmp);
+        System.out.println("---------> " + cal2.getTime().toString());
+
 
         simpleDateFormat.setTimeZone(cal2.getTimeZone());
 
@@ -1059,6 +1100,26 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 helper.save(newWork);
                 CustomAdapterToDo adapter = new CustomAdapterToDo(this, helper.retrieve());
 
+                break;
+
+            case MyGroupsActivity.GROUP_FINISHED:
+                if ( data == null)
+                {
+                    return;
+                }
+
+                String controlCase = data.getStringExtra("my_groups_activity_result");
+
+                System.out.println("-------> " + controlCase);
+
+                if(controlCase.equals("1"))
+                {
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    isActivityActual = false;
+                    finish();
+                    startActivity(intent);
+                }
                 break;
 
             default:

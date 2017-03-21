@@ -53,6 +53,7 @@ public class MyGroupsActivity extends AppCompatActivity {
     String groupID;
     String childKey;
     String userID;
+    public static final int GROUP_FINISHED = 100;
     String userEmail;
     DatabaseReference db;
     FirebaseHelperMyGroups helper;
@@ -162,8 +163,9 @@ public class MyGroupsActivity extends AppCompatActivity {
 
                                         Intent intent = new Intent(MyGroupsActivity.this, MainActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-                                        startActivity(intent);
+                                        intent.putExtra("my_groups_activity_result", "1");
+                                        setResult(GROUP_FINISHED, intent);
+                                        finish();
                                     }
                                     @Override public void onCancelled(DatabaseError databaseError) {}
                             });

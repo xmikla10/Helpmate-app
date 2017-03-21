@@ -332,8 +332,8 @@ public class Tab_TODO extends Fragment
                 newWork.set_workProgress("0");
 
                 helper.save(newWork);
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(getActivity(), MainActivity.class);
+                //startActivity(intent);
 
                 break;
 

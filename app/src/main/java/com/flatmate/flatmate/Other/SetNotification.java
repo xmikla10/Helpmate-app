@@ -183,7 +183,8 @@ public class SetNotification
                                             }
                                         }
 
-                                        if (control == 8) {
+                                        if (control == 8)
+                                        {
                                             String message_8 = "8";
                                             String message_plus = string;
                                             sendNotification(message_8, group_name, find_user, message_plus);

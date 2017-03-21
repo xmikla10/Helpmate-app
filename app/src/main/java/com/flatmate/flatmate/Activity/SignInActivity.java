@@ -274,7 +274,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     private void signIn()
     {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        signInIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
@@ -288,7 +287,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         if(view == buttonLogin){
             //open login activity when user taps on the already registered textview
             Intent intent =new Intent(this, LogInActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
         }
@@ -393,7 +391,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                                     }
 
                                     Intent intent =new Intent(SignInActivity.this, LogInActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
                                     overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
                                     Toast.makeText(SignInActivity.this, R.string.sign_in_google,Toast.LENGTH_LONG).show();
@@ -458,7 +455,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                                     }
 
                                     Intent intent =new Intent(SignInActivity.this, LogInActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
                                     overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
                                     Toast.makeText(SignInActivity.this, R.string.sign_in_facebook,Toast.LENGTH_LONG).show();
