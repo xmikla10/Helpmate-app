@@ -166,4 +166,5 @@
     <string name="invited_new_group">You was invited to new group -\u0020</string>
     <string name="toast_add_new_work_deadline_wrong">Duration of auction can\'t outreach Deadline. The difference between Deadline and The End of Auction must be minimal 1 hour.</string>
     <string name="enter_time_date">Please, enter time or date</string>
+    <string name="internet_connection">Please, control your internet connection</string>
 </resources>

@@ -3,11 +3,13 @@ package com.flatmate.flatmate.Activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
@@ -101,6 +103,8 @@ public class GroupInfoActivity extends AppCompatActivity
     String admin;
     ImageView renameGroup;
     public String actualGroupName;
+    public String isEmailEnteredAlready;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -198,93 +202,109 @@ public class GroupInfoActivity extends AppCompatActivity
                     AlertDialog.Builder builder = new AlertDialog.Builder(GroupInfoActivity.this);
                     builder.setMessage(getString(R.string.want_you_delete_user) + s.get_user_name() +" ?")
                             .setNegativeButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id)
-                                {
-                                    if( admin.equals("true") || userID.equals(s.get_user_ID()))
-                                    {
-                                        SetNotification set = new SetNotification();
-                                        set.Set(groupID, 3, s.get_user_name(), "1", "");
+                                public void onClick(DialogInterface dialog, int id) {
+                                    if (isOnline() == false) {
+                                        Toast.makeText(getBaseContext(), R.string.internet_connection, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        if (admin.equals("true") || userID.equals(s.get_user_ID())) {
+                                            SetNotification set = new SetNotification();
+                                            set.Set(groupID, 3, s.get_user_name(), "1", "");
 
-                                        db.child("user").child("groups").child("members").child(groupID).child("members").addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                                    Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
-                                                    String childKey = childSnapshot.getKey();
-                                                    String delUserID = value.get("_user_ID").toString();
+                                            db.child("user").child("groups").child("members").child(groupID).child("members").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                                        Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                        String childKey = childSnapshot.getKey();
+                                                        String delUserID = value.get("_user_ID").toString();
 
-                                                    if (delUserID.equals(s.get_user_ID())) {
-                                                        db.child("user").child("groups").child("members").child(groupID).child("members").child(childKey).setValue(null);
-                                                    }
-                                                }
-
-                                                db.child("user").child("groups").child("user").child(s.get_user_ID()).child("user").addListenerForSingleValueEvent(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                                            Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
-                                                            String childKey = childSnapshot.getKey();
-                                                            String delGroupID = value.get("_group_ID").toString();
-
-                                                            if (delGroupID.equals(groupID)) {
-                                                                db.child("user").child("groups").child("user").child(s.get_user_ID()).child("user").child(childKey).setValue(null);
-                                                            }
+                                                        if (delUserID.equals(s.get_user_ID())) {
+                                                            db.child("user").child("groups").child("members").child(groupID).child("members").child(childKey).setValue(null);
                                                         }
+                                                    }
 
-                                                        db.child("user").child("users").child(s.get_user_ID()).child("data").addListenerForSingleValueEvent(new ValueEventListener() {
-                                                            @Override
-                                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                                                    Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
-                                                                    String childKey = childSnapshot.getKey();
-                                                                    String delGroupID = value.get("_group").toString();
+                                                    db.child("user").child("groups").child("user").child(s.get_user_ID()).child("user").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                                                Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                                String childKey = childSnapshot.getKey();
+                                                                String delGroupID = value.get("_group_ID").toString();
 
-                                                                    if (delGroupID.equals(groupID)) {
-                                                                        Map newUserData = new HashMap();
-                                                                        newUserData.put("_group", "");
-                                                                        db.child("user").child("users").child(s.get_user_ID()).child("data").child(childKey).updateChildren(newUserData);
-                                                                    }
+                                                                if (delGroupID.equals(groupID)) {
+                                                                    db.child("user").child("groups").child("user").child(s.get_user_ID()).child("user").child(childKey).setValue(null);
                                                                 }
+                                                            }
 
-                                                                db.child("groups").child(groupID).child("graph").child("months").child("members").addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                    @Override
-                                                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                                                            Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
-                                                                            String childKey = childSnapshot.getKey();
-                                                                            String stringMemCount = value.get("_membersCount").toString();
+                                                            db.child("user").child("users").child(s.get_user_ID()).child("data").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                @Override
+                                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                                                        Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                                        String childKey = childSnapshot.getKey();
+                                                                        String delGroupID = value.get("_group").toString();
 
-                                                                            Integer memCount = Integer.valueOf(stringMemCount);
-                                                                            memCount = memCount - 1;
-
+                                                                        if (delGroupID.equals(groupID)) {
                                                                             Map newUserData = new HashMap();
-                                                                            newUserData.put("_membersCount", memCount.toString());
-                                                                            db.child("groups").child(groupID).child("graph").child("months").child("members").child(childKey).updateChildren(newUserData);
-
-                                                                            if ( memCount == 0)
-                                                                            {
-                                                                                db.child("groups").child(groupID).setValue(null);
-                                                                                db.child("user").child("groups").child("members").child(groupID).setValue(null);
-                                                                            }
-
-                                                                            //Intent intent = new Intent(GroupInfoActivity.this, MainActivity.class);
-                                                                            //startActivity(intent);
-                                                                            finish();
-                                                                            overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+                                                                            newUserData.put("_group", "");
+                                                                            db.child("user").child("users").child(s.get_user_ID()).child("data").child(childKey).updateChildren(newUserData);
                                                                         }
                                                                     }
-                                                                    @Override public void onCancelled(DatabaseError databaseError) {}
-                                                                });}
-                                                            @Override public void onCancelled(DatabaseError databaseError) {}
-                                                        });}
-                                                    @Override public void onCancelled(DatabaseError databaseError) {}
-                                                });}
-                                            @Override public void onCancelled(DatabaseError databaseError) {}
-                                        });
-                                    }
-                                    else
-                                        Toast.makeText(GroupInfoActivity.this, R.string.toast_delete, Toast.LENGTH_SHORT).show();
 
+                                                                    db.child("groups").child(groupID).child("graph").child("months").child("members").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                        @Override
+                                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                                                                Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                                                String childKey = childSnapshot.getKey();
+                                                                                String stringMemCount = value.get("_membersCount").toString();
+
+                                                                                Integer memCount = Integer.valueOf(stringMemCount);
+                                                                                memCount = memCount - 1;
+
+                                                                                Map newUserData = new HashMap();
+                                                                                newUserData.put("_membersCount", memCount.toString());
+                                                                                db.child("groups").child(groupID).child("graph").child("months").child("members").child(childKey).updateChildren(newUserData);
+
+                                                                                if (memCount == 0) {
+                                                                                    db.child("groups").child(groupID).setValue(null);
+                                                                                    db.child("user").child("groups").child("members").child(groupID).setValue(null);
+                                                                                }
+
+                                                                                finish();
+                                                                                //Intent intent = new Intent(GroupInfoActivity.this, MyGroupsActivity.class);
+                                                                                //startActivity(intent);
+                                                                                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+                                                                            }
+                                                                        }
+
+                                                                        @Override
+                                                                        public void onCancelled(DatabaseError databaseError) {
+                                                                        }
+                                                                    });
+                                                                }
+
+                                                                @Override
+                                                                public void onCancelled(DatabaseError databaseError) {
+                                                                }
+                                                            });
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+                                                }
+                                            });
+
+                                        } else
+                                            Toast.makeText(GroupInfoActivity.this, R.string.toast_delete, Toast.LENGTH_SHORT).show();
+
+                                    }
                                 }
                             }).setPositiveButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id)
@@ -344,87 +364,91 @@ public class GroupInfoActivity extends AppCompatActivity
 
         createGroup.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                int size = memberEmail.size();
-                String wrongEmail = "";
-                cnt = 0 ;
-                db = FirebaseDatabase.getInstance().getReference();
-                Boolean goodEmails = true;
+            public void onClick(View view) {
 
-                firebaseAuth = FirebaseAuth.getInstance();
-                userEmail = firebaseAuth.getCurrentUser().getEmail().toString();
-                TextView groupName = (TextView) findViewById(R.id.textViewInfoGroupName);
-                group_name = groupName.getText().toString();
-
-                for (EditText editText : editTexts)
+                if (isOnline() == false) {
+                    Toast.makeText(getBaseContext(), R.string.internet_connection, Toast.LENGTH_SHORT).show();
+                } else
                 {
-                    if (!editText.getText().toString().equals(""))
-                    {
-                        if (!isValidEmail(editText.getText()))
-                        {
-                            wrongEmail = editText.getText().toString();
-                            goodEmails = false;
-                            break;
+
+                    int size = memberEmail.size();
+                    isEmailEnteredAlready = "";
+                    String wrongEmail = "";
+                    cnt = 0;
+                    db = FirebaseDatabase.getInstance().getReference();
+                    Boolean goodEmails = true;
+
+                    firebaseAuth = FirebaseAuth.getInstance();
+                    userEmail = firebaseAuth.getCurrentUser().getEmail().toString();
+                    TextView groupName = (TextView) findViewById(R.id.textViewInfoGroupName);
+                    group_name = groupName.getText().toString();
+
+                    for (EditText editText : editTexts) {
+                        if (!editText.getText().toString().equals("")) {
+                            if (!isValidEmail(editText.getText())) {
+                                wrongEmail = editText.getText().toString();
+                                goodEmails = false;
+                                break;
+                            }
                         }
                     }
-                }
 
-                if ( goodEmails)
-                {
-                    final int itemCount = editTexts.size();
-                    memCount = 0;
+                    if (goodEmails) {
+                        final int itemCount = editTexts.size();
+                        memCount = 0;
 
-                    for (final EditText editText : editTexts)
-                    {
-                        final String email = editText.getText().toString();
+                        for (final EditText editText : editTexts) {
+                            final String email = editText.getText().toString();
 
                             db.child("user").child("groups").child("find").orderByChild("_user_email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override public void onDataChange(DataSnapshot dataSnapshot)
-                                {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
                                     memCount++;
-                                    if (dataSnapshot.getValue() == null)
-                                    {
+                                    if (dataSnapshot.getValue() == null) {
                                         //generovat email
                                         System.out.println("" + "");
                                     }
 
-                                    for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
-                                    {
-                                        Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                        Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
                                         final String ID = value.get("_user_ID").toString();
 
                                         db.child("user").child("groups").child("members").child(groupID).child("members").orderByChild("_user_ID").equalTo(ID).addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override public void onDataChange(DataSnapshot dataSnapshot)
-                                            {
-                                                if (dataSnapshot.getValue() == null)
-                                                {
-                                                    AddMembers addMembers = new AddMembers();
-                                                    addMembers.set_group_ID(groupID);
-                                                    addMembers.set_sender_email(userEmail);
-                                                    addMembers.set_group_name(group_name);
-                                                    db.child("user").child("users").child(ID).child("messages").push().setValue(addMembers);
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                if (dataSnapshot.getValue() == null) {
+                                                    if (isEmailEnteredAlready.indexOf(email) != -1) {
+                                                        System.out.println("------->" + "Zhoda - email bol už zadaný");
+                                                    } else {
+                                                        isEmailEnteredAlready = isEmailEnteredAlready + email + " ,";
+                                                        AddMembers addMembers = new AddMembers();
+                                                        addMembers.set_group_ID(groupID);
+                                                        addMembers.set_sender_email(userEmail);
+                                                        addMembers.set_group_name(group_name);
+                                                        db.child("user").child("users").child(ID).child("messages").push().setValue(addMembers);
 
-                                                    NotificationMessage notif = new NotificationMessage();
-                                                    notif.set_message("9");
-                                                    notif.set_message2(group_name);
-                                                    notif.set_group_name(group_name);
-                                                    notif.set_work_ID("9");
-                                                    notif.set_date(getActualDate());
-                                                    notif.set_random(generateRandomNumber().toString());
-                                                    db.child("user").child("users").child(ID).child("notifications").push().setValue(notif);
+                                                        NotificationMessage notif = new NotificationMessage();
+                                                        notif.set_message("9");
+                                                        notif.set_message2(group_name);
+                                                        notif.set_group_name(group_name);
+                                                        notif.set_work_ID("9");
+                                                        notif.set_date(getActualDate());
+                                                        notif.set_random(generateRandomNumber().toString());
+                                                        db.child("user").child("users").child(ID).child("notifications").push().setValue(notif);
+                                                    }
                                                 }
                                             }
-                                            @Override public void onCancelled(DatabaseError databaseError) {}
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                            }
                                         });
                                     }
-                                    if ( memCount == itemCount)
-                                    {
-                                        if ( memCount == 1 && isContactLoaded != 1)
+                                    if (memCount == itemCount) {
+                                        if (memCount == 1 && isContactLoaded != 1)
                                             Toast.makeText(GroupInfoActivity.this, R.string.changes_saved, Toast.LENGTH_SHORT).show();
-                                        else
-                                        {
-                                            if ( isContactLoaded != 1)
+                                        else {
+                                            if (isContactLoaded != 1)
                                                 Toast.makeText(GroupInfoActivity.this, getString(R.string.changes_saved), Toast.LENGTH_SHORT).show();
                                         }
 
@@ -434,15 +458,18 @@ public class GroupInfoActivity extends AppCompatActivity
                                         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
                                     }
                                 }
-                                @Override public void onCancelled(DatabaseError databaseError) {}
-                            });
-                    }
-                }
-                else
-                    Toast.makeText(GroupInfoActivity.this, wrongEmail + getString(R.string.wrong_email), Toast.LENGTH_SHORT).show();
 
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
+                            });
+                        }
+                    } else
+                        Toast.makeText(GroupInfoActivity.this, wrongEmail + getString(R.string.wrong_email), Toast.LENGTH_SHORT).show();
+
+                }
             }
-        });
+            });
 
     }
 
@@ -527,48 +554,55 @@ public class GroupInfoActivity extends AppCompatActivity
                     String value = input.getText().toString();
                     actualGroupName = value;
 
-                    if (value.equals("")) {
-                        Toast.makeText(GroupInfoActivity.this, R.string.group_name_empty_toast, Toast.LENGTH_SHORT).show();
-                    }
-                    else if ( groupName.equals(value))
+                    if ( isOnline() == false)
                     {
-                        Toast.makeText(GroupInfoActivity.this, R.string.gropu_rename_toast, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), R.string.internet_connection, Toast.LENGTH_SHORT).show();
                     }
-                    else
-                    {
-                        db.child("user").child("groups").child("members").child(groupID).child("members").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override public void onDataChange(DataSnapshot dataSnapshot)
-                            {
-                                for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
-                                {
-                                    Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
-                                    final String renameGroupUserID = value.get("_user_ID").toString();
+                    else {
 
-                                    db.child("user").child("groups").child("user").child(renameGroupUserID).child("user").orderByChild("_group_ID").equalTo(groupID).addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override public void onDataChange(DataSnapshot dataSnapshot)
-                                        {
-                                            for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
-                                            {
-                                                String childKey = childSnapshot.getKey();
-                                                Map newGroupName = new HashMap();
-                                                newGroupName.put("_group_name", actualGroupName);
+                        if (value.equals("")) {
+                            Toast.makeText(GroupInfoActivity.this, R.string.group_name_empty_toast, Toast.LENGTH_SHORT).show();
+                        } else if (groupName.equals(value)) {
+                            Toast.makeText(GroupInfoActivity.this, R.string.gropu_rename_toast, Toast.LENGTH_SHORT).show();
+                        } else {
+                            db.child("user").child("groups").child("members").child(groupID).child("members").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                        Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                        final String renameGroupUserID = value.get("_user_ID").toString();
 
-                                                db.child("user").child("groups").child("user").child(renameGroupUserID).child("user").child(childKey).updateChildren(newGroupName);
+                                        db.child("user").child("groups").child("user").child(renameGroupUserID).child("user").orderByChild("_group_ID").equalTo(groupID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                                    String childKey = childSnapshot.getKey();
+                                                    Map newGroupName = new HashMap();
+                                                    newGroupName.put("_group_name", actualGroupName);
+
+                                                    db.child("user").child("groups").child("user").child(renameGroupUserID).child("user").child(childKey).updateChildren(newGroupName);
+                                                }
                                             }
-                                        }
-                                        @Override public void onCancelled(DatabaseError databaseError) {}
-                                    });
-                                }
-                            }
-                            @Override public void onCancelled(DatabaseError databaseError) {}
-                        });
-                        Toast.makeText(GroupInfoActivity.this, R.string.gropu_rename_toast, Toast.LENGTH_SHORT).show();
-                        SetNotification set = new SetNotification();
-                        set.Set(groupID, 7, groupName, "2", "");
 
-                        TextView groupNameText = (TextView) findViewById(R.id.textViewInfoGroupName);
-                        groupNameText.setText(actualGroupName);
-                        groupName = actualGroupName;
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
+                            });
+                            Toast.makeText(GroupInfoActivity.this, R.string.gropu_rename_toast, Toast.LENGTH_SHORT).show();
+                            SetNotification set = new SetNotification();
+                            set.Set(groupID, 7, groupName, "2", "");
+
+                            TextView groupNameText = (TextView) findViewById(R.id.textViewInfoGroupName);
+                            groupNameText.setText(actualGroupName);
+                            groupName = actualGroupName;
+                        }
                     }
                 }
             });
@@ -664,6 +698,21 @@ public class GroupInfoActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.to_do, menu);
         return true;
+    }
+
+    public boolean isOnline()
+    {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else
+        {
+            System.out.println("---------> " + "Nieje pripojenie na internet");
+            return false;
+        }
     }
 
 }

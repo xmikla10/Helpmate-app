@@ -1,9 +1,11 @@
 package com.flatmate.flatmate.Activity;
 
 import android.app.AlarmManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.DiscretePathEffect;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -871,169 +873,181 @@ public class AuctionActivity extends AppCompatActivity
 
                 if ( data == null)
                     return;
-                String[] split = data.getStringExtra(AuctionActivity.SELECTED_ADD_KEY).split("-");
-                bid = Arrays.toString(split).replace("[", "").replace("]", "");
 
-                db = FirebaseDatabase.getInstance().getReference();
-                helper = new FirebaseHelperAuction(db);
-                firebaseAuth = FirebaseAuth.getInstance();
-                userID = firebaseAuth.getCurrentUser().getUid().toString();
+                if ( isOnline() == false)
+                {
+                    Toast.makeText(getBaseContext(), R.string.internet_connection, Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    String[] split = data.getStringExtra(AuctionActivity.SELECTED_ADD_KEY).split("-");
+                    bid = Arrays.toString(split).replace("[", "").replace("]", "");
 
-                db.child("groups").child(groupID).child("graph").child("months").child("members").addChildEventListener(new ChildEventListener() {
-                    @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                        final String members = value.get("_membersCount").toString();
+                    db = FirebaseDatabase.getInstance().getReference();
+                    helper = new FirebaseHelperAuction(db);
+                    firebaseAuth = FirebaseAuth.getInstance();
+                    userID = firebaseAuth.getCurrentUser().getUid().toString();
 
-                    db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(bidsID).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override public void onDataChange(DataSnapshot dataSnapshot)
-                        {
-                            for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
-                            {
-                                childKeyFork = childSnapshot.getKey();
-                                Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
-                                bidsLastValue = value.get("_bidsLastValue").toString();
-                                bidsCount = value.get("_bidsCount").toString();
-                                bidsAddUser = value.get("_bidsAddUsers").toString();
-                                bidsLastUser = value.get("_bidsLastUser").toString();
-                                work_name = value.get("_work_name").toString();
-                            }
+                    db.child("groups").child(groupID).child("graph").child("months").child("members").addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                            Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                            final String members = value.get("_membersCount").toString();
 
-                            if(!bidsLastValue.equals("null") && !bid.equals("not interested"))
-                            {
-                                bidsLast = Integer.valueOf(bidsLastValue);
-                                bidsActual = Integer.valueOf(bid);
-                                bidsLastIsNull = false;
-                            }
-                            else
-                            {
-                                bidsLastIsNull = true;
-                            }
-
-
-                            if (bidsLast <= bidsActual && bidsLastIsNull == false)
-                            {
-                                Toast.makeText(getBaseContext(), R.string.lesser_bid, Toast.LENGTH_SHORT).show();
-                            }
-                            else
-                            {
-                                db.child("user").child("users").child(userID).child("data").addChildEventListener(new ChildEventListener() {
-                                    @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                        Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                                        userName = value.get("_name").toString();
-                                        groupID = value.get("_group").toString();
-                                        Map newWorkData = new HashMap();
-
-                                        if( bidsAddUser.equals("null"))
-                                        {
-                                            Integer bidsC = 0 ;
-                                            bidsC++;
-                                            bidsCount = String.valueOf(bidsC);
-                                            newWorkData.put("_bidsCount", bidsCount);
-                                            newWorkData.put("_bidsAddUsers", userID + ",");
-                                        }
-                                        else
-                                        {
-                                            if (bidsAddUser.indexOf(userID) != -1)
-                                            {
-                                                System.out.println("" + "");
-                                            }
-                                            else
-                                            {
-                                                Integer bidsC = Integer.valueOf(bidsCount);
-                                                bidsC++;
-                                                bidsCount = String.valueOf(bidsC);
-                                                newWorkData.put("_bidsCount", bidsCount);
-                                                newWorkData.put("_bidsAddUsers", bidsAddUser + userID + ",");
-                                            }
-                                        }
-
-                                        if(!bid.equals("not interested"))
-                                        {
-                                            bidsLastValue = bid;
-                                            newWorkData.put("_bidsLastValue", bidsLastValue);
-                                            newWorkData.put("_bidsLastUser", userEmail);
-                                            newWorkData.put("_bidsLastUserName", userName);
-
-                                            evaluation = true;
-                                        }
-
-                                        db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newWorkData);
-
-                                        NewBid newbid = new NewBid();
-
-                                        if(bid.equals(getString(R.string.not_interested)))
-                                        {
-                                            newbid.set_credits(bid);
-                                        }
-                                        else
-                                            newbid.set_credits(bid);
-
-                                        newbid.set_userName(userName);
-                                        helper.save(newbid, bidsID, groupID);
-
-                                        //vyhodnotenie
-                                        if ( Integer.valueOf(members) <= Integer.valueOf(bidsCount))
-                                        {
-                                            Map newEvaluationData = new HashMap();
-                                            Map newEvaluationData2 = new HashMap();
-                                            String notifEmail;
-
-                                            if ( evaluation == true)
-                                            {
-                                                newEvaluationData.put("_userEmail", userEmail);
-                                                notifEmail = userEmail;
-                                            }
-                                            else
-                                            {
-                                                newEvaluationData.put("_userEmail", bidsLastUser);
-                                                notifEmail = bidsLastUser;
-                                            }
-
-                                            if ( bidsLastUser.equals("null") && evaluation != true)
-                                            {
-                                                newEvaluationData2.put("_status", "4");
-                                                db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newEvaluationData2);
-                                                SetNotification set = new SetNotification();
-                                                set.Set(groupID, 8, work_name, bidsID, "");
-                                            }
-                                            else
-                                            {
-                                                newEvaluationData.put("_status", "2");
-                                                db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newEvaluationData);
-                                                SetNotification set1 = new SetNotification();
-                                                SetNotification set2 = new SetNotification();
-                                                set1.Set(groupID, 6, work_name, bidsID, notifEmail);
-                                                set2.Set(groupID, 4, work_name, bidsID, notifEmail);
-                                            }
-
-                                            //Intent intent = new Intent(AuctionActivity.this, MainActivity.class);
-                                            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            //startActivity(intent);
-                                            finish();
-                                            overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
-                                        }
-                                        else
-                                        {
-                                            finish();
-                                            startActivity(getIntent());
-                                        }
+                            db.child("groups").child(groupID).child("works").child("todo").orderByChild("_bidsID").equalTo(bidsID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                        childKeyFork = childSnapshot.getKey();
+                                        Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                        bidsLastValue = value.get("_bidsLastValue").toString();
+                                        bidsCount = value.get("_bidsCount").toString();
+                                        bidsAddUser = value.get("_bidsAddUsers").toString();
+                                        bidsLastUser = value.get("_bidsLastUser").toString();
+                                        work_name = value.get("_work_name").toString();
                                     }
-                                    @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                                    @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                                    @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                                    @Override public void onCancelled(DatabaseError databaseError) {}
-                                });
-                            }
-                        }
-                        @Override public void onCancelled(DatabaseError databaseError) {}
-                        });
 
-                    }
-                    @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                    @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                    @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                    @Override public void onCancelled(DatabaseError databaseError) {}
-                });
+                                    if (!bidsLastValue.equals("null") && !bid.equals("not interested")) {
+                                        bidsLast = Integer.valueOf(bidsLastValue);
+                                        bidsActual = Integer.valueOf(bid);
+                                        bidsLastIsNull = false;
+                                    } else {
+                                        bidsLastIsNull = true;
+                                    }
+
+
+                                    if (bidsLast <= bidsActual && bidsLastIsNull == false) {
+                                        Toast.makeText(getBaseContext(), R.string.lesser_bid, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        db.child("user").child("users").child(userID).child("data").addChildEventListener(new ChildEventListener() {
+                                            @Override
+                                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                                Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                                                userName = value.get("_name").toString();
+                                                groupID = value.get("_group").toString();
+                                                Map newWorkData = new HashMap();
+
+                                                if (bidsAddUser.equals("null")) {
+                                                    Integer bidsC = 0;
+                                                    bidsC++;
+                                                    bidsCount = String.valueOf(bidsC);
+                                                    newWorkData.put("_bidsCount", bidsCount);
+                                                    newWorkData.put("_bidsAddUsers", userID + ",");
+                                                } else {
+                                                    if (bidsAddUser.indexOf(userID) != -1) {
+                                                        System.out.println("" + "");
+                                                    } else {
+                                                        Integer bidsC = Integer.valueOf(bidsCount);
+                                                        bidsC++;
+                                                        bidsCount = String.valueOf(bidsC);
+                                                        newWorkData.put("_bidsCount", bidsCount);
+                                                        newWorkData.put("_bidsAddUsers", bidsAddUser + userID + ",");
+                                                    }
+                                                }
+
+                                                if (!bid.equals("not interested")) {
+                                                    bidsLastValue = bid;
+                                                    newWorkData.put("_bidsLastValue", bidsLastValue);
+                                                    newWorkData.put("_bidsLastUser", userEmail);
+                                                    newWorkData.put("_bidsLastUserName", userName);
+
+                                                    evaluation = true;
+                                                }
+
+                                                db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newWorkData);
+
+                                                NewBid newbid = new NewBid();
+
+                                                if (bid.equals(getString(R.string.not_interested))) {
+                                                    newbid.set_credits(bid);
+                                                } else
+                                                    newbid.set_credits(bid);
+
+                                                newbid.set_userName(userName);
+                                                helper.save(newbid, bidsID, groupID);
+
+                                                //vyhodnotenie
+                                                if (Integer.valueOf(members) <= Integer.valueOf(bidsCount)) {
+                                                    Map newEvaluationData = new HashMap();
+                                                    Map newEvaluationData2 = new HashMap();
+                                                    String notifEmail;
+
+                                                    if (evaluation == true) {
+                                                        newEvaluationData.put("_userEmail", userEmail);
+                                                        notifEmail = userEmail;
+                                                    } else {
+                                                        newEvaluationData.put("_userEmail", bidsLastUser);
+                                                        notifEmail = bidsLastUser;
+                                                    }
+
+                                                    if (bidsLastUser.equals("null") && evaluation != true) {
+                                                        newEvaluationData2.put("_status", "4");
+                                                        db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newEvaluationData2);
+                                                        SetNotification set = new SetNotification();
+                                                        set.Set(groupID, 8, work_name, bidsID, "");
+                                                    } else {
+                                                        newEvaluationData.put("_status", "2");
+                                                        db.child("groups").child(groupID).child("works").child("todo").child(childKeyFork).updateChildren(newEvaluationData);
+                                                        SetNotification set1 = new SetNotification();
+                                                        SetNotification set2 = new SetNotification();
+                                                        set1.Set(groupID, 6, work_name, bidsID, notifEmail);
+                                                        set2.Set(groupID, 4, work_name, bidsID, notifEmail);
+                                                    }
+
+                                                    //Intent intent = new Intent(AuctionActivity.this, MainActivity.class);
+                                                    //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                    //startActivity(intent);
+                                                    finish();
+                                                    overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+                                                } else {
+                                                    finish();
+                                                    startActivity(getIntent());
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                            }
+
+                                            @Override
+                                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                                            }
+
+                                            @Override
+                                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        }
+
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        }
+
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                }
                 break;
 
             default:
@@ -1066,5 +1080,20 @@ public class AuctionActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.to_do, menu);
         return true;
+    }
+
+    public boolean isOnline()
+    {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else
+        {
+            System.out.println("---------> " + "Nieje pripojenie na internet");
+            return false;
+        }
     }
 }

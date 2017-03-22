@@ -3,11 +3,13 @@ package com.flatmate.flatmate.Activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.CharArrayBuffer;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
@@ -173,66 +175,61 @@ public class CreateNewGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                progressDialogCreating.setMessage(getString(R.string.progress_creating_group));
-                progressDialogCreating.setCancelable(false);
-                progressDialogCreating.show();
-                isEmailEnteredAlready = "";
-
-                int size = memberEmail.size();
-                String wrongEmail = "";
-                cnt = 0 ;
-                db = FirebaseDatabase.getInstance().getReference();
-                Boolean goodEmails = true;
-
-                firebaseAuth = FirebaseAuth.getInstance();
-                userEmail = firebaseAuth.getCurrentUser().getEmail().toString();
-                EditText groupName = (EditText) findViewById(R.id.editTextGroupName);
-                group_name = groupName.getText().toString();
-                group_ID = UUID.randomUUID().toString();
-
-                for (EditText editText : editTexts)
+                if ( isOnline() == false)
                 {
-                    if (!editText.getText().toString().equals(""))
-                    {
-                        if (!isValidEmail(editText.getText()))
-                        {
-                            wrongEmail = editText.getText().toString();
-                            goodEmails = false;
-                            break;
+                    Toast.makeText(getBaseContext(), R.string.internet_connection, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    progressDialogCreating.setMessage(getString(R.string.progress_creating_group));
+                    progressDialogCreating.setCancelable(false);
+                    progressDialogCreating.show();
+                    isEmailEnteredAlready = "";
+
+                    int size = memberEmail.size();
+                    String wrongEmail = "";
+                    cnt = 0;
+                    db = FirebaseDatabase.getInstance().getReference();
+                    Boolean goodEmails = true;
+
+                    firebaseAuth = FirebaseAuth.getInstance();
+                    userEmail = firebaseAuth.getCurrentUser().getEmail().toString();
+                    EditText groupName = (EditText) findViewById(R.id.editTextGroupName);
+                    group_name = groupName.getText().toString();
+                    group_ID = UUID.randomUUID().toString();
+
+                    for (EditText editText : editTexts) {
+                        if (!editText.getText().toString().equals("")) {
+                            if (!isValidEmail(editText.getText())) {
+                                wrongEmail = editText.getText().toString();
+                                goodEmails = false;
+                                break;
+                            }
                         }
                     }
-                }
 
-                if ( goodEmails)
-                {
-                    final int itemCount = editTexts.size();
-                    memCount = 0;
+                    if (goodEmails) {
+                        final int itemCount = editTexts.size();
+                        memCount = 0;
 
-                    for (EditText editText : editTexts)
-                    {
-                        final String email = editText.getText().toString();
+                        for (EditText editText : editTexts) {
+                            final String email = editText.getText().toString();
 
                             db.child("user").child("groups").child("find").orderByChild("_user_email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override public void onDataChange(DataSnapshot dataSnapshot)
-                                {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
                                     memCount++;
-                                    if (dataSnapshot.getValue() == null)
-                                    {
+                                    if (dataSnapshot.getValue() == null) {
                                         //generovat email
                                         System.out.println("" + "");
                                     }
 
-                                    for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
-                                    {
-                                        Map<String,Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                        Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
                                         String ID = value.get("_user_ID").toString();
 
-                                        if (isEmailEnteredAlready.indexOf(email) != -1 || userEmail.equals(email))
-                                        {
+                                        if (isEmailEnteredAlready.indexOf(email) != -1 || userEmail.equals(email)) {
                                             System.out.println("------->" + "Zhoda - email bol už zadaný");
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             isEmailEnteredAlready = isEmailEnteredAlready + email + " ,";
                                             AddMembers addMembers = new AddMembers();
                                             addMembers.set_group_ID(group_ID);
@@ -250,21 +247,21 @@ public class CreateNewGroupActivity extends AppCompatActivity {
                                             db.child("user").child("users").child(ID).child("notifications").push().setValue(notif);
                                         }
                                     }
-                                    if ( memCount == itemCount)
-                                    {
+                                    if (memCount == itemCount) {
                                         createGroup();
                                     }
                                 }
-                                @Override public void onCancelled(DatabaseError databaseError) {}
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
                             });
+                        }
+                    } else {
+                        progressDialogCreating.dismiss();
+                        Toast.makeText(CreateNewGroupActivity.this, wrongEmail + getString(R.string.wrong_email), Toast.LENGTH_SHORT).show();
                     }
                 }
-                else
-                {
-                    progressDialogCreating.dismiss();
-                    Toast.makeText(CreateNewGroupActivity.this, wrongEmail +getString(R.string.wrong_email), Toast.LENGTH_SHORT).show();
-                }
-
             }
         });
 
@@ -569,4 +566,18 @@ public class CreateNewGroupActivity extends AppCompatActivity {
         return true;
     }
 
+    public boolean isOnline()
+    {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else
+        {
+            System.out.println("---------> " + "Nieje pripojenie na internet");
+            return false;
+        }
+    }
 }

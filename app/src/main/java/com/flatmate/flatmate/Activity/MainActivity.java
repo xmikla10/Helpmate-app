@@ -5,9 +5,11 @@ import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.media.RingtoneManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -679,23 +681,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     }
                 }
             }
-            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s)
-            {
-                if ( isActivityActual == true)
-                {
-                    Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                    userName = value.get("_name").toString();
-                    userEmail = value.get("_email").toString();
-                    userGroupID = value.get("_group").toString();
-                    userGroupIDChildKey = dataSnapshot.getKey();
-
-                    if (userName != null && userEmail != null){
-                        userNameView.setText(userName);
-                        userEmailView.setText(userEmail);
-                    }
-                }
-
-            }
+            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
             @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
             @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override public void onCancelled(DatabaseError databaseError) {}
@@ -795,11 +781,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         int id = item.getItemId();
         if (id == R.id.nav_settings)
         {
-            Intent intent6 = new Intent(this, AppPreferences.class);
-            intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-            startActivity(intent6);
-            isActivityActual = false;
+            startActivityForResult(new Intent(MainActivity.this, AppPreferences.class), AppPreferences.SETTINGS_FINISHED);
         }
 
         return super.onOptionsItemSelected(item);
@@ -838,8 +820,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 }
                 else if (id == R.id.nav_settings)
                 {
-                    Intent intent = new Intent(MainActivity.this, AppPreferences.class);
-                    startActivity(intent);
+                    //Intent intent = new Intent(MainActivity.this, AppPreferences.class);
+                    //startActivity(intent);
+                    startActivityForResult(new Intent(MainActivity.this, AppPreferences.class), AppPreferences.SETTINGS_FINISHED);
+
                 }
                 else if (id == R.id.nav_my_group)
                 {
@@ -1020,34 +1004,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         difference = getDateDiff(date1,date2,TimeUnit.MINUTES);
 
-        System.out.println("---------> " + date1);
-        System.out.println("---------> " + date2);
-        System.out.println("---------> " + difference);
-
-
         if ( difference < 2880)
         {
             tmp = (difference / 100) * 20;
-            System.out.println("---------> " + tmp);
-
         }
         else
         {
             tmp = (difference / 100) * 50;
-            System.out.println("---------> " + tmp);
-
         }
 
-        System.out.println("---------> " + difference);
-
         cal2.add(Calendar.MINUTE, (int) tmp);
-        System.out.println("---------> " + cal2.getTime().toString());
-
 
         simpleDateFormat.setTimeZone(cal2.getTimeZone());
 
         deadlineR = simpleDateFormat.format(cal2.getTime()).toString();
-
 
     }
 
@@ -1062,44 +1032,48 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     return;
                 }
 
-                String[] split = data.getStringExtra(AddNewWorkActivity.SELECTED_ADD_KEY).split("-");
-                String str = Arrays.toString(split).replace("[", "").replace("]", "");
-                dataresultTostrings(str);
-
-                uniqueID = UUID.randomUUID().toString();
-                db = FirebaseDatabase.getInstance().getReference();
-                helper = new FirebaseHelperWork(db);
-                NewWork newWork = new NewWork();
-                newWork.set_work_name(nameR);
-                newWork.set_duration(durationR + " min");
-
-                if ( !deadlineR.equals("null"))
+                if ( isOnline() == false)
                 {
-                    setAuctionDeadline();
+                    Toast.makeText(getBaseContext(), R.string.internet_connection, Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
-                    setUnspecifiedDeadline();
+
+                    String[] split = data.getStringExtra(AddNewWorkActivity.SELECTED_ADD_KEY).split("-");
+                    String str = Arrays.toString(split).replace("[", "").replace("]", "");
+                    dataresultTostrings(str);
+
+                    uniqueID = UUID.randomUUID().toString();
+                    db = FirebaseDatabase.getInstance().getReference();
+                    helper = new FirebaseHelperWork(db);
+                    NewWork newWork = new NewWork();
+                    newWork.set_work_name(nameR);
+                    newWork.set_duration(durationR + " min");
+
+                    if (!deadlineR.equals("null")) {
+                        setAuctionDeadline();
+                    } else {
+                        setUnspecifiedDeadline();
+                    }
+
+                    newWork.set_deadline(deadlineR);
+                    newWork.set_date(dateR);
+                    newWork.set_time(timeR);
+                    newWork.set_status("1");
+                    newWork.set_bidsID(uniqueID);
+                    newWork.set_bidsID(uniqueID);
+                    newWork.set_userEmail("null");
+
+                    newWork.set_bidsLastValue("null");
+                    newWork.set_bidsAddUsers("null");
+                    newWork.set_bidsLastUser("null");
+                    newWork.set_bidsLastUserName("null");
+                    newWork.set_bidsCount("0");
+                    newWork.set_workProgress("0");
+
+                    helper.save(newWork);
+                    CustomAdapterToDo adapter = new CustomAdapterToDo(this, helper.retrieve());
                 }
-
-                newWork.set_deadline(deadlineR);
-                newWork.set_date(dateR);
-                newWork.set_time(timeR);
-                newWork.set_status("1");
-                newWork.set_bidsID(uniqueID);
-                newWork.set_bidsID(uniqueID);
-                newWork.set_userEmail("null");
-
-                newWork.set_bidsLastValue("null");
-                newWork.set_bidsAddUsers("null");
-                newWork.set_bidsLastUser("null");
-                newWork.set_bidsLastUserName("null");
-                newWork.set_bidsCount("0");
-                newWork.set_workProgress("0");
-
-                helper.save(newWork);
-                CustomAdapterToDo adapter = new CustomAdapterToDo(this, helper.retrieve());
-
                 break;
 
             case MyGroupsActivity.GROUP_FINISHED:
@@ -1121,6 +1095,35 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     startActivity(intent);
                 }
                 break;
+
+            case AppPreferences.SETTINGS_FINISHED:
+                if ( data == null)
+                {
+                    return;
+                }
+                String control = data.getStringExtra("control");
+
+                if ( control.equals("1"))
+                {
+                    String renameUser = data.getStringExtra("rename");
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    isActivityActual = false;
+                    finish();
+                    startActivity(intent);
+                }
+
+                if ( control.equals("2"))
+                {
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    isActivityActual = false;
+                    finish();
+                    startActivity(intent);
+                }
+
+                break;
+
 
             default:
                 Log.d(TAG, "onActivityResult: uknown request code " + requestCode);
@@ -1191,5 +1194,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         }
 
+    }
+
+    public boolean isOnline()
+    {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else
+        {
+            System.out.println("---------> " + "Nieje pripojenie na internet");
+            return false;
+        }
     }
 }

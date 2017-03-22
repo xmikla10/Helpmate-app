@@ -27,6 +27,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.flatmate.flatmate.Activity.MainActivity;
+import com.flatmate.flatmate.Activity.MyGroupsActivity;
 import com.flatmate.flatmate.Firebase.FirebaseHelperWork;
 import com.flatmate.flatmate.Firebase.GraphUser;
 import com.flatmate.flatmate.Firebase.NewGroup;
@@ -48,6 +49,8 @@ import java.util.Map;
 public class AppPreferences extends PreferenceActivity
 {
     public static final String MY_PREFS_NAME = "MyPrefsFile";
+    public static final int SETTINGS_FINISHED = 111;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -187,7 +190,14 @@ public class AppPreferences extends PreferenceActivity
 
                     //Intent refresh = new Intent(getContext(), MainActivity.class);
                     //startActivity(refresh);
+
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.putExtra("rename", newName);
+                    intent.putExtra("control", "1");
+                    getActivity().setResult(SETTINGS_FINISHED, intent);
                     getActivity().finish();
+
                     Toast.makeText(getActivity(), newName , Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -206,8 +216,11 @@ public class AppPreferences extends PreferenceActivity
             Configuration conf = res.getConfiguration();
             conf.locale = myLocale;
             res.updateConfiguration(conf, dm);
-            //Intent refresh = new Intent(getContext(), MainActivity.class);
-            //startActivity(refresh);
+
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra("control", "2");
+            getActivity().setResult(SETTINGS_FINISHED, intent);
             getActivity().finish();
         }
     }

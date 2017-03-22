@@ -103,7 +103,11 @@ public class MyGroupsActivity extends AppCompatActivity {
                         adapter = new CustomAdapterMyGroups(MyGroupsActivity.this, helper.retrieve(),groupID);
                         lv.setAdapter(adapter);
                     }
-                    @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                    @Override public void onChildRemoved(DataSnapshot dataSnapshot)
+                    {
+                        adapter = new CustomAdapterMyGroups(MyGroupsActivity.this, helper.retrieve(),groupID);
+                        lv.setAdapter(adapter);
+                    }
                     @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                     @Override public void onCancelled(DatabaseError databaseError) {}
                 });
@@ -124,12 +128,20 @@ public class MyGroupsActivity extends AppCompatActivity {
                         adapter = new CustomAdapterMyGroups(MyGroupsActivity.this, helper.retrieve(),groupID);
                         lv.setAdapter(adapter);
                     }
-                    @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                    @Override public void onChildRemoved(DataSnapshot dataSnapshot)
+                    {
+                        adapter = new CustomAdapterMyGroups(MyGroupsActivity.this, helper.retrieve(),groupID);
+                        lv.setAdapter(adapter);
+                    }
                     @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                     @Override public void onCancelled(DatabaseError databaseError) {}
                 });
             }
-            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override public void onChildRemoved(DataSnapshot dataSnapshot)
+            {
+                adapter = new CustomAdapterMyGroups(MyGroupsActivity.this, helper.retrieve(),groupID);
+                lv.setAdapter(adapter);
+            }
             @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
