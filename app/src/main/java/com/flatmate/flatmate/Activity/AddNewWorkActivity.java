@@ -195,9 +195,17 @@ public class AddNewWorkActivity extends AppCompatActivity {
         String date = str2;
         String time = str1;
 
-        if ( str2 == null || str1 == null)
+        if ( str2 == null && str1 == null)
         {
             Toast.makeText( getBaseContext(), R.string.enter_time_date ,Toast.LENGTH_SHORT).show();
+        }
+        else if ( str2 == null && str1 != null)
+        {
+            Toast.makeText( getBaseContext(), R.string.please_date ,Toast.LENGTH_SHORT).show();
+        }
+        else if ( str2 != null && str1 == null)
+        {
+            Toast.makeText( getBaseContext(), R.string.please_time ,Toast.LENGTH_SHORT).show();
         }
         else
         {

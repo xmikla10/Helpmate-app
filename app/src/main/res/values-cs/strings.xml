@@ -133,7 +133,7 @@
     <string name="here_type_name_of_group">Zde zadejte meno skupiny</string>
     <string name="add_members">Přidat Členy</string>
     <string name="name_email_com">jmeno@email.sk</string>
-    <string name="add_member">Přidat člena</string>
+    <string name="add_member">\u0020Přidat člena</string>
     <string name="name_of_work">Jméno práce</string>
     <string name="here_type_name_of_work">Zde zadejte jméno práce</string>
     <string name="duration_of_work">Délka práce</string>
@@ -157,7 +157,7 @@
     <string name="language">Jazyk</string>
     <string name="languages">Jazyky</string>
     <string name="the_group">Skupina </string>
-    <string name="was_renamed"> byla přejmenována</string>
+    <string name="was_renamed">\u0020byla přejmenována</string>
     <string name="rename">Přejmenovat</string>
     <string name="the_user">Uživatel</string>
     <string name="toast_add_new_work_deadline_wrong">Délka aukce nesmí přesáhnout uzáveřku. Rozdíl mezi Uzávěrkou a Koncem Aukce musí být nejméne 1 hodina.</string>
@@ -166,6 +166,6 @@
     <string name="invite_new_user">Vás přidal do nové skupiny</string>
     <string name="invited_new_group">Byli jste přidáni do nové skupiny -\u0020</string>
     <string name="dialog_cancel_work">Jste si jistý, že chcete zrušit tuto práci ?</string>
-    <string name="enter_time_date">Prosím, zadejte čas nebo datum</string>
+    <string name="enter_time_date">Prosím, zadejte čas a datum</string>
     <string name="internet_connection">Prosím, skontrolujte vaše internetové připojení</string>
 </resources>

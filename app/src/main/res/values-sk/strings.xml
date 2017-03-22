@@ -133,7 +133,7 @@
     <string name="here_type_name_of_group">Tu zadajte meno skupiny</string>
     <string name="add_members">Pridať Členov</string>
     <string name="name_email_com">meno@email.sk</string>
-    <string name="add_member">Pridať člena</string>
+    <string name="add_member">\u0020Pridať člena</string>
     <string name="name_of_work">Meno práce</string>
     <string name="here_type_name_of_work">Tu zadajte meno práce</string>
     <string name="duration_of_work">Dĺžka práce</string>
@@ -157,15 +157,15 @@
     <string name="language">Jazyk</string>
     <string name="languages">Jazyky</string>
     <string name="the_group">Skupina </string>
-    <string name="was_renamed"> bola premenovaná</string>
+    <string name="was_renamed">\u0020bola premenovaná</string>
     <string name="rename">Premenovať</string>
     <string name="user_name">meno</string>
     <string name="new_name">Nové meno:\u0020</string>
     <string name="the_user">Užívateľ\u0020</string>
-    <string name="invite_new_user">Vás pridal do novej skupiny</string>
+    <string name="invite_new_user">\u0020Vás pridal do novej skupiny</string>
     <string name="invited_new_group">Boli ste pridaný do skupiny -\u0020</string>
     <string name="toast_add_new_work_deadline_wrong">Dĺžka aukcie nesmie presahovať uzávierku. Rozdiel medzi Uzávierkou a Koncom Aukcie musí byť minimálne 1 hodina</string>
     <string name="dialog_cancel_work">Ste si istý, že chcete zrušiť túto prácu ?</string>
-    <string name="enter_time_date">Prosím, zadajte čas alebo dátum</string>
+    <string name="enter_time_date">Prosím, zadajte čas a dátum</string>
     <string name="internet_connection">Prosím, skontrolujte vaše internetové pripojenie</string>
 </resources>

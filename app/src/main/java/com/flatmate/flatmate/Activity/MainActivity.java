@@ -546,9 +546,26 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     userGroupID = value.get("_group").toString();
                     userGroupIDChildKey = dataSnapshot.getKey();
 
-                    if (userName != null && userEmail != null) {
+                    if (userName != null && userEmail != null)
+                    {
                         userNameView.setText(userName);
                         userEmailView.setText(userEmail);
+
+                        db.child("user").child("groups").child("user").child(userID).child("user").orderByChild("_group_ID").equalTo(userGroupID).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot)
+                            {
+                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                    Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                    String groupName = value.get("_group_name").toString();
+                                    final TextView group = (TextView) findViewById(R.id.menuUserGroupView);
+                                    group.setText(groupName);
+
+                                }
+                            }
+                            @Override public void onCancelled(DatabaseError databaseError) {}
+                        });
+
                         db.child("user").child("users").child(userID).child("messages").addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {

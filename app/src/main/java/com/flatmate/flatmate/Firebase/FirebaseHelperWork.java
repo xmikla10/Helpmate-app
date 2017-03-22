@@ -83,7 +83,7 @@ public class FirebaseHelperWork
                 db.child("groups").child(groupID).child("works").addChildEventListener(new ChildEventListener() {
                     @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {fetchData(dataSnapshot);}
                     @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {fetchData(dataSnapshot);}
-                    @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                    @Override public void onChildRemoved(DataSnapshot dataSnapshot) {fetchData(dataSnapshot);}
                     @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                     @Override public void onCancelled(DatabaseError databaseError) {}
                 });
@@ -95,12 +95,12 @@ public class FirebaseHelperWork
                 db.child("groups").child(groupID).child("works").addChildEventListener(new ChildEventListener() {
                     @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {fetchData(dataSnapshot);}
                     @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {fetchData(dataSnapshot);}
-                    @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                    @Override public void onChildRemoved(DataSnapshot dataSnapshot) {fetchData(dataSnapshot);}
                     @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                     @Override public void onCancelled(DatabaseError databaseError) {}
                 });
             }
-            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {fetchData(dataSnapshot);}
             @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override public void onCancelled(DatabaseError databaseError) {}
         });

@@ -133,7 +133,7 @@
     <string name="here_type_name_of_group">Here type name of group</string>
     <string name="add_members">Add members :</string>
     <string name="name_email_com">name@email.com</string>
-    <string name="add_member">Add member</string>
+    <string name="add_member">\u0020Add member</string>
     <string name="name_of_work">Name of work</string>
     <string name="here_type_name_of_work">Here type name of work</string>
     <string name="duration_of_work">Duration of work</string>
@@ -162,9 +162,9 @@
     <string name="rename">Rename</string>
     <string name="new_name">New name :\u0020</string>
     <string name="the_user">The user\u0020</string>
-    <string name="invite_new_user">invite you to new group</string>
+    <string name="invite_new_user">\u0020invite you to new group</string>
     <string name="invited_new_group">You was invited to new group -\u0020</string>
     <string name="toast_add_new_work_deadline_wrong">Duration of auction can\'t outreach Deadline. The difference between Deadline and The End of Auction must be minimal 1 hour.</string>
-    <string name="enter_time_date">Please, enter time or date</string>
+    <string name="enter_time_date">Please, enter time and date</string>
     <string name="internet_connection">Please, control your internet connection</string>
 </resources>

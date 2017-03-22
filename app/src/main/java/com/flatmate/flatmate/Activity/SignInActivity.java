@@ -153,6 +153,12 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             }
         };
 
+        try
+        {
+            LoginManager.getInstance().logOut();
+        }
+        catch (Exception e) {}
+
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_facebook_button);
         loginButton.setReadPermissions("email", "public_profile");
@@ -284,12 +290,8 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     @Override
-    public void onClick(View view) {
-        if ( isOnline() == false)
-        {
-            Toast.makeText(getBaseContext(), R.string.internet_connection, Toast.LENGTH_SHORT).show();
-        }
-        else {
+    public void onClick(View view)
+    {
 
             if (view == buttonSignup) {
                 registerUser();
@@ -306,7 +308,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 signOut();
                 signIn();
             }
-        }
 
     }
 
@@ -345,6 +346,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             if (result.isSuccess())
             {
                 // Google Sign In was successful, authenticate with Firebase
+                System.out.println("--------> " + "som v google sign in");
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             }

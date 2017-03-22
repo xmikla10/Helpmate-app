@@ -197,6 +197,7 @@ public class AppPreferences extends PreferenceActivity
                     intent.putExtra("control", "1");
                     getActivity().setResult(SETTINGS_FINISHED, intent);
                     getActivity().finish();
+                    getActivity().overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
 
                     Toast.makeText(getActivity(), newName , Toast.LENGTH_SHORT).show();
                     return true;

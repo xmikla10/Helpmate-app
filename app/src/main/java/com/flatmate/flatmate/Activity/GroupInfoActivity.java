@@ -269,12 +269,15 @@ public class GroupInfoActivity extends AppCompatActivity
                                                                                 if (memCount == 0) {
                                                                                     db.child("groups").child(groupID).setValue(null);
                                                                                     db.child("user").child("groups").child("members").child(groupID).setValue(null);
+                                                                                    finish();
+                                                                                    overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+
                                                                                 }
 
-                                                                                finish();
+                                                                                //finish();
                                                                                 //Intent intent = new Intent(GroupInfoActivity.this, MyGroupsActivity.class);
                                                                                 //startActivity(intent);
-                                                                                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+                                                                                //overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                                                                             }
                                                                         }
 

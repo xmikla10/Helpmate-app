@@ -16,7 +16,7 @@
         android:paddingLeft="0.1in"
         android:textSize="13dp"
         android:gravity="center|left"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorWhite"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         />
 

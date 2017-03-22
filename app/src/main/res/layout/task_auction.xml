@@ -17,10 +17,10 @@
         <FrameLayout
             android:weightSum="1"
             android:layout_marginBottom="2dp"
-            android:layout_marginRight="2dp"
+            android:layout_marginTop="2dp"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:background="#ffffff"
+            android:background="#363636"
             android:layout_height="match_parent"
             android:focusable="false"
             android:elevation="4dp">
@@ -33,13 +33,13 @@
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="3dp" />
-                <include layout="@layout/task_line"/>
+
                 <include layout="@layout/task_todo1a"/>
                 <include layout="@layout/task_todo2a"/>
                 <include layout="@layout/task_line"/>
                 <include layout="@layout/task_auction1"/>
                 <include layout="@layout/task_auction2"/>
-                <include layout="@layout/task_line"/>
+
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="3dp" />

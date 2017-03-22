@@ -174,7 +174,14 @@ public class Tab_TODO extends Fragment
                         adapter = new CustomAdapterToDo(getContext(), helper.retrieve());
                         lv.setAdapter(adapter);
                     }
-                    @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                    @Override public void onChildRemoved(DataSnapshot dataSnapshot)
+                    {
+                        LinearLayout lay = (LinearLayout) rootView.findViewById(R.id.addNewWorkText);
+                        lay.setVisibility(View.GONE);
+                        mProgress.setVisibility(View.GONE);
+                        adapter = new CustomAdapterToDo(getContext(), helper.retrieve());
+                        lv.setAdapter(adapter);
+                    }
                     @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                     @Override public void onCancelled(DatabaseError databaseError) {}
                 });

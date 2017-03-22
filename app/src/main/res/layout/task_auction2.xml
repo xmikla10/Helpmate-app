@@ -17,7 +17,7 @@
         android:textSize="13dp"
         android:gravity="center|left"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorWhite"
         />
 
     <TextView
