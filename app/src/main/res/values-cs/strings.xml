@@ -167,4 +167,5 @@
     <string name="invited_new_group">Byli jste přidáni do nové skupiny -\u0020</string>
     <string name="dialog_cancel_work">Jste si jistý, že chcete zrušit tuto práci ?</string>
     <string name="enter_time_date">Prosím, zadejte čas nebo datum</string>
+    <string name="internet_connection">Prosím, skontrolujte vaše internetové připojení</string>
 </resources>

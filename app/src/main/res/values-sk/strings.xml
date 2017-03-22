@@ -167,4 +167,5 @@
     <string name="toast_add_new_work_deadline_wrong">Dĺžka aukcie nesmie presahovať uzávierku. Rozdiel medzi Uzávierkou a Koncom Aukcie musí byť minimálne 1 hodina</string>
     <string name="dialog_cancel_work">Ste si istý, že chcete zrušiť túto prácu ?</string>
     <string name="enter_time_date">Prosím, zadajte čas alebo dátum</string>
+    <string name="internet_connection">Prosím, skontrolujte vaše internetové pripojenie</string>
 </resources>

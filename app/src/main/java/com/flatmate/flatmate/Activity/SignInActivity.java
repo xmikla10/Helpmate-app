@@ -1,10 +1,12 @@
 package com.flatmate.flatmate.Activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -158,23 +160,27 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             @Override
             public void onSuccess(final LoginResult loginResult)
             {
+                if ( isOnline() == false)
+                {
+                    Toast.makeText(getBaseContext(), R.string.internet_connection, Toast.LENGTH_SHORT).show();
+                }
+                else {
 
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback()
-                        {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse response)
-                            {
-                                Log.v("Main", response.toString());
-                                setProfileToView(object);
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,gender, birthday");
-                request.setParameters(parameters);
-                request.executeAsync();
-                handleFacebookAccessToken(loginResult.getAccessToken());
+                    GraphRequest request = GraphRequest.newMeRequest(
+                            loginResult.getAccessToken(),
+                            new GraphRequest.GraphJSONObjectCallback() {
+                                @Override
+                                public void onCompleted(JSONObject object, GraphResponse response) {
+                                    Log.v("Main", response.toString());
+                                    setProfileToView(object);
+                                }
+                            });
+                    Bundle parameters = new Bundle();
+                    parameters.putString("fields", "id,name,email,gender, birthday");
+                    request.setParameters(parameters);
+                    request.executeAsync();
+                    handleFacebookAccessToken(loginResult.getAccessToken());
+                }
 
             }
 
@@ -279,22 +285,27 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
     @Override
     public void onClick(View view) {
-
-        if(view == buttonSignup){
-            registerUser();
-        }
-
-        if(view == buttonLogin){
-            //open login activity when user taps on the already registered textview
-            Intent intent =new Intent(this, LogInActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
-        }
-
-        if ( view == googleBut)
+        if ( isOnline() == false)
         {
-            signOut();
-            signIn();
+            Toast.makeText(getBaseContext(), R.string.internet_connection, Toast.LENGTH_SHORT).show();
+        }
+        else {
+
+            if (view == buttonSignup) {
+                registerUser();
+            }
+
+            if (view == buttonLogin) {
+                //open login activity when user taps on the already registered textview
+                Intent intent = new Intent(this, LogInActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
+            }
+
+            if (view == googleBut) {
+                signOut();
+                signIn();
+            }
         }
 
     }
@@ -470,6 +481,21 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     {
         // Google sign out
         Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+    }
+
+    public boolean isOnline()
+    {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else
+        {
+            System.out.println("---------> " + "Nieje pripojenie na internet");
+            return false;
+        }
     }
 
 }

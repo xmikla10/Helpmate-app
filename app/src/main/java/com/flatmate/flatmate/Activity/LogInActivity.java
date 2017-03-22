@@ -1,7 +1,9 @@
 package com.flatmate.flatmate.Activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -110,16 +112,39 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        if(view == buttonSignIn){
-            userLogin();
+
+        if ( isOnline() == false)
+        {
+            Toast.makeText(getBaseContext(), R.string.internet_connection, Toast.LENGTH_SHORT).show();
         }
+        else
+        {
+            if (view == buttonSignIn) {
+                userLogin();
+            }
 
-        if(view == buttonRegistration){
-            finish();
+            if (view == buttonRegistration) {
+                finish();
 
-            Intent intent = new Intent(this, SignInActivity.class);
-            startActivity( intent);
-            overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
+                Intent intent = new Intent(this, SignInActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
+            }
+        }
+    }
+
+    public boolean isOnline()
+    {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else
+        {
+            System.out.println("---------> " + "Nieje pripojenie na internet");
+            return false;
         }
     }
 }
