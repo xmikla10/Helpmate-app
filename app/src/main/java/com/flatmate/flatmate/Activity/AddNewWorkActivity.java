@@ -364,6 +364,32 @@ public class AddNewWorkActivity extends AppCompatActivity {
                 Toast.makeText(this, str2 , Toast.LENGTH_SHORT).show();
                 break;
 
+            case AppPreferences.SETTINGS_FINISHED:
+                if ( data == null)
+                {
+                    return;
+                }
+                String control = data.getStringExtra("control");
+
+                if ( control.equals("1"))
+                {
+                    String renameUser = data.getStringExtra("rename");
+                    Intent intent = new Intent(AddNewWorkActivity.this, AddNewWorkActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    finish();
+                    startActivity(intent);
+                }
+
+                if ( control.equals("2"))
+                {
+                    Intent intent = new Intent(AddNewWorkActivity.this, AddNewWorkActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    finish();
+                    startActivity(intent);
+                }
+
+                break;
+
             default:
                 Log.d(TAG, "onActivityResult: uknown request code " + requestCode);
         }
@@ -380,11 +406,7 @@ public class AddNewWorkActivity extends AppCompatActivity {
 
         if (id == R.id.nav_settings)
         {
-            Intent intent6 = new Intent(this, AppPreferences.class);
-            intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-            startActivity(intent6);
-            overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+            startActivityForResult(new Intent(AddNewWorkActivity.this, AppPreferences.class), AppPreferences.SETTINGS_FINISHED);
         }
 
         return super.onOptionsItemSelected(item);

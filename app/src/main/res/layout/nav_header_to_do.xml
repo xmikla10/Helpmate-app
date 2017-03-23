@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:weightSum="10"
+        android:weightSum="10.5"
         android:orientation="vertical">
 
         <TextView
@@ -47,7 +47,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="2.5"
             android:text="Name"
             android:gravity="center"
             android:layout_gravity="left"
@@ -61,8 +61,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="1.5"
-            android:text="Group"
+            android:layout_weight="2"
+            android:text="Email"
             android:gravity="center"
             android:layout_gravity="left"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -75,8 +75,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="1.5"
-            android:text="Email"
+            android:layout_weight="2"
+            android:text=""
             android:gravity="center"
             android:layout_gravity="left"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"

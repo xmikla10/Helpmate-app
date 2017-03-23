@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,11 +25,13 @@ import android.widget.Toast;
 import com.flatmate.flatmate.Firebase.FirebaseHelperAuction;
 import com.flatmate.flatmate.Firebase.FirebaseHelperMyGroups;
 import com.flatmate.flatmate.Firebase.FirebaseHelperMyWorks;
+import com.flatmate.flatmate.Firebase.FirebaseHelperWork;
 import com.flatmate.flatmate.Firebase.NewGroup;
 import com.flatmate.flatmate.Firebase.NewWork;
 import com.flatmate.flatmate.Other.AppPreferences;
 import com.flatmate.flatmate.Other.CustomAdapterMyGroups;
 import com.flatmate.flatmate.Other.CustomAdapterMyWorks;
+import com.flatmate.flatmate.Other.CustomAdapterToDo;
 import com.flatmate.flatmate.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -40,8 +43,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by xmikla10 on 29.10.2016.
@@ -240,10 +245,7 @@ public class MyGroupsActivity extends AppCompatActivity {
 
         if (id == R.id.nav_settings)
         {
-            Intent intent6 = new Intent(this, AppPreferences.class);
-            intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent6);
-            overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+            startActivityForResult(new Intent(MyGroupsActivity.this, AppPreferences.class), AppPreferences.SETTINGS_FINISHED);
         }
 
         return super.onOptionsItemSelected(item);
@@ -256,4 +258,37 @@ public class MyGroupsActivity extends AppCompatActivity {
         return true;
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+
+            case AppPreferences.SETTINGS_FINISHED:
+                if (data == null) {
+                    return;
+                }
+                String control = data.getStringExtra("control");
+
+                if (control.equals("1")) {
+                    String renameUser = data.getStringExtra("rename");
+                    Intent intent = new Intent(MyGroupsActivity.this, MyGroupsActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    finish();
+                    startActivity(intent);
+                }
+
+                if (control.equals("2")) {
+                    Intent intent = new Intent(MyGroupsActivity.this, MyGroupsActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    finish();
+                    startActivity(intent);
+                }
+
+                break;
+
+
+            default:
+                Log.d("test", "onActivityResult: uknown request code " + requestCode);
+        }
+    }
 }

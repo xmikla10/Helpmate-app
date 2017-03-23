@@ -588,6 +588,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                                 actualMonth = getMonth(monthInInt);
                                                 SetNotification set = new SetNotification();
                                                 set.Set(addGroupID, 2, userName, "1", "");
+                                                final TextView group = (TextView) findViewById(R.id.menuUserGroupView);
+                                                group.setText(addGroupName);
 
                                                 db.child("groups").child(addGroupID).child("graph").child("months").child("members").addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
@@ -824,7 +826,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 if (id == R.id.nav_to_do)
                 {
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     isActivityActual = false;
                     finish();
                     startActivity(intent);
@@ -871,7 +873,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     finish();
 
                     Intent intent = new Intent(MainActivity.this, SignInActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     isActivityActual = false;
                     startActivity(intent);
                     overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
@@ -1106,7 +1108,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 if(controlCase.equals("1"))
                 {
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     isActivityActual = false;
                     finish();
                     startActivity(intent);
@@ -1124,7 +1126,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 {
                     String renameUser = data.getStringExtra("rename");
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     isActivityActual = false;
                     finish();
                     startActivity(intent);
@@ -1133,7 +1135,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 if ( control.equals("2"))
                 {
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     isActivityActual = false;
                     finish();
                     startActivity(intent);

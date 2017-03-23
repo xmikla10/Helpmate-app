@@ -106,7 +106,47 @@ public class AppPreferences extends PreferenceActivity
             ListPreference listPreference = (ListPreference) findPreference("language");
             if(listPreference.getValue()==null)
             {
-                listPreference.setValueIndex(0);
+                SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+                String restoredText = prefs.getString("language", null);
+                if( restoredText != null)
+                {
+                    if ( restoredText.equals("sk"))
+                    {
+                        listPreference.setValueIndex(2);
+                    }
+                    if ( restoredText.equals("cs"))
+                    {
+                        listPreference.setValueIndex(1);
+                    }
+                    if ( restoredText.equals("en"))
+                    {
+                        listPreference.setValueIndex(0);
+                    }
+                }
+                else
+                    listPreference.setValueIndex(0);
+            }
+            else
+            {
+                SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+                String restoredText = prefs.getString("language", null);
+                if( restoredText != null)
+                {
+                    if ( restoredText.equals("sk"))
+                    {
+                        listPreference.setValueIndex(2);
+                    }
+                    if ( restoredText.equals("cs"))
+                    {
+                        listPreference.setValueIndex(1);
+                    }
+                    if ( restoredText.equals("en"))
+                    {
+                        listPreference.setValueIndex(0);
+                    }
+                }
+                else
+                    listPreference.setValueIndex(0);
             }
             listPreference.setSummary(listPreference.getValue().toString());
             listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
@@ -192,13 +232,10 @@ public class AppPreferences extends PreferenceActivity
                     //startActivity(refresh);
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intent.putExtra("rename", newName);
                     intent.putExtra("control", "1");
                     getActivity().setResult(SETTINGS_FINISHED, intent);
                     getActivity().finish();
-                    getActivity().overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
-
                     Toast.makeText(getActivity(), newName , Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -207,7 +244,7 @@ public class AppPreferences extends PreferenceActivity
 
         public void setLocale(String lang)
         {
-            SharedPreferences.Editor editor = getContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+            SharedPreferences.Editor editor = getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
             editor.putString("language", lang);
             editor.commit();
 
@@ -216,10 +253,10 @@ public class AppPreferences extends PreferenceActivity
             DisplayMetrics dm = res.getDisplayMetrics();
             Configuration conf = res.getConfiguration();
             conf.locale = myLocale;
+
             res.updateConfiguration(conf, dm);
 
             Intent intent = new Intent(getActivity(), MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra("control", "2");
             getActivity().setResult(SETTINGS_FINISHED, intent);
             getActivity().finish();

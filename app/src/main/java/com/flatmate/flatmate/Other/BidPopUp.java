@@ -2,10 +2,14 @@ package com.flatmate.flatmate.Other;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -68,9 +72,22 @@ public class BidPopUp extends Activity
         }
 
         DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        Display getOrient = getWindowManager().getDefaultDisplay();
 
-        getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        int screenWidth = (int) (metrics.widthPixels * 0.90);
+        int screenWidth2 = (int) (metrics.widthPixels * 0.60);
+
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int rotation = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
+
+        if( rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180)
+        {
+            getWindow().setLayout(screenWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        else
+            getWindow().setLayout(screenWidth2, ViewGroup.LayoutParams.WRAP_CONTENT);
+
 
         Button btnbid = (Button) findViewById(R.id.button_bid);
         final CheckBox checkboxbid = (CheckBox) findViewById(R.id.checkBoxBid);
@@ -134,10 +151,6 @@ public class BidPopUp extends Activity
             }
         });
 
-
-
-
-
-
     }
+
 }

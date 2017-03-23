@@ -136,7 +136,7 @@ public class SetNotification
                                         }
 
                                         if (control == 3) {
-                                            if (!find_user.equals(userID)) {
+                                            if (!find_user.equals(userID) && !find_email.equals(evaluationEmail)) {
                                                 NotificationMessage notif_3 = new NotificationMessage();
                                                 String message_3 = "3";
                                                 String message_plus = string;
@@ -148,6 +148,11 @@ public class SetNotification
                                                 notif_3.set_date(getActualDate());
                                                 notif_3.set_random(generateRandomNumber().toString());
                                                 db.child("user").child("users").child(find_user).child("notifications").push().setValue(notif_3);
+                                            }
+                                            if (find_email.equals(evaluationEmail)) {
+                                                String message_1O = "10";
+                                                String message_plus = group_name;
+                                                sendNotification(message_1O, group_name, find_user, message_plus);
                                             }
                                         }
 

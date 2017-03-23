@@ -128,7 +128,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         googleBut.setOnClickListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.server_client_id))
+                .requestIdToken("106635181777-kidaidh6pg71dbp3sp2a8vru52odjgo7.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 
@@ -166,11 +166,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             @Override
             public void onSuccess(final LoginResult loginResult)
             {
-                if ( isOnline() == false)
-                {
-                    Toast.makeText(getBaseContext(), R.string.internet_connection, Toast.LENGTH_SHORT).show();
-                }
-                else {
 
                     GraphRequest request = GraphRequest.newMeRequest(
                             loginResult.getAccessToken(),
@@ -186,7 +181,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                     request.setParameters(parameters);
                     request.executeAsync();
                     handleFacebookAccessToken(loginResult.getAccessToken());
-                }
 
             }
 
@@ -197,6 +191,10 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
             @Override
             public void onError(FacebookException error) {
+                if ( isOnline() == false)
+                {
+                    Toast.makeText(getBaseContext(), R.string.internet_connection, Toast.LENGTH_SHORT).show();
+                }
                 Log.d(TAG, "facebook:onError", error);
             }
         });
@@ -292,22 +290,31 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     @Override
     public void onClick(View view)
     {
-
-            if (view == buttonSignup) {
+        if ( isOnline() == false)
+        {
+            Toast.makeText(getBaseContext(), R.string.internet_connection, Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            if (view == buttonSignup)
+            {
                 registerUser();
             }
 
-            if (view == buttonLogin) {
+            if (view == buttonLogin)
+            {
                 //open login activity when user taps on the already registered textview
                 Intent intent = new Intent(this, LogInActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
             }
 
-            if (view == googleBut) {
+            if (view == googleBut)
+            {
                 signOut();
                 signIn();
             }
+        }
 
     }
 
@@ -342,11 +349,11 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         if (requestCode == RC_SIGN_IN)
         {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            Toast.makeText(getBaseContext(), result.toString() , Toast.LENGTH_LONG).show();
 
             if (result.isSuccess())
             {
                 // Google Sign In was successful, authenticate with Firebase
-                System.out.println("--------> " + "som v google sign in");
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             }

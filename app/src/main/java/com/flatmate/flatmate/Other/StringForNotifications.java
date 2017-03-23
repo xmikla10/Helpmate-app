@@ -63,6 +63,10 @@ public class StringForNotifications
         {
             returnNotif = a.getString(R.string.invited_new_group) + addToNotif;
         }
+        else if(notifNumber.equals("10"))
+        {
+            returnNotif = a.getString(R.string.deleted_you_group) + addToNotif;
+        }
         else
             returnNotif = "";
 

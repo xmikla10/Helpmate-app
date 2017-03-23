@@ -438,11 +438,7 @@ public class GraphActivity extends AppCompatActivity
 
         if (id == R.id.nav_settings)
         {
-            Intent intent6 = new Intent(this, AppPreferences.class);
-            intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-            startActivity(intent6);
-            overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+            startActivityForResult(new Intent(GraphActivity.this, AppPreferences.class), AppPreferences.SETTINGS_FINISHED);
         }
 
         return super.onOptionsItemSelected(item);
@@ -453,6 +449,40 @@ public class GraphActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.to_do, menu);
         return true;
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+
+            case AppPreferences.SETTINGS_FINISHED:
+                if (data == null) {
+                    return;
+                }
+                String control = data.getStringExtra("control");
+
+                if (control.equals("1")) {
+                    String renameUser = data.getStringExtra("rename");
+                    Intent intent = new Intent(GraphActivity.this, GraphActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    finish();
+                    startActivity(intent);
+                }
+
+                if (control.equals("2")) {
+                    Intent intent = new Intent(GraphActivity.this, GraphActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    finish();
+                    startActivity(intent);
+                }
+
+                break;
+
+
+            default:
+                Log.d("test", "onActivityResult: uknown request code " + requestCode);
+        }
     }
 
 }

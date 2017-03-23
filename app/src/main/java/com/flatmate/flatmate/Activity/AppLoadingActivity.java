@@ -43,23 +43,34 @@ public class AppLoadingActivity extends Activity {
 
                         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
                         String restoredText = prefs.getString("language", null);
+                        String firstStart = prefs.getString("firstStart", null);
 
-                        if (restoredText != null)
+                        if ( firstStart == null)
                         {
-                            Locale myLocale = new Locale(restoredText);
-                            Resources res = getResources();
-                            DisplayMetrics dm = res.getDisplayMetrics();
-                            Configuration conf = res.getConfiguration();
-                            conf.locale = myLocale;
-                            res.updateConfiguration(conf, dm);
+                            Intent i = new Intent(AppLoadingActivity.this, SelectLanguageActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(i);
+                            finish();
                         }
+                        else
+                        {
+                            if (restoredText != null)
+                            {
+                                Locale myLocale = new Locale(restoredText);
+                                Resources res = getResources();
+                                DisplayMetrics dm = res.getDisplayMetrics();
+                                Configuration conf = res.getConfiguration();
+                                conf.locale = myLocale;
+                                res.updateConfiguration(conf, dm);
+                            }
 
-                    Intent i = new Intent(AppLoadingActivity.this,
-                            SignInActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            Intent i = new Intent(AppLoadingActivity.this, SignInActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                    startActivity(i);
-                    finish();
+                            startActivity(i);
+                            finish();
+
+                        }
                 }
             }
         };
