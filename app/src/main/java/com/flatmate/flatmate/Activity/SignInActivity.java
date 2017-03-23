@@ -349,7 +349,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         if (requestCode == RC_SIGN_IN)
         {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            Toast.makeText(getBaseContext(), result.toString() , Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "som za resultom" , Toast.LENGTH_LONG).show();
 
             if (result.isSuccess())
             {
@@ -357,6 +357,10 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 GoogleSignInAccount account = result.getSignInAccount();
                 Toast.makeText(getBaseContext(), "success" , Toast.LENGTH_LONG).show();
                 firebaseAuthWithGoogle(account);
+            }
+            else
+            {
+                Toast.makeText(getBaseContext(), "not success" , Toast.LENGTH_LONG).show();
             }
         }
         else

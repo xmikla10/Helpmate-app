@@ -7,8 +7,8 @@ android {
         applicationId "com.flatmate.flatmate"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 9
-        versionName "1.422"
+        versionCode 10
+        versionName "1.423"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
