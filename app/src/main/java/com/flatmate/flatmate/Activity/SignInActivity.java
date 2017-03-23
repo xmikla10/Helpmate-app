@@ -355,6 +355,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
+                Toast.makeText(getBaseContext(), "success" , Toast.LENGTH_LONG).show();
                 firebaseAuthWithGoogle(account);
             }
         }
