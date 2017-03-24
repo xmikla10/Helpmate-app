@@ -1061,22 +1061,7 @@ public class AuctionActivity extends AppCompatActivity
             finish(); // close this activity and return to preview activity (if there is any)
         }
 
-        if (id == R.id.nav_settings)
-        {
-            Intent intent6 = new Intent(this, AppPreferences.class);
-            intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent6);
-            overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
-        }
-
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.to_do, menu);
-        return true;
     }
 
     public boolean isOnline()

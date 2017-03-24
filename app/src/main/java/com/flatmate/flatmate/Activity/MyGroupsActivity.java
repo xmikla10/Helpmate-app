@@ -243,19 +243,7 @@ public class MyGroupsActivity extends AppCompatActivity {
             finish(); // close this activity and return to preview activity (if there is any)
         }
 
-        if (id == R.id.nav_settings)
-        {
-            startActivityForResult(new Intent(MyGroupsActivity.this, AppPreferences.class), AppPreferences.SETTINGS_FINISHED);
-        }
-
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.to_do, menu);
-        return true;
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
