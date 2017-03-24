@@ -128,7 +128,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         googleBut.setOnClickListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("106635181777-kidaidh6pg71dbp3sp2a8vru52odjgo7.apps.googleusercontent.com")
+                .requestIdToken("106635181777-1htmgad7gqti3sbs7sds0meq5isli6id.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 
@@ -349,18 +349,11 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         if (requestCode == RC_SIGN_IN)
         {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            Toast.makeText(getBaseContext(), "som za resultom" , Toast.LENGTH_LONG).show();
-
             if (result.isSuccess())
             {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
-                Toast.makeText(getBaseContext(), "success" , Toast.LENGTH_LONG).show();
                 firebaseAuthWithGoogle(account);
-            }
-            else
-            {
-                Toast.makeText(getBaseContext(), "not success" , Toast.LENGTH_LONG).show();
             }
         }
         else

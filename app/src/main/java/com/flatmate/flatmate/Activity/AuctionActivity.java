@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.DiscretePathEffect;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -136,7 +137,6 @@ public class AuctionActivity extends AppCompatActivity
             String status = extras.getString("status");
 
             MyStatus statusC = new MyStatus();
-
             String statusInString = statusC.setStatus( status, AuctionActivity.this);
 
             String duration = extras.getString("duration");
@@ -557,7 +557,7 @@ public class AuctionActivity extends AppCompatActivity
                                 }
 
                                 cal.setTime(datePlus);
-                                cal.add(Calendar.HOUR, 24);
+                                cal.add(Calendar.HOUR, 6);
 
                                 Map dateData = new HashMap();
                                 dateData.put("_deadline", dateFormat.format(cal.getTime()));
@@ -818,9 +818,6 @@ public class AuctionActivity extends AppCompatActivity
         TextView auctionTime = (TextView) findViewById(R.id.auctionTime);
 
         MyStatus statusC = new MyStatus();
-
-        String statusInString = statusC.setStatus( status, AuctionActivity.this);
-        status = statusInString;
 
         if ( status.equals(getString(R.string.status_done)))
         {

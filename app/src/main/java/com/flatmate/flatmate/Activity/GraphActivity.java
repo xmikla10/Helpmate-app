@@ -24,6 +24,7 @@ import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.flatmate.flatmate.R;
@@ -33,6 +34,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by xmikla10 on 29.10.2016.
@@ -266,6 +268,7 @@ public class GraphActivity extends AppCompatActivity
         return returnMonth;
     }
 
+
     public void setGraph(String members)
     {
         db = FirebaseDatabase.getInstance().getReference();
@@ -276,38 +279,68 @@ public class GraphActivity extends AppCompatActivity
 
         if ( !monthYear.equals("null"))
         {
-            db.child("groups").child(groupID).child("graph").child("months").child(monthString).child("users").addChildEventListener(new ChildEventListener()
+            db.child("groups").child(groupID).child("graph").child("months").child(monthString).child("users").addListenerForSingleValueEvent(new ValueEventListener()
             {
-                @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                    String name = value.get("_name").toString();
-                    String credits = value.get("_credits").toString();
+                @Override public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
+                    {
+                        Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                        final String userEmail = value.get("_email").toString();
 
-                    yData[membersCount] = Integer.parseInt(credits);
-                    xData[membersCount] = name;
+                        db.child("groups").child(groupID).child("graph").child("months").child(monthString).child("users").orderByChild("_email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener()
+                        {
+                            @Override public void onDataChange(DataSnapshot dataSnapshot)
+                            {
+                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
+                                {
+                                    Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                    final String name = value.get("_name").toString();
+                                    final String email = value.get("_email").toString();
+                                    final String credits = value.get("_credits").toString();
+                                    final String childKey = childSnapshot.getKey();
 
-                    membersCount++;
-                    if (membersCount == tmp) {
+                                    db.child("user").child("groups").child("members").child(groupID).child("members").orderByChild("_user_email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                        {
+                                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                                Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                String actualUserName = value.get("_user_name").toString();
 
-                        pieChart = (PieChart) findViewById(R.id.pieChart);
-                        pieChart.setRotationEnabled(true);
-                        pieChart.setUsePercentValues(true);
-                        pieChart.setNoDataTextColor(Color.parseColor("#EF6C00"));
-                        pieChart.setCenterTextColor(Color.BLACK);
-                        pieChart.setHoleRadius(40f);
-                        pieChart.setTransparentCircleAlpha(0);
-                        pieChart.setCenterText(monthToShow(monthString) + " " + monthYear);
-                        pieChart.setCenterTextSize(15);
-                        pieChart.setEntryLabelTextSize(12);
-                        addDataSet();
+                                                if (!actualUserName.equals(name))
+                                                {
+                                                    Map newNameMap = new HashMap();
+                                                    newNameMap.put("_name", actualUserName);
+                                                    db.child("groups").child(groupID).child("graph").child("months").child(monthString).child("users").child(childKey).updateChildren(newNameMap);
+                                                }
+
+                                                yData[membersCount] = Integer.parseInt(credits);
+                                                xData[membersCount] = actualUserName;
+
+                                                membersCount++;
+                                                if (membersCount == tmp) {
+                                                    pieChart = (PieChart) findViewById(R.id.pieChart);
+                                                    pieChart.setRotationEnabled(true);
+                                                    pieChart.setUsePercentValues(true);
+                                                    pieChart.setNoDataTextColor(Color.parseColor("#EF6C00"));
+                                                    pieChart.setCenterTextColor(Color.BLACK);
+                                                    pieChart.setHoleRadius(40f);
+                                                    pieChart.setTransparentCircleAlpha(0);
+                                                    pieChart.setCenterText(monthToShow(monthString) + " " + monthYear);
+                                                    pieChart.setCenterTextSize(15);
+                                                    pieChart.setEntryLabelTextSize(12);
+                                                    addDataSet();
+                                                }
+                                            }
+                                        }
+                                        @Override public void onCancelled(DatabaseError databaseError) {}});
+
+                                }
+                            }
+                            @Override public void onCancelled(DatabaseError databaseError) {}});
                     }
                 }
-
-                @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                @Override public void onCancelled(DatabaseError databaseError) {}
-            });
+                @Override public void onCancelled(DatabaseError databaseError) {}});
         }
         else
         {

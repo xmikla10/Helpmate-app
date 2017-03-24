@@ -513,7 +513,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         notificationManager.notify(notif_counter, notif);
 
                         db.child("user").child("users").child(userID).child("notifications").child(childKey).setValue(null);
-                        System.out.println("-------->" + "som na konci");
                     }
 
                 }
@@ -687,8 +686,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                                 dialog.cancel();
                                             }
                                         });
-                                AlertDialog alert = builder.create();
-                                alert.show();
+
+                                try
+                                {
+                                    AlertDialog alert = builder.create();
+                                    alert.show();
+                                }
+                                catch (Exception e) {}
 
                             }
 
