@@ -149,10 +149,7 @@ public class Tab_MYWORKS extends Fragment {
                 Intent intent = new Intent(getActivity(), AuctionActivity.class);
                 intent.putExtra("work_name", s.get_work_name());
 
-                MyStatus status = new MyStatus();
-                String statusInString = status.setStatus(s.get_status(), getContext());
-
-                intent.putExtra("status", statusInString);
+                intent.putExtra("status", s.get_status());
                 intent.putExtra("duration", s.get_duration());
                 intent.putExtra("deadline", s.get_deadline());
                 intent.putExtra("time", ( s.get_time() +"  "+s.get_date()));

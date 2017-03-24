@@ -79,6 +79,7 @@ public class CustomAdapterMyWorks extends BaseAdapter{
         String statusInString = statusC.setStatus(s.get_status(), c);
 
         textViewStatus.setText(statusInString);
+
         textViewtime.setText(s.get_time() +"  "+s.get_date());
 
         if (s.get_status().equals("5"))
