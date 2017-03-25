@@ -3,11 +3,15 @@ package com.flatmate.flatmate.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +24,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Locale;
 
 public class LogInActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -40,6 +46,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale();
+
         setContentView(R.layout.activity_log_in_layout);
 
         //getting firebase auth object
@@ -146,5 +154,38 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             System.out.println("---------> " + "Nieje pripojenie na internet");
             return false;
         }
+    }
+
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setLocale();
+    }
+
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
+
+    private void setLocale()
+    {
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String restoredText = prefs.getString("language", null);
+
+        if (restoredText != null)
+        {
+            Locale myLocale = new Locale(restoredText);
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration conf = res.getConfiguration();
+            conf.locale = myLocale;
+            res.updateConfiguration(conf, dm);
+        }
+        else
+        {
+            Locale myLocale = new Locale("en");
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration conf = res.getConfiguration();
+            conf.locale = myLocale;
+            res.updateConfiguration(conf, dm);
+        }
+
     }
 }

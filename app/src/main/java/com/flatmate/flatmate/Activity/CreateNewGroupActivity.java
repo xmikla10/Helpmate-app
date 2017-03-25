@@ -5,7 +5,10 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.CharArrayBuffer;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -15,6 +18,7 @@ import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -60,6 +64,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.SimpleTimeZone;
 import java.util.UUID;
@@ -108,6 +113,8 @@ public class CreateNewGroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setLocale();
+
         setContentView(R.layout.activity_add_group_layout);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMyGroups);
@@ -597,5 +604,38 @@ public class CreateNewGroupActivity extends AppCompatActivity {
             default:
                 Log.d("test", "onActivityResult: uknown request code " + requestCode);
         }
+    }
+
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setLocale();
+    }
+
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
+
+    private void setLocale()
+    {
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String restoredText = prefs.getString("language", null);
+
+        if (restoredText != null)
+        {
+            Locale myLocale = new Locale(restoredText);
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration conf = res.getConfiguration();
+            conf.locale = myLocale;
+            res.updateConfiguration(conf, dm);
+        }
+        else
+        {
+            Locale myLocale = new Locale("en");
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration conf = res.getConfiguration();
+            conf.locale = myLocale;
+            res.updateConfiguration(conf, dm);
+        }
+
     }
 }

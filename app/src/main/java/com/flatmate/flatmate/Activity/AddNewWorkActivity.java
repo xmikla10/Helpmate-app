@@ -6,9 +6,13 @@ import com.flatmate.flatmate.R;
 import com.flatmate.flatmate.Other.TimePopUp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +33,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import static java.lang.Integer.parseInt;
 
@@ -49,6 +54,8 @@ public class AddNewWorkActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale();
+
         setContentView(R.layout.activity_add_new_work);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMyGroups);
@@ -391,6 +398,39 @@ public class AddNewWorkActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setLocale();
+    }
+
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
+
+    private void setLocale()
+    {
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String restoredText = prefs.getString("language", null);
+
+        if (restoredText != null)
+        {
+            Locale myLocale = new Locale(restoredText);
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration conf = res.getConfiguration();
+            conf.locale = myLocale;
+            res.updateConfiguration(conf, dm);
+        }
+        else
+        {
+            Locale myLocale = new Locale("en");
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration conf = res.getConfiguration();
+            conf.locale = myLocale;
+            res.updateConfiguration(conf, dm);
+        }
+
     }
 
 

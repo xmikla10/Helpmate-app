@@ -104,6 +104,8 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
         FacebookSdk.sdkInitialize(SignInActivity.this);
         setContentView(R.layout.activity_sign_in_layout);
+        setLocale();
+
 
         //initializing firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
@@ -503,6 +505,39 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             System.out.println("---------> " + "Nieje pripojenie na internet");
             return false;
         }
+    }
+
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setLocale();
+    }
+
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
+
+    private void setLocale()
+    {
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String restoredText = prefs.getString("language", null);
+
+        if (restoredText != null)
+        {
+            Locale myLocale = new Locale(restoredText);
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration conf = res.getConfiguration();
+            conf.locale = myLocale;
+            res.updateConfiguration(conf, dm);
+        }
+        else
+        {
+            Locale myLocale = new Locale("en");
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration conf = res.getConfiguration();
+            conf.locale = myLocale;
+            res.updateConfiguration(conf, dm);
+        }
+
     }
 
 }

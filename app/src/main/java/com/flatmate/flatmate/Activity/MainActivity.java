@@ -7,6 +7,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
@@ -18,6 +21,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.text.format.DateUtils;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -72,6 +76,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.UUID;
@@ -126,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         isActivityActual = true;
         super.onCreate(savedInstanceState);
+        setLocale();
         setContentView(R.layout.activity_main_activity);
         //FontsOverride.setDefaultFont(this, "DEFAULT", "customfont.ttf");
         
@@ -1239,5 +1245,38 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             System.out.println("---------> " + "Nieje pripojenie na internet");
             return false;
         }
+    }
+
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setLocale();
+    }
+
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
+
+    private void setLocale()
+    {
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String restoredText = prefs.getString("language", null);
+
+        if (restoredText != null)
+        {
+            Locale myLocale = new Locale(restoredText);
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration conf = res.getConfiguration();
+            conf.locale = myLocale;
+            res.updateConfiguration(conf, dm);
+        }
+        else
+        {
+            Locale myLocale = new Locale("en");
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration conf = res.getConfiguration();
+            conf.locale = myLocale;
+            res.updateConfiguration(conf, dm);
+        }
+
     }
 }
