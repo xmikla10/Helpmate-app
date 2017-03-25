@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:paddingTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -49,7 +50,7 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:id="@+id/textViewTaskName"
+                    android:id="@+id/auctionWorkName"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_height="0dp"
                     android:layout_weight="3"
@@ -65,92 +66,180 @@
         </LinearLayout>
     </LinearLayout>
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="10dp" />
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:orientation="horizontal"
+        android:paddingBottom="10dp"
         android:layout_height="wrap_content">
 
         <Space
-            android:layout_width="5dp"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
             android:layout_width="53dp"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:layout_height="53dp">
-
-            <TextView
-                android:layout_width="53dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@drawable/circle"
-                android:text="A"
-                android:textSize="30dp"
-                android:visibility="invisible"
-                android:textColor="@color/colorWhite"
-                android:gravity="center"
-                />
-        </LinearLayout>
+            android:layout_height="match_parent" />
 
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:orientation="vertical"
-            android:weightSum="3"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:id="@+id/textViewTaskName"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:paddingLeft="15dp"
-                android:text="Name of Task"
-                android:gravity="center|left|bottom"
-                />
+            android:paddingTop="5dp"
+            android:weightSum="4"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:id="@+id/textViewStatus"
+                android:id="@+id/auctionStatus"
                 android:layout_weight="1"
                 android:text="Status"
+                android:textSize="14dp"
                 android:paddingLeft="14dp"
                 android:gravity="center|left"
                 />
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:paddingTop="5dp"
                 android:layout_height="0dp"
                 android:gravity="center|left|top"
                 android:orientation="horizontal"
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/textViewTime"
+                    android:id="@+id/textViewTaskStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deadline"
-                    android:textSize="12dp"
+                    android:text="@string/duration_of_auction"
+                    android:textSize="14dp"
                     android:paddingLeft="14dp"
                     android:gravity="center|left" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:paddingTop="5dp"
+
+                android:gravity="center|left|top"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
                 <TextView
+                    android:text="@string/duration_of_work"
+                    android:id="@+id/textViewTaskName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textViewtime2"
-                    android:textSize="12dp"
-                    android:text="12/03/2017"
+                    android:textSize="14dp"
+                    android:paddingLeft="14dp"
+                    android:gravity="center|left" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:paddingTop="5dp"
+                android:gravity="center|left|top"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <TextView
+                    android:text="@string/deadline"
+                    android:id="@+id/textViewTaskName1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
                     android:paddingLeft="14dp"
                     android:gravity="center|left" />
 
             </LinearLayout>
 
     </LinearLayout>
+
+        <Space
+            android:layout_width="25dp"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="5dp"
+            android:weightSum="4"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="Status"
+                android:visibility="invisible"
+                android:paddingLeft="14dp"
+                android:gravity="center|left"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:paddingTop="5dp"
+                android:layout_height="0dp"
+                android:gravity="center|left|top"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/auctionTime"
+                    android:textSize="14dp"
+                    android:text="12/03/2017"
+                    android:paddingLeft="14dp"
+                    android:gravity="center|left" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:paddingTop="5dp"
+                android:gravity="center|left|top"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/auctionDuration"
+                    android:textSize="14dp"
+                    android:text="12/03/2017"
+                    android:paddingLeft="14dp"
+                    android:gravity="center|left" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:paddingTop="5dp"
+                android:gravity="center|left|top"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/auctionDeadline"
+                    android:textSize="14dp"
+                    android:text="12/03/2017"
+                    android:paddingLeft="14dp"
+                    android:gravity="center|left" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+</LinearLayout>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="10dp" />
+
 </LinearLayout>

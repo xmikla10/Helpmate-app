@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.DiscretePathEffect;
+import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -163,6 +164,8 @@ public class AuctionActivity extends AppCompatActivity
             TextView duration1 = (TextView) findViewById(R.id.auctionDuration);
             TextView time1 = (TextView) findViewById(R.id.auctionDeadline);
             TextView deadline1 = (TextView) findViewById(R.id.auctionTime);
+            TextView circleLetter = (TextView) findViewById(R.id.circleLetter);
+            GradientDrawable gd = (GradientDrawable) circleLetter.getBackground();
 
             String pom = "";
             if( work_name.length() > 20)
@@ -176,6 +179,31 @@ public class AuctionActivity extends AppCompatActivity
             }
             else
                 pom = work_name;
+
+            String firstLetter = work_name.substring(0,1).toUpperCase();
+
+            switch (firstLetter)
+            {
+                case "A":case "B":case "C":case "D":
+                gd.setColor(Color.RED); break;
+                case "E":case "F":case "G":case "H":
+                gd.setColor(Color.parseColor("#0091EA")); break;
+                case "I":case "J":case "K":case "L":
+                gd.setColor(Color.parseColor("#689F38")); break;
+                case "M":case "N":case "O":case "P":
+                gd.setColor(Color.parseColor("#E64A19")); break;
+                case "Q":case "R":case "S":case "T":
+                gd.setColor(Color.parseColor("#7C4DFF")); break;
+                case "U":case "V":case "W":case "X":
+                gd.setColor(Color.parseColor("#FF80AB")); break;
+                case "Y":case "Z":
+                gd.setColor(Color.parseColor("#EF6C00")); break;
+                default:
+                    gd.setColor(Color.parseColor("#FB7B0A")); break;
+
+            }
+
+            circleLetter.setText(firstLetter);
 
             work_name1.setText(pom);
             status1.setText(statusInString);
@@ -329,7 +357,7 @@ public class AuctionActivity extends AppCompatActivity
 
                                 if (!evaluationEmailUser.equals("null")) {
                                     ListView bids = (ListView) findViewById(R.id.listViewAuction);
-                                    if (bids.getVisibility() != View.GONE) {
+                                    if (bids.getVisibility() != View.INVISIBLE) {
                                         finish();
                                     }
                                 }
@@ -829,18 +857,18 @@ public class AuctionActivity extends AppCompatActivity
         if ( status.equals(getString(R.string.status_done)))
         {
             textViewTaskStatus.setText(R.string.work_completed_by);
-            textViewTaskStatus.setTextSize(15);
+            textViewTaskStatus.setTextSize(16);
         }
         else
         {
             textViewTaskStatus.setText(R.string.who_won);
-            textViewTaskStatus.setTextSize(17);
+            textViewTaskStatus.setTextSize(16);
         }
         auctionStatus.setText(status);
         auctionTime.setText(lastUser);
 
         auctiontext.setVisibility(View.GONE);
-        bids.setVisibility(View.GONE);
+        bids.setVisibility(View.INVISIBLE);
         seek.setVisibility(View.VISIBLE);
         bar.setVisibility(View.VISIBLE);
         fab.setVisibility(View.GONE);

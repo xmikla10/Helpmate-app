@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:orientation="vertical">
+
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-
     <LinearLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -56,47 +61,57 @@
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
             android:orientation="vertical">
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layMyWorks"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+    <LinearLayout
+        android:id="@+id/layMyWorks"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:elevation="20dp">
 
-            <Button
-                android:id="@+id/buttonAuctionDone"
-                android:onClick="onClickButtonWorkDone"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:background="@android:color/holo_orange_light"
-                android:elevation="0dp"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:text="@string/work_done" />
+        <Button
+            android:id="@+id/buttonAuctionDone"
+            android:onClick="onClickButtonWorkDone"
+            android:text="@string/work_done"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorOrange"
+            android:elevation="20dp"
+            android:textAppearance="@style/TextAppearance.AppCompat" />/>
 
-            <Button
-                android:id="@+id/buttonAuctionCancel"
-                android:onClick="onClickButtonCancelWork"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:background="@android:color/holo_orange_light"
-                android:elevation="0dp"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:text="@string/cancel" />
 
+        <Button
+            android:id="@+id/buttonAuctionCancel"
+            android:onClick="onClickButtonCancelWork"
+            android:text="@string/cancel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:textColor="@color/colorWhite"
+            android:background="#363636"
+            android:elevation="20dp"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            />
         </LinearLayout>
+
 
         <ProgressBar
             android:id="@+id/loadingProgressBar"
             android:gravity="center"
+            android:divider="@null"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="visible" />
@@ -105,9 +120,10 @@
             android:id="@+id/listViewAuction"
             android:divider="@null"
             android:dividerHeight="0dp"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             />
 
     </LinearLayout>
 </ScrollView>
+</LinearLayout>

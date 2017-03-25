@@ -24,7 +24,7 @@
             android:focusable="false"
             android:elevation="4dp">
 
-            <include layout="@layout/task_auction_new"
+            <include layout="@layout/task_auction_new"></include>
 
         </FrameLayout>
     </LinearLayout>

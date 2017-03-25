@@ -136,7 +136,7 @@
     <string name="add_member">\u0020Pridať člena</string>
     <string name="name_of_work">Meno práce</string>
     <string name="here_type_name_of_work">Tu zadajte meno práce</string>
-    <string name="duration_of_work">Dĺžka práce</string>
+    <string name="duration_of_work">Dĺžka práce :</string>
     <string name="deadline1">Uzávierka</string>
     <string name="auction">Aukcia :</string>
     <string name="progress">Pokrok :</string>

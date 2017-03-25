@@ -209,7 +209,7 @@ public class Tab_TODO extends Fragment
 
                 intent.putExtra("duration", s.get_duration());
                 intent.putExtra("deadline", s.get_deadline());
-                intent.putExtra("time", ( s.get_time() +"  "+s.get_date()));
+                intent.putExtra("time", ( s.get_time() +" "+s.get_date()));
                 intent.putExtra("bidsID", s.get_bidsID());
 
                 intent.putExtra("bidsLastValue", s.get_bidsLastValue());

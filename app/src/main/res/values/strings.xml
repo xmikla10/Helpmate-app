@@ -136,7 +136,7 @@
     <string name="add_member">\u0020Add member</string>
     <string name="name_of_work">Name of work</string>
     <string name="here_type_name_of_work">Here type name of work</string>
-    <string name="duration_of_work">Duration of work</string>
+    <string name="duration_of_work">Duration of work :</string>
     <string name="deadline1">Deadline</string>
     <string name="auction">Auction :</string>
     <string name="progress">Progress :</string>
