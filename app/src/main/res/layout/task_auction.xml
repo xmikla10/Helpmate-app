@@ -15,39 +15,17 @@
         android:weightSum="1">
 
         <FrameLayout
-            android:weightSum="1"
             android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="5dp"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:background="#363636"
+            android:layout_weight="0.95"
+            android:background="#ffffff"
             android:layout_height="match_parent"
             android:focusable="false"
             android:elevation="4dp">
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp" />
-
-                <include layout="@layout/task_todo1a"/>
-                <include layout="@layout/task_todo2a"/>
-                <include layout="@layout/task_line"/>
-                <include layout="@layout/task_auction1"/>
-                <include layout="@layout/task_auction2"/>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp" />
-
-            </LinearLayout>
+            <include layout="@layout/task_auction_new"
 
         </FrameLayout>
-
     </LinearLayout>
-
 </LinearLayout>
