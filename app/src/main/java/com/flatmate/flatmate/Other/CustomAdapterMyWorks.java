@@ -2,6 +2,7 @@ package com.flatmate.flatmate.Other;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,8 @@ public class CustomAdapterMyWorks extends BaseAdapter{
         TextView textViewStatus = (TextView) convertView.findViewById(R.id.myWorkStatus);
         TextView textViewtime = (TextView) convertView.findViewById(R.id.myWorkDate);
         TextView textViewtime2 = (TextView) convertView.findViewById(R.id.myWorkTaskDuration);
+        TextView circleLetter = (TextView) convertView.findViewById(R.id.myWorkcircleLetter);
+        GradientDrawable gd = (GradientDrawable) circleLetter.getBackground();
 
         String pom;
         String work_name = "";
@@ -89,6 +92,31 @@ public class CustomAdapterMyWorks extends BaseAdapter{
             textViewtime2.setText("");
             textViewtime.setText("");
         }
+
+        String firstLetter = work_name.substring(0,1).toUpperCase();
+
+        switch (firstLetter)
+        {
+            case "A":case "B":case "C":case "D":
+            gd.setColor(Color.parseColor("#EF6C00")); break;
+            case "E":case "F":case "G":case "H":
+            gd.setColor(Color.parseColor("#0091EA")); break;
+            case "I":case "J":case "K":case "L":
+            gd.setColor(Color.parseColor("#689F38")); break;
+            case "M":case "N":case "O":case "P":
+            gd.setColor(Color.parseColor("#E64A19")); break;
+            case "Q":case "R":case "S":case "T":
+            gd.setColor(Color.parseColor("#7C4DFF")); break;
+            case "U":case "V":case "W":case "X":
+            gd.setColor(Color.parseColor("#FF80AB")); break;
+            case "Y":case "Z":
+            gd.setColor(Color.parseColor("#EF6C00")); break;
+            default:
+                gd.setColor(Color.parseColor("#FB7B0A")); break;
+
+        }
+
+        circleLetter.setText(firstLetter);
 
         return convertView;
     }

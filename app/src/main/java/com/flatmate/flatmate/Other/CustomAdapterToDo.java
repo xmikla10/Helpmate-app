@@ -4,12 +4,16 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +23,7 @@ import com.flatmate.flatmate.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Created by Oclemy on 6/21/2016 for ProgrammingWizards Channel and http://www.camposha.com.
@@ -57,6 +62,9 @@ public class CustomAdapterToDo extends BaseAdapter{
         TextView textViewStatus = (TextView) convertView.findViewById(R.id.textViewStatus);
         TextView textViewtime2 = (TextView) convertView.findViewById(R.id.textViewtime2);
         TextView textViewtime = (TextView) convertView.findViewById(R.id.textViewTime);
+        TextView circleLetter = (TextView) convertView.findViewById(R.id.circleLetter);
+        GradientDrawable gd = (GradientDrawable) circleLetter.getBackground();
+        ImageView im = (ImageView) convertView.findViewById(R.id.arrowShowAuction);
 
         final NewWork s= (NewWork) this.getItem(position);
         String pom;
@@ -86,6 +94,7 @@ public class CustomAdapterToDo extends BaseAdapter{
             textViewStatus.setTextColor(Color.BLACK);
             textViewTaskName.setTextColor(Color.BLACK);
             textViewtime2.setText(s.get_deadline());
+            im.setVisibility(View.VISIBLE);
         }
         else if(statusInString.equals(c.getString(R.string.status_progress)))
         {
@@ -93,15 +102,19 @@ public class CustomAdapterToDo extends BaseAdapter{
             textViewTaskName.setTextColor(Color.BLACK);
             textViewtime.setText(R.string.who_won_1);
             textViewStatus.setTextColor(Color.BLACK);
-            textViewtime.setTextSize(17);
+            textViewtime.setTextSize(14);
+            im.setVisibility(View.VISIBLE);
+
         }
         else if(statusInString.equals(c.getString(R.string.status_done)))
         {
             textViewtime2.setText(s.get_bidsLastUserName());
             textViewTaskName.setTextColor(Color.BLACK);
             textViewtime.setText(R.string.work_completed_by_1);
-            textViewtime.setTextSize(14);
+            textViewtime.setTextSize(12);
             textViewStatus.setTextColor(Color.parseColor("#ff669900"));
+            im.setVisibility(View.INVISIBLE);
+
         }
         else if(statusInString.equals(c.getString(R.string.status_unauctioned)))
         {
@@ -109,6 +122,8 @@ public class CustomAdapterToDo extends BaseAdapter{
             textViewtime.setText(R.string.delete_ask);
             textViewStatus.setTextColor(Color.RED);
             textViewTaskName.setTextColor(Color.RED);
+            im.setVisibility(View.INVISIBLE);
+
         }
         else if(statusInString.equals(c.getString(R.string.status_uncompleted)))
         {
@@ -116,12 +131,39 @@ public class CustomAdapterToDo extends BaseAdapter{
             textViewtime.setText(R.string.wrk_uncompleted_by);
             textViewStatus.setTextColor(Color.RED);
             textViewTaskName.setTextColor(Color.RED);
+            im.setVisibility(View.INVISIBLE);
+
         }
         else
             textViewtime2.setText(s.get_deadline());
 
         textViewTaskName.setText(work_name);
         textViewStatus.setText(statusInString);
+
+        String firstLetter = work_name.substring(0,1).toUpperCase();
+
+        switch (firstLetter)
+        {
+            case "A":case "B":case "C":case "D":
+                gd.setColor(Color.RED); break;
+            case "E":case "F":case "G":case "H":
+                gd.setColor(Color.parseColor("#0091EA")); break;
+            case "I":case "J":case "K":case "L":
+                gd.setColor(Color.parseColor("#689F38")); break;
+            case "M":case "N":case "O":case "P":
+                gd.setColor(Color.parseColor("#E64A19")); break;
+            case "Q":case "R":case "S":case "T":
+                gd.setColor(Color.parseColor("#7C4DFF")); break;
+            case "U":case "V":case "W":case "X":
+                gd.setColor(Color.parseColor("#FF80AB")); break;
+            case "Y":case "Z":
+                gd.setColor(Color.parseColor("#EF6C00")); break;
+            default:
+                gd.setColor(Color.parseColor("#FB7B0A")); break;
+
+        }
+
+        circleLetter.setText(firstLetter);
 
         return convertView;
     }

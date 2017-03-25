@@ -100,7 +100,7 @@ public class FirebaseHelperWork
                     @Override public void onCancelled(DatabaseError databaseError) {}
                 });
             }
-            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {fetchData(dataSnapshot);}
+            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
             @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override public void onCancelled(DatabaseError databaseError) {}
         });

@@ -160,6 +160,7 @@ public class Tab_MYWORKS extends Fragment {
                 if ( !s.get_status().equals("5"))
                 {
                     startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
                 }
             }
 

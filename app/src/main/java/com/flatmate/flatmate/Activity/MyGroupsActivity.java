@@ -88,7 +88,6 @@ public class MyGroupsActivity extends AppCompatActivity {
 
         adapter = new CustomAdapterMyGroups(MyGroupsActivity.this , helper.retrieve(), groupID);
         lv = (ListView) findViewById(R.id.listViewMyGroups);
-        lin = (LinearLayout) findViewById(R.id.groupInfoLinLayout);
 
         userID = firebaseAuth.getCurrentUser().getUid().toString();
 

@@ -136,11 +136,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             finish();
             //starting login activity
             Intent intent = new Intent(this, LogInActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
             isActivityActual = false;
-
             startActivity(intent);
         }
+
 
         init();
         setUserName();
@@ -469,52 +469,59 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             {
                 if ( isActivityActual == true)
                 {
-                    Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
-                    String notif_group_name = value.get("_group_name").toString();
+                        Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                        String notif_group_name = value.get("_group_name").toString();
 
-                    String notif_message = value.get("_message").toString();
-                    String notif_message2 = value.get("_message2").toString();
+                        String notif_message = value.get("_message").toString();
+                        String notif_message2 = value.get("_message2").toString();
 
-                    String work_date = value.get("_date").toString();
-                    String tmp = value.get("_random").toString();
-                    Double tmp2 = Double.valueOf(tmp);
-                    Integer notif_counter = tmp2.intValue();
+                        String work_date = value.get("_date").toString();
+                        String tmp;
+                        Integer tmp2;
 
-                    String childKey = dataSnapshot.getKey();
-                    Boolean showNotification = getActualDate(work_date);
+                        try
+                        {
+                            tmp = value.get("_random").toString();
+                            tmp2 = Integer.valueOf(tmp);
+                            System.out.println("------> " + "test");
+                        }catch (Exception e)
+                        {
+                            tmp2 = 12345;
+                        }
 
-                    if ( !showNotification)
-                    {
-                        db.child("user").child("users").child(userID).child("notifications").child(childKey).setValue(null);
-                    }
-                    else
-                    {
-                        StringForNotifications sfn = new StringForNotifications();
-                        String notificaton_message = sfn.setNotificationString(notif_message, notif_message2, MainActivity.this);
+                        Integer notif_counter = tmp2.intValue();
 
-                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        String childKey = dataSnapshot.getKey();
+                        Boolean showNotification = getActualDate(work_date);
 
-                        PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, (int) System.currentTimeMillis(), intent, 0);
+                        if (!showNotification) {
+                            db.child("user").child("users").child(userID).child("notifications").child(childKey).setValue(null);
+                        } else {
+                            StringForNotifications sfn = new StringForNotifications();
+                            String notificaton_message = sfn.setNotificationString(notif_message, notif_message2, MainActivity.this);
 
-                        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                        long[] vibrate = { 0, 200 };
+                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-                        Notification notif = new Notification.Builder(MainActivity.this)
-                                .setSmallIcon(R.mipmap.ic_launcher)
-                                .setSound(alarmSound)
-                                .setContentTitle(notificaton_message)
-                                .setContentText(notif_group_name)
-                                .setContentIntent(pIntent).build();
-                        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                            PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, (int) System.currentTimeMillis(), intent, 0);
 
-                        notif.flags |= Notification.FLAG_ONLY_ALERT_ONCE;
+                            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                            long[] vibrate = {0, 200};
 
-                        notificationManager.notify(notif_counter, notif);
+                            Notification notif = new Notification.Builder(MainActivity.this)
+                                    .setSmallIcon(R.mipmap.ic_launcher)
+                                    .setSound(alarmSound)
+                                    .setContentTitle(notificaton_message)
+                                    .setContentText(notif_group_name)
+                                    .setContentIntent(pIntent).build();
+                            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-                        db.child("user").child("users").child(userID).child("notifications").child(childKey).setValue(null);
-                    }
+                            notif.flags |= Notification.FLAG_ONLY_ALERT_ONCE;
 
+                            notificationManager.notify(notif_counter, notif);
+
+                            db.child("user").child("users").child(userID).child("notifications").child(childKey).setValue(null);
+                        }
                 }
             }
             @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}

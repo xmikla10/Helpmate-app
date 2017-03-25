@@ -3,6 +3,7 @@ package com.flatmate.flatmate.Other;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +75,8 @@ public class CustomAdapterMyGroups extends BaseAdapter{
         }
 
         textGroupName = (TextView) convertView.findViewById(R.id.textGroupName);
+        TextView circleLetter = (TextView) convertView.findViewById(R.id.circleLetter);
+        GradientDrawable gd = (GradientDrawable) circleLetter.getBackground();
 
         String pom;
         String group_name = "";
@@ -91,7 +94,7 @@ public class CustomAdapterMyGroups extends BaseAdapter{
         else
             group_name = s.get_group_name();
 
-        textGroupName.setText(s.get_group_name());
+        textGroupName.setText(group_name);
 
         groupS = s.get_group_ID();
         if (groupID.equals(groupS))
@@ -104,6 +107,31 @@ public class CustomAdapterMyGroups extends BaseAdapter{
             ImageView image = (ImageView) convertView.findViewById(R.id.groupImage);
             image.setImageResource(R.drawable.accept_group_grey);
         }
+
+        String firstLetter = group_name.substring(0,1).toUpperCase();
+
+        switch (firstLetter)
+        {
+            case "A":case "B":case "C":case "D":
+            gd.setColor(Color.parseColor("#EF6C00")); break;
+            case "E":case "F":case "G":case "H":
+            gd.setColor(Color.parseColor("#0091EA")); break;
+            case "I":case "J":case "K":case "L":
+            gd.setColor(Color.parseColor("#689F38")); break;
+            case "M":case "N":case "O":case "P":
+            gd.setColor(Color.parseColor("#E64A19")); break;
+            case "Q":case "R":case "S":case "T":
+            gd.setColor(Color.parseColor("#7C4DFF")); break;
+            case "U":case "V":case "W":case "X":
+            gd.setColor(Color.parseColor("#FF80AB")); break;
+            case "Y":case "Z":
+            gd.setColor(Color.parseColor("#EF6C00")); break;
+            default:
+                gd.setColor(Color.parseColor("#FB7B0A")); break;
+
+        }
+
+        circleLetter.setText(firstLetter);
 
         return convertView;
     }

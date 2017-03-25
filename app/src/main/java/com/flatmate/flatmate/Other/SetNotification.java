@@ -271,13 +271,13 @@ public class SetNotification
         return date;
     }
 
-    public Double generateRandomNumber()
+    public Integer generateRandomNumber()
     {
-        double random = Math.random() * 543 + 1;
-        double random1 = Math.random() * 223 + 1;
-        double random2 = Math.random() * 967 + 1;
-
-        return random + random1 + random2;
+        double random = Math.random() * 12345 + 1;
+        double random1 = Math.random() * 67891 + 1;
+        double tmp = Double.valueOf(random1 + random);
+        int notif_counter = (int) tmp;
+        return notif_counter;
     }
 
 }

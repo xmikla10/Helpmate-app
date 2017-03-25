@@ -6,7 +6,114 @@
     android:layout_height="78dp"
     android:orientation="vertical">
 
-    <include layout="@layout/task_myworks1"/>
-    <include layout="@layout/task_myworks2"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="53dp"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_height="53dp">
+
+            <TextView
+                android:layout_width="53dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/circle"
+                android:text="A"
+                android:textSize="30dp"
+                android:id="@+id/myWorkcircleLetter"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="7.2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="6.5"
+                android:orientation="vertical"
+                android:weightSum="3"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:id="@+id/myWorkTaskName"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="15dp"
+                    android:text="Name of Task"
+                    android:gravity="center|left|bottom"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:id="@+id/myWorkStatus"
+                    android:layout_weight="1"
+                    android:text="Status"
+                    android:paddingLeft="14dp"
+                    android:gravity="center|left"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="center|left|top"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/duration_of_auction"
+                        android:id="@+id/myWorkTaskDuration"
+                        android:paddingLeft="14dp"
+                        android:gravity="center|left" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/myWorkDate"
+                        android:text="12/03/2017"
+                        android:paddingLeft="14dp"
+                        android:gravity="center|left" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.6"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                >
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:backgroundTint="#363636"
+                    android:layout_height="25dp"
+                    android:gravity="center|left"
+                    android:background="@drawable/arrow"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

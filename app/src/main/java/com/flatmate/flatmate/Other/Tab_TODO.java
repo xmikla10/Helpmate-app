@@ -283,6 +283,7 @@ public class Tab_TODO extends Fragment
                     if(!statusInString.equals(getContext().getString(R.string.status_done)))
                     {
                         startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
                     }
                 }
             }

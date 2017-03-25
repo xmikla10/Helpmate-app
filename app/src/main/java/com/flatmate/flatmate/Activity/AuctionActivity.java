@@ -1059,6 +1059,8 @@ public class AuctionActivity extends AppCompatActivity
 
         if (item.getItemId() == android.R.id.home) {
             finish(); // close this activity and return to preview activity (if there is any)
+            overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
+
         }
 
         return super.onOptionsItemSelected(item);

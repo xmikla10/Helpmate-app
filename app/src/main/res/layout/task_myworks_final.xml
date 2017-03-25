@@ -11,7 +11,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="5dp" />
+        android:layout_height="2dp" />
 
     <LinearLayout
         android:id="@+id/linLayout5"
@@ -23,14 +23,14 @@
 
         <FrameLayout
             android:weightSum="1"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="3dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="2dp"
             android:layout_width="0dp"
             android:layout_weight="0.95"
             android:background="#ffffff"
             android:layout_height="match_parent"
             android:focusable="false"
-            android:elevation="4dp">
+            android:elevation="2dp">
 
             <include layout="@layout/task_myworks"></include>
 
