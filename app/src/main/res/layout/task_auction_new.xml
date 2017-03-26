@@ -67,13 +67,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:orientation="horizontal"
         android:paddingBottom="10dp"
         android:layout_height="wrap_content">
 
         <Space
             android:layout_width="53dp"
+            android:id="@+id/spaceUnderCircle"
             android:layout_height="match_parent" />
 
 
@@ -156,7 +157,8 @@
     </LinearLayout>
 
         <Space
-            android:layout_width="25dp"
+            android:layout_width="20dp"
+            android:id="@+id/spaceAuction"
             android:layout_height="wrap_content" />
 
         <LinearLayout

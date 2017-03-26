@@ -87,7 +87,6 @@ public class CustomAdapterToDo extends BaseAdapter{
 
         String statusInString = statusC.setStatus( s.get_status(), c);
 
-
         if(statusInString.equals(c.getString(R.string.status_auctioning)))
         {
             textViewtime.setText(R.string.duration_of_auction);
@@ -98,7 +97,7 @@ public class CustomAdapterToDo extends BaseAdapter{
         }
         else if(statusInString.equals(c.getString(R.string.status_progress)))
         {
-            textViewtime2.setText(s.get_bidsLastUserName());
+            textViewtime2.setText(cutUserName(s.get_bidsLastUserName()));
             textViewTaskName.setTextColor(Color.BLACK);
             textViewtime.setText(R.string.who_won_1);
             textViewStatus.setTextColor(Color.BLACK);
@@ -108,7 +107,7 @@ public class CustomAdapterToDo extends BaseAdapter{
         }
         else if(statusInString.equals(c.getString(R.string.status_done)))
         {
-            textViewtime2.setText(s.get_bidsLastUserName());
+            textViewtime2.setText(cutUserName(s.get_bidsLastUserName()));
             textViewTaskName.setTextColor(Color.BLACK);
             textViewtime.setText(R.string.work_completed_by_1);
             textViewtime.setTextSize(12);
@@ -121,16 +120,16 @@ public class CustomAdapterToDo extends BaseAdapter{
             textViewtime2.setText("");
             textViewtime.setText(R.string.delete_ask);
             textViewStatus.setTextColor(Color.RED);
-            textViewTaskName.setTextColor(Color.RED);
+            textViewTaskName.setTextColor(Color.BLACK);
             im.setVisibility(View.INVISIBLE);
 
         }
         else if(statusInString.equals(c.getString(R.string.status_uncompleted)))
         {
-            textViewtime2.setText(s.get_bidsLastUserName());
+            textViewtime2.setText(cutUserName(s.get_bidsLastUserName()));
             textViewtime.setText(R.string.wrk_uncompleted_by);
             textViewStatus.setTextColor(Color.RED);
-            textViewTaskName.setTextColor(Color.RED);
+            textViewTaskName.setTextColor(Color.BLACK);
             im.setVisibility(View.INVISIBLE);
 
         }
@@ -166,5 +165,23 @@ public class CustomAdapterToDo extends BaseAdapter{
         circleLetter.setText(firstLetter);
 
         return convertView;
+    }
+
+    public String cutUserName(String name)
+    {
+        String pom1 = "";
+        if( name.length() > 12)
+        {
+            char[] charArray = name.toCharArray();
+            for( int i = 0; i < 12; i++)
+            {
+                pom1= pom1 + String.valueOf(charArray[i]);
+            }
+            pom1 = pom1 + "...";
+        }
+        else
+            pom1 = name;
+
+        return pom1;
     }
 }

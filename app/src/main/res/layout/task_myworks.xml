@@ -108,6 +108,7 @@
                     android:layout_width="25dp"
                     android:backgroundTint="#363636"
                     android:layout_height="25dp"
+                    android:id="@+id/arrowMyWorks"
                     android:gravity="center|left"
                     android:background="@drawable/arrow"
                     />

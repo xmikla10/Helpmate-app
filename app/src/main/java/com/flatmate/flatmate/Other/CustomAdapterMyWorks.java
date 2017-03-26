@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.flatmate.flatmate.Firebase.NewWork;
@@ -58,6 +59,8 @@ public class CustomAdapterMyWorks extends BaseAdapter{
         TextView textViewtime2 = (TextView) convertView.findViewById(R.id.myWorkTaskDuration);
         TextView circleLetter = (TextView) convertView.findViewById(R.id.myWorkcircleLetter);
         GradientDrawable gd = (GradientDrawable) circleLetter.getBackground();
+        ImageView im = (ImageView) convertView.findViewById(R.id.arrowMyWorks);
+
 
         String pom;
         String work_name = "";
@@ -87,10 +90,11 @@ public class CustomAdapterMyWorks extends BaseAdapter{
 
         if (s.get_status().equals("5"))
         {
-            textViewTaskName.setTextColor(Color.RED);
+            textViewTaskName.setTextColor(Color.BLACK);
             textViewStatus.setTextColor(Color.RED);
             textViewtime2.setText("");
             textViewtime.setText("");
+            im.setVisibility(View.INVISIBLE);
         }
 
         String firstLetter = work_name.substring(0,1).toUpperCase();

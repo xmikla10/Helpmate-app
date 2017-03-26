@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -27,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.PendingIntent;
@@ -166,6 +168,24 @@ public class AuctionActivity extends AppCompatActivity
             TextView deadline1 = (TextView) findViewById(R.id.auctionTime);
             TextView circleLetter = (TextView) findViewById(R.id.circleLetter);
             GradientDrawable gd = (GradientDrawable) circleLetter.getBackground();
+            Space spaceUnderCircle = (Space) findViewById(R.id.spaceUnderCircle);
+            Space spaceAuction = (Space) findViewById(R.id.spaceAuction);
+
+            Display display = getWindowManager().getDefaultDisplay();
+            int width = display.getWidth();
+
+            if ( width < 720 && width > 680)
+            {
+                spaceUnderCircle.getLayoutParams().width=53;
+                spaceAuction.getLayoutParams().width=15;
+            }
+
+            if ( width <= 680 )
+            {
+                spaceUnderCircle.getLayoutParams().width=45;
+                spaceAuction.getLayoutParams().width=10;
+            }
+
 
             String pom = "";
             if( work_name.length() > 20)
