@@ -206,19 +206,19 @@ public class AuctionActivity extends AppCompatActivity
             {
                 case "A":case "B":case "C":case "D":
                 gd.setColor(Color.RED); break;
-                case "E":case "F":case "G":case "H":
+                case "E":case "F":case "G":case "H": //blue
                 gd.setColor(Color.parseColor("#0091EA")); break;
-                case "I":case "J":case "K":case "L":
-                gd.setColor(Color.parseColor("#689F38")); break;
-                case "M":case "N":case "O":case "P":
-                gd.setColor(Color.parseColor("#E64A19")); break;
-                case "Q":case "R":case "S":case "T":
+                case "I":case "J":case "K":case "L": //green
+                gd.setColor(Color.parseColor("#20d8bf")); break;
+                case "M":case "N":case "O":case "P": // green
+                gd.setColor(Color.parseColor("#36b201")); break;
+                case "Q":case "R":case "S":case "T":  //fialova
                 gd.setColor(Color.parseColor("#7C4DFF")); break;
-                case "U":case "V":case "W":case "X":
+                case "U":case "V":case "W":case "X": // ruzova
                 gd.setColor(Color.parseColor("#FF80AB")); break;
                 case "Y":case "Z":
-                gd.setColor(Color.parseColor("#EF6C00")); break;
-                default:
+                gd.setColor(Color.parseColor("#1e09fa")); break;
+                default: //oranzova
                     gd.setColor(Color.parseColor("#FB7B0A")); break;
 
             }
