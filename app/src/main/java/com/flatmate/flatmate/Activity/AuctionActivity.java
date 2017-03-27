@@ -176,13 +176,13 @@ public class AuctionActivity extends AppCompatActivity
 
             if ( width < 720 && width > 680)
             {
-                spaceUnderCircle.getLayoutParams().width=53;
+                spaceUnderCircle.getLayoutParams().width=45;
                 spaceAuction.getLayoutParams().width=15;
             }
 
             if ( width <= 680 )
             {
-                spaceUnderCircle.getLayoutParams().width=45;
+                spaceUnderCircle.getLayoutParams().width=40;
                 spaceAuction.getLayoutParams().width=10;
             }
 
@@ -379,11 +379,15 @@ public class AuctionActivity extends AppCompatActivity
                                     ListView bids = (ListView) findViewById(R.id.listViewAuction);
                                     if (bids.getVisibility() != View.INVISIBLE) {
                                         finish();
+                                        overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
+
                                     }
                                 }
 
                                 if(status.equals(getString(R.string.status_unauctioned)))
                                     finish();
+                                    overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
+
                             }
                         }
                         @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
@@ -877,12 +881,12 @@ public class AuctionActivity extends AppCompatActivity
         if ( status.equals(getString(R.string.status_done)))
         {
             textViewTaskStatus.setText(R.string.work_completed_by);
-            textViewTaskStatus.setTextSize(16);
+            textViewTaskStatus.setTextSize(15);
         }
         else
         {
             textViewTaskStatus.setText(R.string.who_won);
-            textViewTaskStatus.setTextSize(16);
+            textViewTaskStatus.setTextSize(15);
         }
         auctionStatus.setText(status);
         auctionTime.setText(lastUser);
@@ -1050,7 +1054,8 @@ public class AuctionActivity extends AppCompatActivity
                                                     //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                     //startActivity(intent);
                                                     finish();
-                                                    overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+                                                    overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
+
                                                 } else {
                                                     finish();
                                                     startActivity(getIntent());

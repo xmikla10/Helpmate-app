@@ -299,6 +299,8 @@ public class AddNewWorkActivity extends AppCompatActivity {
                             setResult(ADD_FINISHED, intent);
 
                             finish();
+                            overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+
                         }
                     } else {
                         if (checkbox.isChecked() == false) {
@@ -318,6 +320,8 @@ public class AddNewWorkActivity extends AppCompatActivity {
                         setResult(ADD_FINISHED, intent);
 
                         finish();
+                        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+
                     }
                 }
             }
@@ -395,6 +399,7 @@ public class AddNewWorkActivity extends AppCompatActivity {
 
         if (item.getItemId() == android.R.id.home) {
             finish(); // close this activity and return to preview activity (if there is any)
+            overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
         }
 
         return super.onOptionsItemSelected(item);

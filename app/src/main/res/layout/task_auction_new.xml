@@ -73,7 +73,7 @@
         android:layout_height="wrap_content">
 
         <Space
-            android:layout_width="53dp"
+            android:layout_width="50dp"
             android:id="@+id/spaceUnderCircle"
             android:layout_height="match_parent" />
 
@@ -91,7 +91,7 @@
                 android:id="@+id/auctionStatus"
                 android:layout_weight="1"
                 android:text="Status"
-                android:textSize="14dp"
+                android:textSize="13dp"
                 android:paddingLeft="14dp"
                 android:gravity="center|left"
                 />
@@ -109,7 +109,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/duration_of_auction"
-                    android:textSize="14dp"
+                    android:textSize="13dp"
                     android:paddingLeft="14dp"
                     android:gravity="center|left" />
 
@@ -129,7 +129,7 @@
                     android:id="@+id/textViewTaskName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14dp"
+                    android:textSize="13dp"
                     android:paddingLeft="14dp"
                     android:gravity="center|left" />
 
@@ -148,7 +148,7 @@
                     android:id="@+id/textViewTaskName1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14dp"
+                    android:textSize="13dp"
                     android:paddingLeft="14dp"
                     android:gravity="center|left" />
 
@@ -190,7 +190,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/auctionTime"
-                    android:textSize="14dp"
+                    android:textSize="13dp"
                     android:text="12/03/2017"
                     android:paddingLeft="14dp"
                     android:gravity="center|left" />
@@ -209,7 +209,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/auctionDuration"
-                    android:textSize="14dp"
+                    android:textSize="13dp"
                     android:text="12/03/2017"
                     android:paddingLeft="14dp"
                     android:gravity="center|left" />
@@ -228,7 +228,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/auctionDeadline"
-                    android:textSize="14dp"
+                    android:textSize="13dp"
                     android:text="12/03/2017"
                     android:paddingLeft="14dp"
                     android:gravity="center|left" />
