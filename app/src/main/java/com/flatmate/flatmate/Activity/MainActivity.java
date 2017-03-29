@@ -1042,7 +1042,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         if ( difference < 2880)
         {
-            tmp = (difference / 100) * 20;
+            tmp = (difference / 100) * 30;
         }
         else
         {
@@ -1054,6 +1054,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         simpleDateFormat.setTimeZone(cal2.getTimeZone());
 
         deadlineR = simpleDateFormat.format(cal2.getTime()).toString();
+
+        System.out.println("-----> " + deadlineR);
 
     }
 

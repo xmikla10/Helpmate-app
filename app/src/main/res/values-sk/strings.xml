@@ -170,4 +170,5 @@
     <string name="internet_connection">Prosím, skontrolujte vaše internetové pripojenie</string>
     <string name="deleted_you_group">Boli ste odstránení zo skupiny :\u0020</string>
     <string name="long_duration_of_work">Dĺžka práce je príliž dlhá</string>
+    <string name="credits_second">\u0020kreditov</string>
 </resources>

@@ -169,4 +169,5 @@
     <string name="internet_connection">Please, control your internet connection</string>
     <string name="deleted_you_group">"You was deleted from group :\u0020"</string>
     <string name="long_duration_of_work">Duration of work is too long</string>
+    <string name="credits_second">\u0020credits</string>
 </resources>

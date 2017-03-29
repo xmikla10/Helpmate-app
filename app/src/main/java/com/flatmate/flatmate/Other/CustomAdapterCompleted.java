@@ -90,11 +90,14 @@ public class CustomAdapterCompleted extends BaseAdapter{
 
         if( s.get_credits().equals("1"))
         {
-            completedCredits.setText(s.get_credits() + " " + c.getString(R.string.credit));
+            completedCredits.setText(s.get_credits() + c.getString(R.string.credit));
+        }
+        else if( s.get_credits().equals("2") || s.get_credits().equals("3") || s.get_credits().equals("4"))
+        {
+            completedCredits.setText(s.get_credits() + c.getString(R.string.credits));
         }
         else
-            completedCredits.setText(s.get_credits() + " " + c.getString(R.string.credits));
-
+            completedCredits.setText(s.get_credits() + c.getString(R.string.credits_second));
 
         return convertView;
     }

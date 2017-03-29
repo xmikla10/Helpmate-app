@@ -73,12 +73,16 @@ public class CustomAdapterAuction extends BaseAdapter{
         {
             textViewCredits.setText(s.get_credits() + c.getString(R.string.credit));
         }
+        else if( s.get_credits().equals("2") || s.get_credits().equals("3") || s.get_credits().equals("4"))
+        {
+            textViewCredits.setText(s.get_credits() + c.getString(R.string.credits));
+        }
         else if ( s.get_credits().equals("not interested"))
         {
             textViewCredits.setText(c.getString(R.string.not_interested));
         }
         else
-            textViewCredits.setText(s.get_credits() + c.getString(R.string.credits));
+            textViewCredits.setText(s.get_credits() + c.getString(R.string.credits_second));
 
         return convertView;
     }
