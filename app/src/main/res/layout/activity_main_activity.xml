@@ -89,8 +89,19 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#363636"
-        app:headerLayout="@layout/nav_header_to_do"
-        app:menu="@menu/activity_to_do_drawer" />
+        android:background="#363636">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/nav_header_to_do"/>
+
+            <include layout="@layout/custom_menu" />
+
+        </LinearLayout>
+
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

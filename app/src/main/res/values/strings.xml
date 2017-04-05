@@ -26,7 +26,7 @@
     <string name="congrat">Congratulation, You win \u0020</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
-    <string name="work_completed_by">Work completed by  :</string>
+    <string name="work_completed_by">Work completed by:</string>
     <string name="who_won">Who won?</string>
     <string name="not_interested">not interested</string>
     <string name="lesser_bid">Please, enter a lesser bid then a last user</string>
@@ -104,12 +104,12 @@
     <string name="time_and">Time  \u0020  -  \u0020</string>
     <string name="date_and">Date  \u0020  -  \u0020</string>
     <string name="want_you_delete_user">Want you delete user\u0020</string>
-    <string name="deadline">Deadline :</string>
-    <string name="duration_of_auction">Duration of auction :</string>
+    <string name="deadline">Deadline:</string>
+    <string name="duration_of_auction">Duration of auction:</string>
     <string name="who_won_1">Who won?</string>
-    <string name="work_completed_by_1">Work completed by :</string>
+    <string name="work_completed_by_1">Work completed by:</string>
     <string name="delete_ask">Delete ?</string>
-    <string name="wrk_uncompleted_by">Work uncompleted by :</string>
+    <string name="wrk_uncompleted_by">Work uncompleted by:</string>
     <string name="want_repeat_work">Want you repeat this work ?</string>
     <string name="repeat">Repeat</string>
     <string name="delete_repeat">Delete</string>
@@ -131,21 +131,21 @@
     <string name="log_out_fb">Log Out</string>
     <string name="name_of_group">Name of group</string>
     <string name="here_type_name_of_group">Here type name of group</string>
-    <string name="add_members">Add members :</string>
+    <string name="add_members">Add members:</string>
     <string name="name_email_com">name@email.com</string>
     <string name="add_member">\u0020Add member</string>
     <string name="name_of_work">Name of work</string>
     <string name="here_type_name_of_work">Here type name of work</string>
-    <string name="duration_of_work">Duration of work :</string>
+    <string name="duration_of_work">Duration of work:</string>
     <string name="deadline1">Deadline</string>
     <string name="auction">Auction :</string>
     <string name="progress">Progress :</string>
     <string name="work_done">Work Done</string>
-    <string name="members">Members :</string>
+    <string name="members">Members:</string>
     <string name="click_here_and_add_new_work">Click here and add new work</string>
     <string name="i_am_not_interested">I am not interested</string>
     <string name="save">Save</string>
-    <string name="add_bid">Add bid :</string>
+    <string name="add_bid">Add bid:</string>
     <string name="minutes">minutes</string>
     <string name="add_new_work">Add new work</string>
     <string name="my_groups_label">My Groups</string>
@@ -160,7 +160,7 @@
     <string name="was_renamed">\u0020was renamed</string>
     <string name="user_name">User name</string>
     <string name="rename">Rename</string>
-    <string name="new_name">New name :\u0020</string>
+    <string name="new_name">"New name: "</string>
     <string name="the_user">The user\u0020</string>
     <string name="invite_new_user">\u0020invite you to new group</string>
     <string name="invited_new_group">You was invited to new group -\u0020</string>
@@ -170,4 +170,5 @@
     <string name="deleted_you_group">"You was deleted from group :\u0020"</string>
     <string name="long_duration_of_work">Duration of work is too long</string>
     <string name="credits_second">\u0020credits</string>
+    <string name="toast_select_group">Please, select a groups or create a new group</string>
 </resources>

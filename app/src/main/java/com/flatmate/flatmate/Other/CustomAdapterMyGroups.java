@@ -64,19 +64,15 @@ public class CustomAdapterMyGroups extends BaseAdapter{
         final NewGroup s= (NewGroup) this.getItem(position);
 
         db = FirebaseDatabase.getInstance().getReference();
-
         firebaseAuth = FirebaseAuth.getInstance();
-
         userID = firebaseAuth.getCurrentUser().getUid().toString();
 
         if(convertView==null)
         {
-            convertView= LayoutInflater.from(c).inflate(R.layout.task_my_groups,parent,false);
+            convertView= LayoutInflater.from(c).inflate(R.layout.task_group_menu_item,parent,false);
         }
 
-        textGroupName = (TextView) convertView.findViewById(R.id.textGroupName);
-        TextView circleLetter = (TextView) convertView.findViewById(R.id.circleLetter);
-        GradientDrawable gd = (GradientDrawable) circleLetter.getBackground();
+        textGroupName = (TextView) convertView.findViewById(R.id.menu_group_item);
 
         String pom;
         String group_name = "";
@@ -95,43 +91,6 @@ public class CustomAdapterMyGroups extends BaseAdapter{
             group_name = s.get_group_name();
 
         textGroupName.setText(group_name);
-
-        groupS = s.get_group_ID();
-        if (groupID.equals(groupS))
-        {
-            ImageView image = (ImageView) convertView.findViewById(R.id.groupImage);
-            image.setImageResource(R.drawable.accept_group_green);
-        }
-        else
-        {
-            ImageView image = (ImageView) convertView.findViewById(R.id.groupImage);
-            image.setImageResource(R.drawable.accept_group_grey);
-        }
-
-        String firstLetter = group_name.substring(0,1).toUpperCase();
-
-        switch (firstLetter)
-        {
-            case "A":case "B":case "C":case "D":
-            gd.setColor(Color.RED); break;
-            case "E":case "F":case "G":case "H": //blue
-            gd.setColor(Color.parseColor("#0091EA")); break;
-            case "I":case "J":case "K":case "L": //green
-            gd.setColor(Color.parseColor("#20d8bf")); break;
-            case "M":case "N":case "O":case "P": // green
-            gd.setColor(Color.parseColor("#36b201")); break;
-            case "Q":case "R":case "S":case "T":  //fialova
-            gd.setColor(Color.parseColor("#7C4DFF")); break;
-            case "U":case "V":case "W":case "X": // ruzova
-            gd.setColor(Color.parseColor("#FF80AB")); break;
-            case "Y":case "Z":
-            gd.setColor(Color.parseColor("#1e09fa")); break;
-            default: //oranzova
-                gd.setColor(Color.parseColor("#FB7B0A")); break;
-
-        }
-
-        circleLetter.setText(firstLetter);
 
         return convertView;
     }

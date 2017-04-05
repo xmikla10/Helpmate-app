@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
@@ -29,19 +30,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
 import com.facebook.login.LoginManager;
+import com.facebook.share.internal.LegacyNativeDialogParameters;
 import com.flatmate.flatmate.Firebase.AddMembers;
+import com.flatmate.flatmate.Firebase.FirebaseHelperMyGroups;
 import com.flatmate.flatmate.Firebase.GraphUser;
 import com.flatmate.flatmate.Firebase.NewGroup;
 import com.flatmate.flatmate.Other.AlarmProgressReceiver;
 import com.flatmate.flatmate.Other.AlarmReceiver;
 import com.flatmate.flatmate.Other.AppPreferences;
+import com.flatmate.flatmate.Other.CustomAdapterMyGroups;
 import com.flatmate.flatmate.Other.MyStatus;
 import com.flatmate.flatmate.Other.CustomAdapterToDo;
 import com.flatmate.flatmate.Firebase.NewWork;
@@ -103,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public String userEmail;
     public String uniqueID;
     public String groupID;
+    public String groupName;
     public String actualMonth;
     public String userGroupID;
     public String userGroupIDChildKey;
@@ -137,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         
         firebaseAuth = FirebaseAuth.getInstance();
         notifCounter = 1;
+        groupName = "";
         if(firebaseAuth.getCurrentUser() == null){
             //closing this activity
             finish();
@@ -150,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         init();
         setUserName();
+        group_list_view();
         control_notification();
         setEvaluationByDB();
 
@@ -174,6 +183,112 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+            }
+        });
+
+    }
+
+    public CustomAdapterMyGroups adapter;
+
+    public void group_list_view()
+    {
+        final FirebaseHelperMyGroups helper;
+        helper = new FirebaseHelperMyGroups(db);
+
+        adapter = new CustomAdapterMyGroups(MainActivity.this , helper.retrieve(), groupID);
+
+        final ListView lv;
+        lv = (ListView) findViewById(R.id.listViewMyGroups);
+
+        db.child("user").child("users").child(userID).child("data").addChildEventListener(new ChildEventListener() {
+            @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
+            {
+                Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                groupID = value.get("_group").toString();
+                db.child("user").child("groups").child("user").child(userID).child("user").addChildEventListener(new ChildEventListener() {
+                    @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
+                    {
+                        adapter = new CustomAdapterMyGroups(MainActivity.this, helper.retrieve(),groupID);
+                        lv.setAdapter(adapter);
+                    }
+                    @Override public void onChildChanged(DataSnapshot dataSnapshot, String s)
+                    {
+                        adapter = new CustomAdapterMyGroups(MainActivity.this, helper.retrieve(),groupID);
+                        lv.setAdapter(adapter);
+                    }
+                    @Override public void onChildRemoved(DataSnapshot dataSnapshot)
+                    {
+                        adapter = new CustomAdapterMyGroups(MainActivity.this, helper.retrieve(),groupID);
+                        lv.setAdapter(adapter);
+                    }
+                    @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                    @Override public void onCancelled(DatabaseError databaseError) {}
+                });
+
+            }
+            @Override public void onChildChanged(DataSnapshot dataSnapshot, String s)
+            {
+                Map<String,Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                groupID = value.get("_group").toString();
+                db.child("user").child("groups").child("user").child(userID).child("user").addChildEventListener(new ChildEventListener() {
+                    @Override public void onChildAdded(DataSnapshot dataSnapshot, String s)
+                    {
+                        adapter = new CustomAdapterMyGroups(MainActivity.this, helper.retrieve(),groupID);
+                        lv.setAdapter(adapter);
+                    }
+                    @Override public void onChildChanged(DataSnapshot dataSnapshot, String s)
+                    {
+                        adapter = new CustomAdapterMyGroups(MainActivity.this, helper.retrieve(),groupID);
+                        lv.setAdapter(adapter);
+                    }
+                    @Override public void onChildRemoved(DataSnapshot dataSnapshot)
+                    {
+                        adapter = new CustomAdapterMyGroups(MainActivity.this, helper.retrieve(),groupID);
+                        lv.setAdapter(adapter);
+                    }
+                    @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                    @Override public void onCancelled(DatabaseError databaseError) {}
+                });
+            }
+            @Override public void onChildRemoved(DataSnapshot dataSnapshot)
+            {
+                adapter = new CustomAdapterMyGroups(MainActivity.this, helper.retrieve(),groupID);
+                lv.setAdapter(adapter);
+            }
+            @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        lv.setAdapter(adapter);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                final NewGroup s= (NewGroup) adapter.getItem(position);
+                userID = firebaseAuth.getCurrentUser().getUid().toString();
+
+                db.child("user").child("users").child(userID).child("data").orderByChild("_ID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override public void onDataChange(DataSnapshot dataSnapshot)
+                    {
+                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                        {
+                            childKey = childSnapshot.getKey();
+                        }
+                        Map newUserData = new HashMap();
+                        newUserData.put("_group", s.get_group_ID());
+
+                        db.child("user").child("users").child(userID).child("data").child(childKey).updateChildren(newUserData);
+
+                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        isActivityActual = false;
+                        finish();
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
+
+                    }
+                    @Override public void onCancelled(DatabaseError databaseError) {}
+                });
             }
         });
 
@@ -542,10 +657,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         firebaseAuth = FirebaseAuth.getInstance();
         userID = firebaseAuth.getCurrentUser().getUid().toString();
 
-        View hView =  navigationView.getHeaderView(0);
+        //View hView =  navigationView.getHeaderView(0);
 
-        final TextView userNameView = (TextView) hView.findViewById(R.id.menuUserNameView);
-        final TextView userEmailView = (TextView) hView.findViewById(R.id.menuUserEmailView);
+        final TextView userNameView = (TextView) findViewById(R.id.menuUserNameView);
+        final TextView userEmailView = (TextView) findViewById(R.id.menuUserEmailView);
 
         db = FirebaseDatabase.getInstance().getReference();
         db.child("user").child("users").child(userID).child("data").addChildEventListener(new ChildEventListener() {
@@ -562,16 +677,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     {
                         userNameView.setText(userName);
                         userEmailView.setText(userEmail);
+                        getSupportActionBar().setTitle("Helpmate");
 
                         db.child("user").child("groups").child("user").child(userID).child("user").orderByChild("_group_ID").equalTo(userGroupID).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot)
                             {
-                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
+                                {
                                     Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
-                                    String groupName = value.get("_group_name").toString();
+                                    String groupName1 = value.get("_group_name").toString();
                                     final TextView group = (TextView) findViewById(R.id.menuUserGroupView);
-                                    group.setText(groupName);
+                                    group.setText(groupName1);
+                                    groupName =groupName1;
+                                    getSupportActionBar().setTitle(groupName1);
 
                                 }
                             }
@@ -817,7 +936,52 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         int id = item.getItemId();
         if (id == R.id.nav_settings)
         {
-            startActivityForResult(new Intent(MainActivity.this, AppPreferences.class), AppPreferences.SETTINGS_FINISHED);
+
+            db.child("user").child("users").child(userID).child("data").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
+                    {
+                        Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                        String existGroupID = value.get("_group").toString();
+
+                        if (!existGroupID.equals(""))
+                        {
+                            db.child("user").child("users").child(userID).child("data").orderByChild("_ID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                {
+
+                                    db.child("user").child("groups").child("user").child(userID).child("user").orderByChild("_group_ID").equalTo(groupID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override public void onDataChange(DataSnapshot dataSnapshot)
+                                        {
+                                            String admin = "";
+                                            for (DataSnapshot childSnapshot: dataSnapshot.getChildren())
+                                            {
+                                                Map<String, Object> value = (Map<String, Object>) childSnapshot.getValue();
+                                                admin = value.get("_admin").toString();
+                                            }
+
+                                            Intent intent = new Intent(MainActivity.this, GroupInfoActivity.class);
+                                            intent.putExtra("group_ID", groupID);
+                                            intent.putExtra("group_name", groupName);
+                                            intent.putExtra("admin", admin);
+                                            startActivity(intent);
+
+                                        }
+                                        @Override public void onCancelled(DatabaseError databaseError) {}
+                                    });
+                                }
+                                @Override public void onCancelled(DatabaseError databaseError) {}
+                            });
+                        }
+                        else
+                            Toast.makeText(MainActivity.this, R.string.toast_select_group,Toast.LENGTH_LONG).show();
+
+                    }
+                }
+                @Override public void onCancelled(DatabaseError databaseError) {} });
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -828,6 +992,82 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final LinearLayout lin1 = (LinearLayout) findViewById(R.id.menu_main_page);
+        lin1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent1 = new Intent(MainActivity.this, MainActivity.class);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                isActivityActual = false;
+                finish();
+                startActivity(intent1);
+                overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
+            }
+        });
+
+        final LinearLayout lin2 = (LinearLayout) findViewById(R.id.menu_new_group);
+        lin2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent2 = new Intent(MainActivity.this, CreateNewGroupActivity.class);
+                startActivity(intent2);
+
+            }
+        });
+
+        final LinearLayout lin3 = (LinearLayout) findViewById(R.id.menu_activity_graph);
+        lin3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent3 = new Intent(MainActivity.this, GraphActivity.class);
+                startActivity(intent3);
+
+            }
+        });
+
+        final LinearLayout lin4 = (LinearLayout) findViewById(R.id.menu_settings);
+        lin4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                startActivityForResult(new Intent(MainActivity.this, AppPreferences.class), AppPreferences.SETTINGS_FINISHED);
+
+            }
+        });
+
+        final LinearLayout lin5 = (LinearLayout) findViewById(R.id.menu_log_out);
+        lin5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                try
+                {
+                    LoginManager.getInstance().logOut();
+                }
+                catch (Exception e) {}
+
+                try
+                {
+                    SignInActivity signIn = new SignInActivity();
+                    signIn.signOut();
+                }
+                catch (Exception e) {}
+
+                firebaseAuth.signOut();
+                finish();
+
+                Intent intent4 = new Intent(MainActivity.this, SignInActivity.class);
+                intent4.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                isActivityActual = false;
+                startActivity(intent4);
+                overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
+
+            }
+        });
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -835,72 +1075,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-
-            public boolean onNavigationItemSelected(MenuItem item) {
-                // Handle navigation view item clicks here.
-                int id = item.getItemId();
-                if (id == R.id.nav_to_do)
-                {
-                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    isActivityActual = false;
-                    finish();
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
-                }
-                else if (id == R.id.nav_activity_graph)
-                {
-                    Intent intent = new Intent(MainActivity.this, GraphActivity.class);
-                    startActivity(intent);
-                }
-                else if (id == R.id.nav_settings)
-                {
-                    //Intent intent = new Intent(MainActivity.this, AppPreferences.class);
-                    //startActivity(intent);
-                    startActivityForResult(new Intent(MainActivity.this, AppPreferences.class), AppPreferences.SETTINGS_FINISHED);
-
-                }
-                else if (id == R.id.nav_my_group)
-                {
-                    //Intent intent = new Intent(MainActivity.this, MyGroupsActivity.class);
-                    //startActivity(intent);
-                    startActivityForResult(new Intent(MainActivity.this, MyGroupsActivity.class), MyGroupsActivity.GROUP_FINISHED);
-                }
-                else if (id == R.id.nav_add_group)
-                {
-                    Intent intent = new Intent(MainActivity.this, CreateNewGroupActivity.class);
-                    startActivity(intent);
-                }
-                else if (id == R.id.nav_log_out)
-                {
-                    try {
-                        LoginManager.getInstance().logOut();
-                    }
-                    catch (Exception e) {}
-
-                    try
-                    {
-                        SignInActivity signIn = new SignInActivity();
-                        signIn.signOut();
-                    }
-                    catch (Exception e) {}
-
-                    firebaseAuth.signOut();
-                    finish();
-
-                    Intent intent = new Intent(MainActivity.this, SignInActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    isActivityActual = false;
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
-                }
-
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                drawer.closeDrawer(GravityCompat.START);
-                return true;
-            }
-        });
     }
 
     public Boolean getActualDate(String work_date)

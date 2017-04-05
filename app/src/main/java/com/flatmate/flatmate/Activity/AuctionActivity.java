@@ -162,7 +162,7 @@ public class AuctionActivity extends AppCompatActivity
             bidsCount = extras.getString("bidsCount");
 
             TextView work_name1 = (TextView) findViewById(R.id.auctionWorkName);
-            TextView status1 = (TextView) findViewById(R.id.auctionStatus);
+            TextView status1 = (TextView) findViewById(R.id.auctionStatusName);
             TextView duration1 = (TextView) findViewById(R.id.auctionDuration);
             TextView time1 = (TextView) findViewById(R.id.auctionDeadline);
             TextView deadline1 = (TextView) findViewById(R.id.auctionTime);
@@ -226,7 +226,12 @@ public class AuctionActivity extends AppCompatActivity
             circleLetter.setText(firstLetter);
 
             work_name1.setText(pom);
+
+            /////
+            statusInString = statusInString.substring(9, statusInString.length());
             status1.setText(statusInString);
+            /////
+
             duration1.setText(duration);
             deadline1.setText(deadline);
             time1.setText(time);

@@ -85,16 +85,24 @@
             android:weightSum="4"
             android:layout_height="wrap_content">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
+                android:paddingTop="5dp"
                 android:layout_height="0dp"
-                android:id="@+id/auctionStatus"
-                android:layout_weight="1"
-                android:text="Status"
-                android:textSize="13dp"
-                android:paddingLeft="14dp"
-                android:gravity="center|left"
-                />
+                android:gravity="center|left|top"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/auctionStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status:"
+                    android:textSize="13dp"
+                    android:paddingLeft="14dp"
+                    android:gravity="center|left" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -168,15 +176,24 @@
             android:weightSum="4"
             android:layout_height="wrap_content">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
+                android:paddingTop="5dp"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="Status"
-                android:visibility="invisible"
-                android:paddingLeft="14dp"
-                android:gravity="center|left"
-                />
+                android:gravity="center|left|top"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/auctionStatusName"
+                    android:textSize="13dp"
+                    android:text="12/03/2017"
+                    android:paddingLeft="14dp"
+                    android:gravity="center|left" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -26,7 +26,7 @@
     <string name="congrat">Blahoželáme, vyhrali ste</string>
     <string name="no">Nie</string>
     <string name="yes">Áno</string>
-    <string name="work_completed_by">Prácu dokončil/a  :</string>
+    <string name="work_completed_by">Prácu dokončil/a:</string>
     <string name="who_won">Kto vyhral?</string>
     <string name="not_interested">nemá záujem</string>
     <string name="lesser_bid">Prosím, zadajte menšiu ponuku ako posledný užívateľ</string>
@@ -104,12 +104,12 @@
     <string name="time_and">Čas \u0020\u0020  - \u0020\u0020  </string>
     <string name="date_and">Dátum \u0020\u0020  -  \u0020\u0020  </string>
     <string name="want_you_delete_user">Chcete vymazať užívateľa\u0020</string>
-    <string name="deadline">Uzávierka :</string>
-    <string name="duration_of_auction">Dĺžka aukcie :</string>
+    <string name="deadline">Uzávierka:</string>
+    <string name="duration_of_auction">Dĺžka aukcie:</string>
     <string name="who_won_1">Kto vyhral?</string>
-    <string name="work_completed_by_1">Prácu dokončil/a :</string>
+    <string name="work_completed_by_1">Prácu dokončil/a:</string>
     <string name="delete_ask">Vymazať ?</string>
-    <string name="wrk_uncompleted_by">Prácu nedokončil/a :</string>
+    <string name="wrk_uncompleted_by">Prácu nedokončil/a:</string>
     <string name="want_repeat_work">Chcete zopakovať túto prácu ?</string>
     <string name="repeat">Zopakovať</string>
     <string name="delete_repeat">Vymazať</string>
@@ -136,21 +136,21 @@
     <string name="add_member">\u0020Pridať člena</string>
     <string name="name_of_work">Meno práce</string>
     <string name="here_type_name_of_work">Tu zadajte meno práce</string>
-    <string name="duration_of_work">Dĺžka práce :</string>
+    <string name="duration_of_work">Dĺžka práce:</string>
     <string name="deadline1">Uzávierka</string>
     <string name="auction">Aukcia :</string>
     <string name="progress">Pokrok :</string>
     <string name="work_done">Práca dokončená</string>
-    <string name="members">Členovia :</string>
+    <string name="members">Členovia:</string>
     <string name="click_here_and_add_new_work">Kliknite tu a pridajte novú prácu</string>
     <string name="i_am_not_interested">Nemám záujem</string>
     <string name="save">Uložiť</string>
-    <string name="add_bid">Pridať ponuku :</string>
+    <string name="add_bid">Pridať ponuku:</string>
     <string name="minutes">minúty</string>
     <string name="activity_graph_label">Graf Aktivít</string>
     <string name="add_group">Pridať Skupinu</string>
     <string name="add_new_work">Pridať novú prácu</string>
-    <string name="group_info">Skupina - info</string>
+    <string name="group_info">Skupina info</string>
     <string name="my_groups_label">Moje Skupiny</string>
     <string name="settings_label">Nastavenia</string>
     <string name="work_details">Detaily práce</string>
@@ -171,4 +171,5 @@
     <string name="deleted_you_group">Boli ste odstránení zo skupiny :\u0020</string>
     <string name="long_duration_of_work">Dĺžka práce je príliž dlhá</string>
     <string name="credits_second">\u0020kreditov</string>
+    <string name="toast_select_group">Prosím, vyberte skupinu alebo vytvorte novú skupinu</string>
 </resources>
