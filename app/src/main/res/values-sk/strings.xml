@@ -172,4 +172,12 @@
     <string name="long_duration_of_work">Dĺžka práce je príliž dlhá</string>
     <string name="credits_second">\u0020kreditov</string>
     <string name="toast_select_group">Prosím, vyberte skupinu alebo vytvorte novú skupinu</string>
+    <string name="demo_slide_1_1">Vitajte</string>
+    <string name="demo_slide_1_2">Helpmate je vaším pomocníkom pre ľahšie rozdelenie prác v skupinách</string>
+    <string name="demo_slide_2_1">Na Prácu</string>
+    <string name="demo_slide_2_2">Na hlavnej stránke máte prehľad všetkých prác</string>
+    <string name="demo_slide_3_1">Aukcia</string>
+    <string name="demo_slide_3_2">V aukcií môže každý vyjadriť svoj názor a pridať ponuku</string>
+    <string name="demo_slide_4_1">Graf aktivít</string>
+    <string name="demo_slide_4_2">Koľáčový graf vám ukáže kto a koľko robil</string>
 </resources>

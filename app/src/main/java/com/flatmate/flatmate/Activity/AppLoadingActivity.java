@@ -47,8 +47,29 @@ public class AppLoadingActivity extends Activity {
 
                         if ( firstStart == null)
                         {
-                            Intent i = new Intent(AppLoadingActivity.this, SelectLanguageActivity.class);
+                            String language = Locale.getDefault().getLanguage();
+
+                            if( language.equals("sk"))
+                            {
+                                setLocale("sk");
+                            }
+                            else if( language.equals("cs"))
+                            {
+                                setLocale("cs");
+                            }
+                            else
+                            {
+                                setLocale("en");
+                            }
+
+
+                            Intent i = new Intent(AppLoadingActivity.this, IntroActivity.class);
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                            SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                            editor.putString("firstStart", "1");
+                            editor.commit();
+
                             startActivity(i);
                             finish();
                         }
@@ -76,4 +97,20 @@ public class AppLoadingActivity extends Activity {
         };
         welcomeThread.start();
     }
+
+    public void setLocale(String lang)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putString("language", lang);
+        editor.commit();
+
+        Locale myLocale = new Locale(lang);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+
+        res.updateConfiguration(conf, dm);
+    }
+
 }

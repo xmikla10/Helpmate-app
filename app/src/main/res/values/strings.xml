@@ -171,4 +171,12 @@
     <string name="long_duration_of_work">Duration of work is too long</string>
     <string name="credits_second">\u0020credits</string>
     <string name="toast_select_group">Please, select a groups or create a new group</string>
+    <string name="demo_slide_1_1">Welcome</string>
+    <string name="demo_slide_1_2">Helpmate is your helper for easier dividing works in groups</string>
+    <string name="demo_slide_2_1">To Do</string>
+    <string name="demo_slide_2_2">At the main page you have an overview of all works</string>
+    <string name="demo_slide_3_1">Auction</string>
+    <string name="demo_slide_3_2">In the auction can anyone give their opinion and add bid</string>
+    <string name="demo_slide_4_1">Activity graph</string>
+    <string name="demo_slide_4_2">Pie Chart shows you who and how many works</string>
 </resources>

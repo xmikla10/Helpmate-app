@@ -172,4 +172,12 @@
     <string name="long_duration_of_work">Délka práce je příliž dlouhá</string>
     <string name="credits_second">\u0020kreditů</string>
     <string name="toast_select_group">Prosím, vyberte skupinu nebo vytvořte novou skupinu</string>
+    <string name="demo_slide_1_1">Vítejte</string>
+    <string name="demo_slide_1_2">Helpmateje vaším pomocníkem pro snadnější dělení práce ve skupinách</string>
+    <string name="demo_slide_2_1">Na Práci</string>
+    <string name="demo_slide_2_2">Na hlavní stránce máte přehled všech prací</string>
+    <string name="demo_slide_3_1">Aukce</string>
+    <string name="demo_slide_3_2">V aukcií může každej přidat svůj názor a přidat ponuku</string>
+    <string name="demo_slide_4_1">Graf aktivit</string>
+    <string name="demo_slide_4_2">Koláčový graf vám ukáže kto a kolik dělal</string>
 </resources>

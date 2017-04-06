@@ -86,8 +86,8 @@
             android:label="About Flatmate"
             android:name=".Activity.AboutFlatmateActivity"/>
 
-        <activity android:name=".Activity.SelectLanguageActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Activity.IntroActivity"
+            android:theme="@style/AppTheme.NoActionBar2"/>
 
         <activity
             android:label="@string/activity_graph_label"
